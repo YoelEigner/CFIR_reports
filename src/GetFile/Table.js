@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux';
 import Select from 'react-select';
 import GetAssociateTypes from "../BL/GetAssociateTypes";
 import GetFile from "../DALs/GetFileByDate";
-import LoadingSpinner from "../Loader/Loader";
-import ZipFiles from "../Zip/Zip";
 
 const MainTable = ({ date, loading, excahngeRate }) => {
     const storeData = useSelector(state => state)

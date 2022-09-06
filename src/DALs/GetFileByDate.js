@@ -2,7 +2,6 @@ import axios from 'axios'
 import moment from 'moment'
 import configureStore from '../store/ReduxStore'
 import saveAs from 'file-saver';
-import ZipFiles from '../Zip/Zip'
 
 const GetFile = async (start, end, token, reportType, users, action, excahngeRate) => {
     const { store } = configureStore();
