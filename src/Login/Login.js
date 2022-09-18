@@ -9,7 +9,11 @@ import LoadingSpinner from './../Loader/Loader';
 import GetPhysicianFunc from './GetPhysicianFunc';
 import GetAssociateLeval from './../BL/GetAssociateLeval';
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+
 const Login = () => {
+    const eye = <FontAwesomeIcon icon={faEye} />;
     const [username, setUsername] = useState('')
     const [pass, setPass] = useState('')
     const navigate = useNavigate();
@@ -43,6 +47,7 @@ const Login = () => {
 
         } catch (error) {
             setErr(error.response.data)
+            setPass('')
             setIsLoading(false);
             setTimeout(() => {
                 setErr("")
@@ -66,13 +71,15 @@ const Login = () => {
                 <Form onSubmit={(e) => { submit(e) }}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Username</Form.Label>
-                        <Form.Control type="text" placeholder="Username" onChange={(e) => { setUsername(e.target.value) }} />
+                        <Form.Control type="text" placeholder="Username" value={username} onChange={(e) => { setUsername(e.target.value) }} />
                     </Form.Group>
-
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control type="password" placeholder="Password" onChange={(e) => { setPass(e.target.value) }} />
-                    </Form.Group>
+                    <div className="pass-wrapper">
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" placeholder="Password" value={pass} onChange={(e) => { setPass(e.target.value) }} />
+                            <i>{eye}</i>
+                        </Form.Group>
+                    </div>
                     <Button variant="primary" type="submit">
                         Login
                     </Button>

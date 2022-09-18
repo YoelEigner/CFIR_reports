@@ -16,8 +16,6 @@ const RegisterUser = () => {
             let resp = await RegisterUserBL(username, oldPass, newPass)
             if (resp.status === 200) { navigate('/login'); }
         } catch (error) {
-            // console.log(error)
-
             setErr(error.response.data)
             setTimeout(() => {
                 setErr("")

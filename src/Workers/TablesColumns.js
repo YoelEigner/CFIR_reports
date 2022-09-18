@@ -49,7 +49,10 @@ const WorkerProfileTable = ({ selected, worker }) => {
     const [duplicateTable, setDuplicateTable] = useState(true)
     const [associateFeesTable, setAssociateFeesTable] = useState(true)
     const [comments, setComments] = useState('')
+    const [adjustmentFee, setAdjustmentFee] = useState([{ name: "", value: 0 }])
+    const [adjustmentPaymentFee, setAdjustmentPAymentFee] = useState([{ name: "", value: 0 }])
     const dispatch = useDispatch()
+
 
     useEffect(() => {
         setSuperviserSelect(superviserSelectOptions(storeData.Physician))
@@ -130,11 +133,13 @@ const WorkerProfileTable = ({ selected, worker }) => {
             setInOfficeBlockTimes(worker.inOfficeBlockTimes)
             setBlocksBiWeeklyCharge(worker.blocksBiWeeklyCharge)
             setSelectedVideoTech({ value: worker.videoTech, label: worker.videoTech })
-            setVideoFee(worker.videoTechMonthlyFee)
+            setVideoFee(worker.cahrgeVideoFee)
             setDuplicateTable(worker.duplicateTable)
             setNonChargeablesTable(worker.nonChargeablesTable)
             setAssociateFeesTable(worker.associateFeesTable)
             setComments(worker.comments)
+            setAdjustmentFee(JSON.parse(worker.adjustmentFee))
+            setAdjustmentPAymentFee(JSON.parse(worker.adjustmentPaymentFee))
 
         }
     }, [worker])
@@ -179,11 +184,13 @@ const WorkerProfileTable = ({ selected, worker }) => {
         temp.inOfficeBlockTimes = inOfficeBlockTimes
         temp.blocksBiWeeklyCharge = blocksBiWeeklyCharge
         temp.videoTech = selectedVideoTech.label
-        temp.videoTechMonthlyFee = videoFee
+        temp.cahrgeVideoFee = videoFee
         temp.duplicateTable = duplicateTable
         temp.nonChargeablesTable = nonChargeablesTable
         temp.associateFeesTable = associateFeesTable
         temp.comments = comments
+        temp.adjustmentFee = JSON.stringify(adjustmentFee)
+        temp.adjustmentPaymentFee = JSON.stringify(adjustmentPaymentFee)
 
         let validate = Object.keys(temp).map(key => { return temp[key] })
         if (validate.includes("Please Select") || associateFeeBaseType === "" || associateFeeBaseTypeTwo === "" || date === "date") {
@@ -234,7 +241,30 @@ const WorkerProfileTable = ({ selected, worker }) => {
         }, 10000);
     }, [msg])
 
+    const handleAddClick = () => {
+        setAdjustmentFee([...adjustmentFee, { name: "", value: 0 }])
+    }
+    const handleAddPaymentClick = () => {
+        setAdjustmentPAymentFee([...adjustmentPaymentFee, { name: "", value: 0 }])
+    }
 
+    const updateAdjustmentArr = (value, item, index) => {
+        let tempArr = [...adjustmentFee]
+        item === 'name' ? tempArr[index].name = value : tempArr[index].value = value
+        setAdjustmentFee(tempArr)
+    }
+    const updatePaymentAdjustmentArr = (value, item, index) => {
+        let tempArr = [...adjustmentPaymentFee]
+        item === 'name' ? tempArr[index].name = value : tempArr[index].value = value
+        setAdjustmentPAymentFee(tempArr)
+    }
+
+    useEffect(() => {
+        if (!tglIsSupervised) {
+            setSupervierOne({ value: "Please Select", label: "Please Select" })
+            setSupervierTwo({ value: "Select Second Superviser", label: "Select Second Superviser" })
+        }
+    }, [tglIsSupervised])
 
     return (
         <div>
@@ -294,6 +324,22 @@ const WorkerProfileTable = ({ selected, worker }) => {
                             </td>
                         </tr>
                         <tr>
+                            <th className="required">Associate Name</th>
+                            <td>
+                                <InputGroup size="sm" >
+                                    <Form.Control required aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateName} onChange={(e) => { setAssociateName(e.target.value) }} />
+                                </InputGroup>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th className="required">Associate Email</th>
+                            <td>
+                                <InputGroup size="sm" >
+                                    <Form.Control required aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateEmail} onChange={(e) => { setAssociateEmail(e.target.value) }} />
+                                </InputGroup>
+                            </td>
+                        </tr>
+                        <tr>
                             <th className="required">Associate Type</th>
                             <td>
                                 <Select
@@ -306,25 +352,6 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                     value={associate}
                                     onChange={(e) => setAssociate((e))}
                                 />
-                                {/* <InputGroup size="sm" className="mb-3">
-                                    <Form.Control required aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associate} onChange={(e) => { setAssociate(e.target.value) }} />
-                                </InputGroup> */}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className="required">Associate Name</th>
-                            <td>
-                                <InputGroup size="sm" className="mb-3">
-                                    <Form.Control required aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateName} onChange={(e) => { setAssociateName(e.target.value) }} />
-                                </InputGroup>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className="required">Associate Email</th>
-                            <td>
-                                <InputGroup size="sm" className="mb-3">
-                                    <Form.Control required aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateEmail} onChange={(e) => { setAssociateEmail(e.target.value) }} />
-                                </InputGroup>
                             </td>
                         </tr>
                         <tr>
@@ -476,7 +503,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                         <tr>
                             <th>Associate Fee Base Rate</th>
                             <td>
-                                <InputGroup size="sm" className="mb-3">
+                                <InputGroup size="sm"  >
                                     <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRate}
                                         onChange={(e) => { setAssociateFeeBaseRate(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                 </InputGroup>
@@ -485,7 +512,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                         <tr>
                             <th>Associate Fee Base Rate Override({'<33'})</th>
                             <td>
-                                <InputGroup size="sm" className="mb-3">
+                                <InputGroup size="sm"  >
                                     <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide33}
                                         onChange={(e) => { setAssociateFeeBaseRate33(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                 </InputGroup>
@@ -494,7 +521,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                         <tr>
                             <th>Associate Fee Base Rate Override({'>34'})</th>
                             <td>
-                                <InputGroup size="sm" className="mb-3">
+                                <InputGroup size="sm"  >
                                     <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34}
                                         onChange={(e) => { setAssociateFeeBaseRate34(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                 </InputGroup>
@@ -520,7 +547,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                         <tr>
                             <th className={associateFeeBaseType === 1 || associateFeeBaseType === 2 ? 'required' : ""}> In Office Blocks</th >
                             <td>
-                                <InputGroup size="sm" className="mb-3">
+                                <InputGroup size="sm"  >
                                     <Form.Control required={associateFeeBaseType === 1 || associateFeeBaseType === 2}
                                         aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlocks} onChange={(e) => { setInOfficeBlocks(e.target.value) }} />
                                 </InputGroup>
@@ -529,7 +556,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                         <tr>
                             <th className={associateFeeBaseType === 1 ? 'required' : ""}>In Office Block Times</th>
                             <td>
-                                <InputGroup size="sm" className="mb-3">
+                                <InputGroup size="sm"  >
                                     <Form.Control as={'textarea'} required={associateFeeBaseType === 1}
                                         aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlockTimes} onChange={(e) => { setInOfficeBlockTimes(e.target.value) }} />
                                 </InputGroup>
@@ -538,7 +565,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                         <tr>
                             <th className={associateFeeBaseType === 1 || associateFeeBaseType === 4 ? 'required' : ""}>Blocks Bi Weekly Charge</th>
                             <td>
-                                <InputGroup size="sm" className="mb-3">
+                                <InputGroup size="sm"  >
                                     <Form.Control required={associateFeeBaseType === 1 || associateFeeBaseType === 4}
                                         aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={blocksBiWeeklyCharge}
                                         onChange={(e) => { setBlocksBiWeeklyCharge(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
@@ -561,18 +588,36 @@ const WorkerProfileTable = ({ selected, worker }) => {
                             </td>
                         </tr>
                         <tr>
-                            <th className={selectedVideoTech.label !== 'Huddle' ? 'required' : ""}>Video Tech Monthly Fee</th>
+                            <th>Charge Video Fee?</th>
                             <td>
-                                <InputGroup size="sm" className="mb-3">
-                                    <Form.Control required={selectedVideoTech.label !== 'Huddle'} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={videoFee}
-                                        onChange={(e) => { setVideoFee(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
-                                </InputGroup>
+                                <ToggleButton
+                                    aria-required={true}
+                                    className="mb-2"
+                                    id="toggle-check5"
+                                    type="checkbox"
+                                    variant="outline-dark"
+                                    checked={videoFee}
+                                    value="1"
+                                    size="sm"
+                                    onChange={(e) => setVideoFee(e.currentTarget.checked)}
+                                >
+                                    {videoFee === true ? "Yes" : "No"}
+                                </ToggleButton>
                             </td>
                         </tr>
+                        {/* <tr>
+                            <th className={selectedVideoTech.label !== 'Huddle' ? 'required' : ""}>Video Tech Monthly Fee</th>
+                            <td>
+                                <InputGroup size="sm"  >
+                                    <Form.Control required={selectedVideoTech.label !== 'Huddle'} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={videoFee}
+                                        onChange={(e) => { setVideoFee(e.currentTarget.checked) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                </InputGroup>
+                            </td>
+                        </tr> */}
                         <tr>
                             <th >Comments</th>
                             <td>
-                                <InputGroup size="sm" className="mb-3">
+                                <InputGroup size="sm"  >
                                     <Form.Control as={'textarea'}
                                         aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={comments} onChange={(e) => { setComments(e.target.value) }} />
                                 </InputGroup>
@@ -586,7 +631,34 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                 <Form.Check type={'checkbox'} id={`associateFeesTable`} label={`Associate Fees Table`} checked={associateFeesTable} onChange={(e) => setAssociateFeesTable(e.target.checked)} />
                             </td>
                         </tr>
-
+                        {adjustmentFee.map((x, index) => {
+                            return <tr key={index}>
+                                <th>Invoice Adjustment fee</th>
+                                <td>
+                                    <InputGroup size="sm"  >
+                                        <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.name} placeholder={'Adjustment Fee'} style={{ marginRight: '5px' }}
+                                            onChange={(e) => { updateAdjustmentArr(e.target.value, 'name', index) }} />
+                                        <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.value}
+                                            onChange={(e) => { updateAdjustmentArr(e.target.value, 'vlaue', index) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        <Button style={{ marginLeft: '5px' }} variant="dark" onClick={handleAddClick}>+</Button>
+                                    </InputGroup>
+                                </td>
+                            </tr>
+                        })}
+                        {adjustmentPaymentFee.map((x, index) => {
+                            return <tr key={index}>
+                                <th>Payment Adjustment fee</th>
+                                <td>
+                                    <InputGroup size="sm"  >
+                                        <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.name} placeholder={'Adjustment Fee'} style={{ marginRight: '5px' }}
+                                            onChange={(e) => { updatePaymentAdjustmentArr(e.target.value, 'name', index) }} />
+                                        <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.value}
+                                            onChange={(e) => { updatePaymentAdjustmentArr(e.target.value, 'vlaue', index) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        <Button style={{ marginLeft: '5px' }} variant="dark" onClick={handleAddPaymentClick}>+</Button>
+                                    </InputGroup>
+                                </td>
+                            </tr>
+                        })}
                     </thead>
                 </Table >
                 {<Button variant={'dark'} disabled={worker.status === false} type="submit">{selected === "" ? "Save user" : "Update user"}</Button>}

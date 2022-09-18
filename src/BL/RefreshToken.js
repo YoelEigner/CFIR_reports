@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const RefreshToken = async (refreshToken, status,) => {
+const RefreshToken = async (token) => {
 
-    let resp = await axios.post(process.env.REACT_APP_API_AUTH_URL + `/token`, { token: refreshToken })
+    let resp = await axios.post(process.env.REACT_APP_API_URL + `/newworkprofiles`, { headers: { "authorization": `Bearer ${token}` } })
     return resp.data
 }
 

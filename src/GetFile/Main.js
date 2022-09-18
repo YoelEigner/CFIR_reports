@@ -17,12 +17,13 @@ const Main = () => {
   const [date, setDate] = useState([]);
   const storeData = useSelector(state => state)
   const [open, setOpen] = useState(false)
-  const [excahngeRate, setExcahngeRate] = useState(0)
+  const [videoFee, setVideoFee] = useState(0)
   const [physicians, setPhysicians] = useState([])
   const [selectedUser, setSelectedUser] = useState("")
   const [err, setErr] = useState("")
   const [isLoading, setIsLoading] = useState(false);
-
+  const [addEndDate, setAddEndDate] = useState(false)
+  const [endDate, setEndDate] = useState('')
   useEffect(() => {
     setPhysicians(storeData.Physician)
   }, [storeData.Physician])
@@ -31,13 +32,28 @@ const Main = () => {
     revokeAccess()
   }, [])
 
-  const onChangeDate = (date) => {
-    let temp = []
-    var endate = new Date(date);
-    endate.setDate(endate.getDate() + 14);
-    temp.push(date)
-    temp.push(endate)
+  const onStartDateChange = (startDate) => {
+    var temp = []
+    var endateTemp = new Date(startDate);
+    endateTemp.setDate(endateTemp.getDate() + 14);
+    setEndDate(endateTemp)
+    temp.push(startDate)
+    temp.push(endateTemp)
     setDate(temp);
+  }
+
+  useEffect(() => {
+    if (addEndDate === false) {
+      date[0] !== undefined && onStartDateChange(date[0])
+    }
+  }, [addEndDate])
+
+  const onEndDateChange = (endDate) => {
+    var temp = date
+    temp.splice(1, 1)
+    temp.push(endDate)
+    setDate(temp);
+    setEndDate(endDate)
   }
   const style = { width: '50%', marginRight: 'auto', marginLeft: 'auto' }
 
@@ -61,8 +77,8 @@ const Main = () => {
     try {
       setIsLoading(true)
       let resp = await GetWorkerProfile(selectedUser, storeData.accessToken)
-      await GetFile(date[0], date[1], storeData.accessToken, 'singlepdf', resp, 'run', excahngeRate)
-      // await GetFile(date[0], date[1], storeData.accessToken, 'bydate', resp[0].associateName.split(" (Active)")[0], 'run', resp[0].associateEmail, resp[0].id, excahngeRate)
+      await GetFile(date[0], date[1], storeData.accessToken, 'singlepdf', resp, 'run', videoFee, 'payment')
+      await GetFile(date[0], date[1], storeData.accessToken, 'singlepdf', resp, 'run', videoFee, 'invoice')
       setIsLoading(false)
 
     } catch (error) {
@@ -76,7 +92,7 @@ const Main = () => {
   }
 
   return (
-    <Col style={{paddingTop: '80px' }}>
+    <Col style={{ paddingTop: '80px' }}>
       {isLoading && <LoadingSpinner />}
       {err !== "" && <Alert key={'danger'} variant={'danger'}>
         {err}
@@ -84,28 +100,34 @@ const Main = () => {
       <TokenRefreshModal open={open} setOpen={(close) => setOpen(close)} revokeAccess={() => revokeAccess()} />
       <Row style={{ display: 'inline-flex', justifyContent: 'center', width: 300 }}>
         <DatePicker
-          id="EndDate"
+          id="startDate"
           value={date[0]}
-          onChange={onChangeDate}
+          onChange={(e) => onStartDateChange(e)}
           formatStyle="large"
-          placeholder="DD/MM/YYYY"
+          placeholder="MM/DD/YYYY"
           selectionType="single"
-
         />
+        <br />
+        <br />
+        {addEndDate && <DatePicker
+          id="EndDate"
+          value={endDate}
+          minDate={date[0]}
+          onChange={(e) => onEndDateChange(e)}
+          formatStyle="large"
+          placeholder="MM/DD/YYYY"
+          selectionType="single"
+        />}
       </Row>
       <br />
+      {date[0] && <Form.Check style={{ display: 'inline-table' }} type={'checkbox'} label={'Change End Date?'} onChange={(e) => setAddEndDate(e.target.checked)} name="group2" id="radio1" />}
+
       <br />
       {/* 
       <Form.Check style={{ display: 'inline-table' }} type={'radio'} label={'US'} name="group2" id="radio1" />{" "}
       <Form.Check style={{ display: 'inline-table' }} type={'radio'} label={'CAD'} name="group2" id="radio2" />
-      <Table style={style}>
-        <thead>
-          <tr>
-            <td ><Form.Control required={true} aria-label="Small" size="sm" aria-describedby="inputGroup-sizing-sm" onKeyPress={(e) => NumbersOnly(e)} contentEditable={true}
-              onChange={(e) => setExcahngeRate(e.target.value)} placeholder="Video fee exchange rate, Ex:0.77" /></td>
-          </tr>
-        </thead>
-      </Table> */}
+ */}
+
       <Col>
         <Table style={style}>
           <tbody>
@@ -119,7 +141,14 @@ const Main = () => {
             })}
           </tbody>
         </Table>
-
+        <Table style={style}>
+          <thead>
+            <tr>
+              <td ><Form.Control required={true} aria-label="Small" size="sm" aria-describedby="inputGroup-sizing-sm" onKeyPress={(e) => NumbersOnly(e)} contentEditable={true}
+                onChange={(e) => setVideoFee(e.target.value)} placeholder="Video fee (For All Users)" /></td>
+            </tr>
+          </thead>
+        </Table>
         <div style={{ borderWidth: '1px', borderStyle: 'solid', paddingTop: '9px', paddingLeft: '5px', paddingRight: '5px' }}>
           <Select
             styles={{ paddingBottem: '5px' }}
@@ -138,7 +167,7 @@ const Main = () => {
 
 
         <br />
-        <MainTable date={date} loading={(e) => setIsLoading(e)} rate={excahngeRate} />
+        <MainTable date={date} loading={(e) => setIsLoading(e)} videoFee={videoFee} />
       </Col>
     </Col >
   )
