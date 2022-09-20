@@ -24,12 +24,11 @@ const MainTable = ({ date, loading, videoFee }) => {
 
     const optionsArr = [
         { value: 'associateType', label: "Run all reports for all therapists" },
-        { value: 1, label: "Run Reports together for Revision" },
         { value: 'L1', label: "Run reports for L1 only" },
         { value: 'L2', label: "Run reports for L2 only" },
         { value: 'L3', label: "Run reports for L3 only" },
         { value: 'L4', label: "Run reports for L4 only" },
-        { value: 'superviser', label: "Run reports for Supervised & their Supervisors only" }
+        // { value: 'superviser', label: "Run reports for Supervised & their Supervisors only" }
     ]
     const updateChbxValue = (row, name, checked) => {
         let temp = chbx

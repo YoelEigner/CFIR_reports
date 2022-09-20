@@ -9,18 +9,14 @@ import { useDispatch } from "react-redux";
 const WorkerProfiles = () => {
     const [physicians, setPhysicians] = useState([])
     const storeData = useSelector(state => state)
-    // const [workerObjKeys, setWorkerObjKeys] = useState([{ dataField: 'id', text: 'Product ID' }])
-    // const [workerObjects, setWorkerObjects] = useState([{}])
     const [physicianNmae, setPhysicianName] = useState('')
     const [worker, setWorker] = useState([])
     const dispatch = useDispatch()
     const [err, setErr] = useState("")
 
-
     useEffect(() => {
         setPhysicians(storeData.Physician)
     }, [storeData.Physician])
-
 
     const physiciansOptions = () => {
         let arr = []

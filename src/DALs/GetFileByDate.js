@@ -17,15 +17,17 @@ const GetFile = async (start, end, token, reportType, users, action, videoFee, t
         const file = new Blob([resp.data], { type: 'application/pdf' });
         const urlOne = URL.createObjectURL(file)
         window.open(urlOne)
+        return resp
     }
     else if (reportType === 'multipdf') {
         const file = new Blob([resp.data], { type: 'application/zip' });
         let date = new Date()
-        var filename = "reports_" + date.toJSON().slice(0, 10) + "T" + date.toLocaleTimeString().slice(0, 5) + ".zip";
+        var filename = type + "_reports_" + date.toJSON().slice(0, 10) + "T" + date.toLocaleTimeString().slice(0, 5) + ".zip";
         saveAs(file, filename)
         if (action === 'both') {
             saveAs(file, filename)
         }
+        return resp
     }
 }
 export default GetFile

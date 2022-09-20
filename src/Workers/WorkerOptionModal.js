@@ -18,7 +18,6 @@ const WorkerOptionModal = ({ open, setOpen, header, accessToken, id, setCovrage1
 
     useEffect(() => {
         getServiceTypes()
-
     }, [])
 
     useEffect(() => {

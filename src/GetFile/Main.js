@@ -24,6 +24,8 @@ const Main = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [addEndDate, setAddEndDate] = useState(false)
   const [endDate, setEndDate] = useState('')
+  const numberFormat = Intl.NumberFormat()
+
   useEffect(() => {
     setPhysicians(storeData.Physician)
   }, [storeData.Physician])
@@ -65,9 +67,9 @@ const Main = () => {
     return arr
   }
   const revokeAccess = () => {
-    // setTimeout(() => {
-    //   setOpen(true)
-    // }, storeData.expiresIn);
+    setTimeout(() => {
+      setOpen(true)
+    }, storeData.expiresIn);
   }
   const handleUserChange = (id) => {
     setSelectedUser(id.value)
@@ -75,11 +77,20 @@ const Main = () => {
 
   const getWorker = async () => {
     try {
-      setIsLoading(true)
-      let resp = await GetWorkerProfile(selectedUser, storeData.accessToken)
-      await GetFile(date[0], date[1], storeData.accessToken, 'singlepdf', resp, 'run', videoFee, 'payment')
-      await GetFile(date[0], date[1], storeData.accessToken, 'singlepdf', resp, 'run', videoFee, 'invoice')
-      setIsLoading(false)
+      if (isNaN(numberFormat.format(videoFee))) {
+        setErr('Please enter a video fee amount')
+        setTimeout(() => {
+          setErr("")
+        }, 5000);
+      }
+      else {
+        setIsLoading(true)
+        let resp = await GetWorkerProfile(selectedUser, storeData.accessToken)
+        await GetFile(date[0], date[1], storeData.accessToken, 'singlepdf', resp, 'run', videoFee, 'payment')
+        await GetFile(date[0], date[1], storeData.accessToken, 'singlepdf', resp, 'run', videoFee, 'invoice')
+        setIsLoading(false)
+
+      }
 
     } catch (error) {
       setErr(String(error))

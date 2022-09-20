@@ -147,7 +147,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
     const removeStatus = (name) => {
         try {
             let status = storeData.Physician.find(x => x.associateName.includes(name))
-            return status.status === true ? name.split("(Active)")[0] : name.split("(Not Active)")[0]
+            return status.status === true ? name.split("(Active)")[0].split('-')[1].trim() : name.split("(Not Active)")[0].split('-')[1].trim()
         } catch (error) {
             return name
         }
@@ -624,7 +624,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                             </td>
                         </tr>
                         <tr>
-                            <th >Tables to show on report</th>
+                            <th >Tables to show on invoice report</th>
                             <td>
                                 <Form.Check type={'checkbox'} id={`duplicateTable`} label={`Duplicate Table`} checked={duplicateTable} onChange={(e) => setDuplicateTable(e.target.checked)} />
                                 <Form.Check type={'checkbox'} id={`nonChargeablesTable`} label={`Non-chargeables`} checked={nonChargeablesTable} onChange={(e) => setNonChargeablesTable(e.target.checked)} />
@@ -636,7 +636,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                 <th>Invoice Adjustment fee</th>
                                 <td>
                                     <InputGroup size="sm"  >
-                                        <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.name} placeholder={'Adjustment Fee'} style={{ marginRight: '5px' }}
+                                        <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.name} placeholder={'Invoice Adjustment Fee'} style={{ marginRight: '5px' }}
                                             onChange={(e) => { updateAdjustmentArr(e.target.value, 'name', index) }} />
                                         <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.value}
                                             onChange={(e) => { updateAdjustmentArr(e.target.value, 'vlaue', index) }} onKeyPress={(e) => NumbersOnly(e)} />
@@ -650,7 +650,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                 <th>Payment Adjustment fee</th>
                                 <td>
                                     <InputGroup size="sm"  >
-                                        <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.name} placeholder={'Adjustment Fee'} style={{ marginRight: '5px' }}
+                                        <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.name} placeholder={'Payment Adjustment Fee'} style={{ marginRight: '5px' }}
                                             onChange={(e) => { updatePaymentAdjustmentArr(e.target.value, 'name', index) }} />
                                         <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.value}
                                             onChange={(e) => { updatePaymentAdjustmentArr(e.target.value, 'vlaue', index) }} onKeyPress={(e) => NumbersOnly(e)} />
@@ -667,8 +667,6 @@ const WorkerProfileTable = ({ selected, worker }) => {
             <br />
             <br />
         </div >
-
     )
 }
-
 export default WorkerProfileTable

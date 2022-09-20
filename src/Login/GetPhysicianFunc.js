@@ -6,7 +6,7 @@ const GetPhysicianFunc = async (token) => {
     resp.data.forEach(user => {
         let temp = user
         let status = temp.status === true ? " (Active)" : " (Not Active)"
-        temp.associateName = temp.associateName + status
+        temp.associateName = user.associateType + " - " + temp.associateName + status
         arr.push(temp)
     })
     return resp.data

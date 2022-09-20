@@ -2,19 +2,12 @@ import { useState } from "react";
 import { Alert, Button, Form, InputGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import UpdateEmailPasswordBL from "../BL/UpdateEmailPasswordBL";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faEye } from "@fortawesome/free-solid-svg-icons";
-import { useForm } from "react-hook-form";
 
 const UpdateEmailPassword = () => {
     const [pass, setPass] = useState("")
     const storeData = useSelector(state => state)
     const [msg, setMsg] = useState("")
     const [varient, setVarient] = useState("danger")
-    const [showHide, setShowHide] = useState('password')
-    // const eye = <FontAwesomeIcon icon={faEye} />;
-    // const { register, handleSubmit, watch, formState: { errors } } = useForm();
-
 
     const onSubmit = async (e) => {
         try {
@@ -37,28 +30,23 @@ const UpdateEmailPassword = () => {
     }
 
     return (
-        <div style={{ paddingTop: '100%' }}>
+        <div style={{ paddingTop: '80%' }}>
             {msg !== "" && <Alert key={varient} variant={varient}>
                 {msg}
             </Alert>}
-
-            <Form className="" onSubmit={onSubmit}>
-                <div className="pass-wrapper">
-
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Label>Update email password</Form.Label>
-                        <Form.Control type={showHide} placeholder="Password" onChange={(e) => setPass(e.target.value)}
-                        />
-                        {/* <i>{eye}</i> */}
-                        {/* {errors.requierd && <span style={{ color: 'red' }}>This field is required</span>} */}
-
-                    </Form.Group>
-                </div>
+            <Form onSubmit={onSubmit}>
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Update email password</Form.Label>
+                    <Form.Control type={'password'} placeholder="Password" onChange={(e) => setPass(e.target.value)}
+                    />
+                </Form.Group>
                 <Button variant="dark" type="submit">
                     Update Password
                 </Button>
             </Form>
-
+            <div style={{ position: 'absolute', left: '30%', right: '30%' }}>
+                This password is NOT the account password, this is the "App Password" in the email account settings!
+            </div>
         </div>
     );
 }

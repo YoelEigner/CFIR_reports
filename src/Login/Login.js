@@ -9,11 +9,7 @@ import LoadingSpinner from './../Loader/Loader';
 import GetPhysicianFunc from './GetPhysicianFunc';
 import GetAssociateLeval from './../BL/GetAssociateLeval';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
-
 const Login = () => {
-    const eye = <FontAwesomeIcon icon={faEye} />;
     const [username, setUsername] = useState('')
     const [pass, setPass] = useState('')
     const navigate = useNavigate();
@@ -77,7 +73,7 @@ const Login = () => {
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Label>Password</Form.Label>
                             <Form.Control type="password" placeholder="Password" value={pass} onChange={(e) => { setPass(e.target.value) }} />
-                            <i>{eye}</i>
+                            {/* <i>{eye}</i> */}
                         </Form.Group>
                     </div>
                     <Button variant="primary" type="submit">
@@ -86,7 +82,6 @@ const Login = () => {
                 </Form>
                 <span><a href='/register'>Need to register?</a></span>
                 <br />
-                <span>YoelE - password1</span>
             </Col>
         </div>)
 
