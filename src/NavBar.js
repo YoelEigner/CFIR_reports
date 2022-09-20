@@ -1,7 +1,6 @@
 import { Alert, Container, Nav, Navbar } from "react-bootstrap"
 import { useState } from 'react';
 import WorkerProfiles from './Workers/WorkerProfiles';
-import Main from "./GetFile/Main";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from 'react';
@@ -9,6 +8,7 @@ import GetPhysicianFunc from './Login/GetPhysicianFunc';
 import UpdateEmailPassword from "./UpdateEmailPassword/UpdateEmailPassword";
 import resetadjustmentfee from './BL/ResetAjustmentFees';
 import ResetAdjustmentFeeModal from './ResetAdjustmentFeeModal/ResetAdjustmentFeeModal';
+import Main from "./HomePage/Main";
 
 const NavBar = () => {
     const [physiciansVisable, setWorkerProfile] = useState(false)

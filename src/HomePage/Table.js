@@ -28,7 +28,6 @@ const MainTable = ({ date, loading, videoFee }) => {
         { value: 'L2', label: "Run reports for L2 only" },
         { value: 'L3', label: "Run reports for L3 only" },
         { value: 'L4', label: "Run reports for L4 only" },
-        // { value: 'superviser', label: "Run reports for Supervised & their Supervisors only" }
     ]
     const updateChbxValue = (row, name, checked) => {
         let temp = chbx
@@ -52,8 +51,6 @@ const MainTable = ({ date, loading, videoFee }) => {
             setErrMsg("")
             getFiles(action, type)
         }
-
-
     }
 
     const isDisabled = date.length === 0 || selected === ''
@@ -89,7 +86,12 @@ const MainTable = ({ date, loading, videoFee }) => {
                 let resp = await GetFile(date[0], date[1], storeData.accessToken, 'multipdf', filterSites, action, videoFee, type)
                 if (resp.status === 200) {
                     setVarient('success')
-                    setErrMsg('Success')
+                    if(action === 'email'){
+                        setErrMsg('Eamils sent!')
+                    }
+                    else {
+                        setErrMsg('Download compleate!')
+                    }
                     setTimeout(() => {
                         setErrMsg("")
                     }, 5000);

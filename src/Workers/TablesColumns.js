@@ -8,7 +8,7 @@ import WorkerOptionModal from "./WorkerOptionModal";
 import UpdateWorkerProfile from "../BL/UpdateWorkerProfiles";
 import { useDispatch } from "react-redux";
 import NewWorkerProfile from "../BL/NewWorkerProfile";
-import { NumbersOnly } from "../GetFile/NumbersOnly";
+import { NumbersOnly } from "../HomePage/NumbersOnly";
 import { act } from "react-dom/test-utils";
 
 const WorkerProfileTable = ({ selected, worker }) => {
