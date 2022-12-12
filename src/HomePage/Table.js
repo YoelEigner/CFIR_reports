@@ -24,6 +24,7 @@ const MainTable = ({ date, loading, videoFee }) => {
 
     const optionsArr = [
         { value: 'associateType', label: "Run all reports for all therapists" },
+        { value: 'supervisers', label: "Run reports for Supervised & their Supervisors only" },
         { value: 'L1', label: "Run reports for L1 only" },
         { value: 'L2', label: "Run reports for L2 only" },
         { value: 'L3', label: "Run reports for L3 only" },

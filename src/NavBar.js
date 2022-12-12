@@ -1,50 +1,30 @@
 import { Alert, Container, Nav, Navbar } from "react-bootstrap"
-import { useState } from 'react';
-import WorkerProfiles from './Workers/WorkerProfiles';
+import { Children, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from 'react';
 import GetPhysicianFunc from './Login/GetPhysicianFunc';
-import UpdateEmailPassword from "./UpdateEmailPassword/UpdateEmailPassword";
-import resetadjustmentfee from './BL/ResetAjustmentFees';
 import ResetAdjustmentFeeModal from './ResetAdjustmentFeeModal/ResetAdjustmentFeeModal';
-import Main from "./HomePage/Main";
+import TokenRefreshModal from "./Login/TokenRefreshModal";
+
 
 const NavBar = () => {
-    const [physiciansVisable, setWorkerProfile] = useState(false)
-    const [getByDateVisable, setGetByDateVisable] = useState(true)
+    // const [physiciansVisable, setWorkerProfile] = useState(false)
+    // const [getByDateVisable, setGetByDateVisable] = useState(true)
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    const [isActive, setIsActive] = useState(true)
-    const [updatePass, setUpdatePass] = useState(false)
+    // const [updatePass, setUpdatePass] = useState(false)
     const storeData = useSelector(state => state)
     const [msg, setMsg] = useState("")
     const [varient, setVarient] = useState("success")
     const [showHide, setShowHide] = useState(false)
+    const [open, setOpen] = useState(false)
+    const [active, setActive] = useState('default');
 
-    const clickAction = (btn) => {
-        if (btn === 'byDate') {
-            setGetByDateVisable(true)
-            setWorkerProfile(false)
-            setUpdatePass(false)
-            setIsActive(true)
-        }
-        else if (btn === 'workerprofile') {
-            setGetByDateVisable(false)
-            setWorkerProfile(true)
-            setUpdatePass(false)
-            setIsActive(false)
-        }
-        else if (btn === 'updatepass') {
-            setGetByDateVisable(false)
-            setWorkerProfile(false)
-            setUpdatePass(true)
-            setIsActive(false)
-        }
-        else if (btn === 'logout') {
-            dispatch({ type: "RESET" })
-            navigate('/login')
-        }
+
+    const logout = () => {
+        dispatch({ type: "RESET" })
+        navigate('/login')
     }
     const onReload = async () => {
         let physicians = await GetPhysicianFunc(storeData.accessToken)
@@ -55,9 +35,18 @@ const NavBar = () => {
         onReload()
     }, [])
 
+    // useEffect(() => {
+    //     revokeAccess()
+    // }, [])
+
+    const revokeAccess = () => {
+        setTimeout(() => {
+            setOpen(true)
+        }, storeData.expiresIn);
+    }
+
     const handleResp = async (resp) => {
         setShowHide(false)
-        setIsActive(false)
         if (resp === 'OK') {
             setVarient("success")
             setMsg("Adjustment fees have been reset")
@@ -74,33 +63,30 @@ const NavBar = () => {
     }
     return (
         <div >
+            <TokenRefreshModal open={open} setOpen={(close) => setOpen(close)} revokeAccess={() => revokeAccess()} />
+
             <Navbar bg="dark" variant="dark" style={{ position: 'sticky', top: '0', zIndex: "1" }}>
                 <Container>
-                    <Nav className="me-auto">
-                        <Nav.Link href="#getbydate" onClick={() => clickAction('byDate')} activeclassname="active" active={isActive}>Get By Date</Nav.Link>
-                        <Nav.Link href="#workerprofile" onClick={() => clickAction('workerprofile')} activeclassname="active">Worker Profile</Nav.Link>
-                        <Nav.Link href="#updatepassword" onClick={() => clickAction('updatepass')} activeclassname="active">Update Password</Nav.Link>
-                        <Nav.Link href="#resetAdjustmentFees" onClick={() => setShowHide(true)} activeclassname="active">Reset Adjustment Fees</Nav.Link>
-                        <Nav.Link href="#logout" onClick={() => clickAction('logout')} >Logout</Nav.Link>
-
+                    <Nav className="me-auto"
+                        activeKey={active}
+                        onSelect={(selectedKey) => setActive(selectedKey)}
+                    >
+                        <Nav.Link href="" onClick={() => navigate('/home')} eventKey="default" >Get By Date</Nav.Link>
+                        <Nav.Link href="" onClick={() => navigate('/workerprofile')} eventKey="link-1" >Worker Profile</Nav.Link>
+                        <Nav.Link href="" onClick={() => setShowHide(true)} eventKey="link-2">Reset Adjustment Fees</Nav.Link>
+                        <Nav.Link href="" onClick={() => navigate('changepass', { user: 'yoel' })} eventKey="link-3" >Change Password</Nav.Link>
+                        <Nav.Link href="" onClick={() => logout()} >Logout</Nav.Link>
 
                     </Nav>
                     <Navbar.Text>
-                        Signed in as: <a href="#">{storeData.username}</a>
+                        Signed in as: <a href="#/" onClick={() => navigate('changepass')}>{storeData.username}</a>
                     </Navbar.Text>
                 </Container>
             </Navbar>
-            {msg !== "" && <Alert style={{ textAlign: "center", position: "sticky", top: 45 }} key={'success'} variant={'success'}>
+            {msg !== "" && <Alert style={{ textAlign: "center", position: "sticky", top: 50 }} key={'success'} variant={varient}>
                 {msg}
             </Alert>}
-            <div className="App">
-                <div className="spaceTop">
-                    <ResetAdjustmentFeeModal show={showHide} setShow={(e) => { setShowHide(e) }} token={storeData.accessToken} handleResp={(resp) => handleResp(resp)} />
-                    {getByDateVisable && <Main />}
-                    {physiciansVisable && <WorkerProfiles />}
-                    {updatePass && <UpdateEmailPassword />}
-                </div>
-            </div>
+            <ResetAdjustmentFeeModal show={showHide} setShow={(e) => { setShowHide(e) }} token={storeData.accessToken} handleResp={(resp) => handleResp(resp)} />
         </div>
     )
 }

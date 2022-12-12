@@ -1,5 +1,5 @@
 import { Alert, Button, Col, Form } from 'react-bootstrap'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import GetToken from '../BL/JWTtoken'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -17,7 +17,9 @@ const Login = () => {
     const [err, setErr] = useState("")
     const [isLoading, setIsLoading] = useState(false);
 
-
+    useEffect(() => {
+        dispatch({ type: "AUTHENTICATED", payload: false })
+    }, [])
     const submit = async (e) => {
         e.preventDefault()
         setIsLoading(true);
@@ -76,14 +78,15 @@ const Login = () => {
                             {/* <i>{eye}</i> */}
                         </Form.Group>
                     </div>
-                    <Button variant="primary" type="submit">
+                    <Button variant="secondary" type="submit">
                         Login
                     </Button>
                 </Form>
-                <span><a href='/register'>Need to register?</a></span>
+                <span><a href='/register'>Need to register?</a></span><br />
+                <span><a href='/changepass'>Change password?</a></span>
                 <br />
             </Col>
-        </div>)
+        </div >)
 
 }
 export default Login

@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { DatePicker } from "react-rainbow-components";
 import { Alert, Button, Col, Form, Row, Table } from 'react-bootstrap'
 import { useSelector } from "react-redux";
 import GetFile from '../DALs/GetFileByDate';
-import TokenRefreshModal from "../Login/TokenRefreshModal";
 import Select from 'react-select';
 import MainTable from "./Table";
 import { NumbersOnly } from "./NumbersOnly";
 import GetWorkerProfile from "../BL/GetWorkerProfile";
 import LoadingSpinner from "../Loader/Loader";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Cookies from 'universal-cookie';
+import moment from "moment";
 
 
 
 const Main = () => {
-  const [date, setDate] = useState([]);
+  const [date, setDate] = useState([new Date()]);
   const storeData = useSelector(state => state)
-  const [open, setOpen] = useState(false)
   const [videoFee, setVideoFee] = useState(0)
   const [physicians, setPhysicians] = useState([])
   const [selectedUser, setSelectedUser] = useState("")
@@ -24,19 +25,19 @@ const Main = () => {
   const [addEndDate, setAddEndDate] = useState(false)
   const [endDate, setEndDate] = useState('')
   const numberFormat = Intl.NumberFormat()
+  const cookies = new Cookies();
+
 
   useEffect(() => {
     setPhysicians(storeData.Physician)
   }, [storeData.Physician])
 
-  useEffect(() => {
-    revokeAccess()
-  }, [])
 
   const onStartDateChange = (startDate) => {
+    cookies.set('startDate', startDate, { maxAge: 2629800000 });
     var temp = []
     var endateTemp = new Date(startDate);
-    endateTemp.setDate(endateTemp.getDate() + 14);
+    endateTemp.setDate(endateTemp.getDate() + 13);
     setEndDate(endateTemp)
     temp.push(startDate)
     temp.push(endateTemp)
@@ -45,9 +46,15 @@ const Main = () => {
 
   useEffect(() => {
     if (addEndDate === false) {
-      date[0] !== undefined && onStartDateChange(date[0])
+      let cookieStartDate = new Date(cookies.get('startDate'))
+      if (!moment(cookieStartDate).isValid()) {
+        cookieStartDate = new Date()
+      }
+      date[0] !== undefined && onStartDateChange(cookieStartDate)
     }
   }, [addEndDate])
+
+  useEffect(() => { console.log(cookies.get('startDate')); }, [])
 
   const onEndDateChange = (endDate) => {
     var temp = date
@@ -65,11 +72,7 @@ const Main = () => {
     })
     return arr
   }
-  const revokeAccess = () => {
-    setTimeout(() => {
-      setOpen(true)
-    }, storeData.expiresIn);
-  }
+
   const handleUserChange = (id) => {
     setSelectedUser(id.value)
   }
@@ -107,44 +110,24 @@ const Main = () => {
       {err !== "" && <Alert key={'danger'} variant={'danger'}>
         {err}
       </Alert>}
-      <TokenRefreshModal open={open} setOpen={(close) => setOpen(close)} revokeAccess={() => revokeAccess()} />
       <Row style={{ display: 'inline-flex', justifyContent: 'center', width: 300 }}>
-        <DatePicker
-          id="startDate"
-          value={date[0]}
-          onChange={(e) => onStartDateChange(e)}
-          formatStyle="large"
-          placeholder="MM/DD/YYYY"
-          selectionType="single"
-        />
+        <DatePicker selected={date[0]} onChange={(date) => onStartDateChange(date)} />
         <br />
         <br />
-        {addEndDate && <DatePicker
-          id="EndDate"
-          value={endDate}
-          minDate={date[0]}
-          onChange={(e) => onEndDateChange(e)}
-          formatStyle="large"
-          placeholder="MM/DD/YYYY"
-          selectionType="single"
-        />}
+        {addEndDate && <DatePicker selected={endDate} onChange={(date) => onEndDateChange(date)} />}
       </Row>
       <br />
       {date[0] && <Form.Check style={{ display: 'inline-table' }} type={'checkbox'} label={'Change End Date?'} onChange={(e) => setAddEndDate(e.target.checked)} name="group2" id="radio1" />}
 
       <br />
-      {/* 
-      <Form.Check style={{ display: 'inline-table' }} type={'radio'} label={'US'} name="group2" id="radio1" />{" "}
-      <Form.Check style={{ display: 'inline-table' }} type={'radio'} label={'CAD'} name="group2" id="radio2" />
- */}
-
       <Col>
-        <Table style={style}>
+        <Table >
           <tbody>
             {storeData.paymentTypes.map((x, index) => {
               return (
                 <tr key={index}>
                   <th>{x.name}</th>
+                  <td>{x.percentage}</td>
                   <td>{x.ammount}</td>
                 </tr>
               )
@@ -172,7 +155,6 @@ const Main = () => {
           />
           <div style={{ paddingTop: '9px' }} ></div>
           {<Button style={{ marginBottom: '9px' }} disabled={date.length === 0 || selectedUser === ""} variant="secondary" onClick={() => getWorker()}>{"Run single user report"}</Button>}
-
         </div>
 
 

@@ -1,23 +1,24 @@
 import { useEffect, useState } from "react"
-import { Alert, Button, Form, FormGroup, InputGroup, Table, ToggleButton } from "react-bootstrap"
+import { Alert, Button, Form, InputGroup, Table, ToggleButton } from "react-bootstrap"
 import Select from 'react-select';
 import { useSelector } from 'react-redux';
 import GetVideoTech from "../BL/GetVideoTech";
-import { DatePicker } from "react-rainbow-components";
 import WorkerOptionModal from "./WorkerOptionModal";
 import UpdateWorkerProfile from "../BL/UpdateWorkerProfiles";
 import { useDispatch } from "react-redux";
 import NewWorkerProfile from "../BL/NewWorkerProfile";
 import { NumbersOnly } from "../HomePage/NumbersOnly";
-import { act } from "react-dom/test-utils";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const WorkerProfileTable = ({ selected, worker }) => {
     const [tglSuperviser, setTglSuperviser] = useState(false)
     const [tglIsSupervised, setTglIsSupervised] = useState(false)
     const [directorSupervised, setDirectorsupervised] = useState(false)
-    const [getMoney, setGetsMoney] = useState(false)
+    const [supOnegetMoney, setSupOneGetsMoney] = useState(false)
+    const [supTwoGetMoney, setSupTwoGetsMoney] = useState(false)
     const [hst, setHst] = useState(false)
-    const [active, setActive] = useState(false)
+    const [active, setActive] = useState(true)
     const [associateName, setAssociateName] = useState("")
     const [associateEmail, setAssociateEmail] = useState("")
     const [associate, setAssociate] = useState({ value: "Please Select", label: "Please Select" })
@@ -29,17 +30,23 @@ const WorkerProfileTable = ({ selected, worker }) => {
     const [superviserOneCovrage, setSuperviserOneCovrage] = useState([])
     const [superviserTwoCovrage, setSuperviserTwoCovrage] = useState([])
     const [selectedVideoTech, setSelectedVideoTech] = useState({ value: "Please Select", label: "Please Select" })
-    const [inOfficeBlocks, setInOfficeBlocks] = useState("")
+    const [inOfficeBlocks, setInOfficeBlocks] = useState(0)
+    const [inOfficeBlockHours, setInOfficeBlockHours] = useState(0)
     const [inOfficeBlockTimes, setInOfficeBlockTimes] = useState("")
-    const [blocksBiWeeklyCharge, setBlocksBiWeeklyCharge] = useState("")
+    const [blocksHourlyRate, setBlocksHourlyRate] = useState(0)
+    const [blocksBiWeeklyCharge, setBlocksBiWeeklyCharge] = useState(0)
+    const [assessmentRate, setAssessmentRate] = useState(0)
     const [associateFeeBaseRate, setAssociateFeeBaseRate] = useState(0)
+    const [associateFeeBaseRateTwo, setAssociateFeeBaseRateTwo] = useState(0)
     const [associateFeebaseRateOverRide33, setAssociateFeeBaseRate33] = useState(0)
+    const [associateFeebaseRateOverRide33Two, setAssociateFeeBaseRate33Two] = useState(0)
     const [associateFeebaseRateOverRide34, setAssociateFeeBaseRate34] = useState(0)
+    const [associateFeebaseRateOverRide34Two, setAssociateFeeBaseRate34Two] = useState(0)
     const [associateFeeBaseRateOverrideAsseements, setAssociateFeeBaseRateOverrideAsseements] = useState(false)
     const [associateFeeBaseType, setAssociateFeeBaseType] = useState('')
     const [associateFeeBaseTypeTwo, setAssociateFeeBaseTypeTwo] = useState('')
     const storeData = useSelector(state => state)
-    const [date, setDate] = useState('')
+    const [date, setDate] = useState(new Date())
     const [superviserSelect, setSuperviserSelect] = useState([])
     const [showModal, setShowModal] = useState(false)
     const [modalHeader, setModalHeader] = useState("")
@@ -52,6 +59,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
     const [adjustmentFee, setAdjustmentFee] = useState([{ name: "", value: 0 }])
     const [adjustmentPaymentFee, setAdjustmentPAymentFee] = useState([{ name: "", value: 0 }])
     const dispatch = useDispatch()
+    const [subPrac, setSubPrac] = useState(false)
 
 
     useEffect(() => {
@@ -94,9 +102,13 @@ const WorkerProfileTable = ({ selected, worker }) => {
     }
     const levals = () => {
         let arr = []
-        storeData.associateLeval.forEach(x => {
-            arr.push({ value: x.id, label: x.leval })
-        })
+        try {
+            storeData.associateLeval.forEach(x => {
+                arr.push({ value: x.id, label: x.leval })
+            })
+        } catch (error) {
+
+        }
         return arr
     }
 
@@ -109,8 +121,9 @@ const WorkerProfileTable = ({ selected, worker }) => {
 
     useEffect(() => {
         if (worker.length !== 0) {
+            worker.associateType === 'L1 (Sup Prac)' ? setSubPrac(true) : setSubPrac(false)
             setActive(worker.status)
-            setDate(worker.startDate)
+            setDate(new Date(worker.startDate))
             setProvValue({ value: worker.site, label: worker.site })
             setAssociate({ value: worker.associateType, label: worker.associateType })
             setAssociateName(worker.associateName)
@@ -122,16 +135,23 @@ const WorkerProfileTable = ({ selected, worker }) => {
             setSupervierTwo({ value: worker.supervisor1, label: worker.supervisor2 })
             setSuperviserOneCovrage(worker.supervisor1Covrage)
             setSuperviserTwoCovrage(worker.supervisor2Covrage)
-            setGetsMoney(worker.supervisorGetsMoney)
+            setSupOneGetsMoney(worker.supervisorOneGetsMoney)
+            setSupTwoGetsMoney(worker.supervisorTwoGetsMoney)
             setAssociateFeeBaseType(worker.associateFeeBaseType)
             setAssociateFeeBaseTypeTwo(worker.associateFeeBaseType2)
+            setAssessmentRate(worker.assessmentRate)
             setAssociateFeeBaseRate(worker.associateFeeBaseRate)
+            setAssociateFeeBaseRateTwo(worker.associateFeeBaseRateTwo)
             setAssociateFeeBaseRate33(worker.associateFeeBaseRateOverrideLessThen)
+            setAssociateFeeBaseRate33Two(worker.associateFeeBaseRateOverrideLessThenTwo)
             setAssociateFeeBaseRate34(worker.associateFeeBaseRateOverrideGreaterThen)
+            setAssociateFeeBaseRate34Two(worker.associateFeeBaseRateOverrideGreaterThenTwo)
             setAssociateFeeBaseRateOverrideAsseements(worker.associateFeeBaseRateOverrideAsseements)
             setInOfficeBlocks(worker.inOfficeBlocks)
+            setInOfficeBlockHours(worker.inOfficeBlockHours)
             setInOfficeBlockTimes(worker.inOfficeBlockTimes)
             setBlocksBiWeeklyCharge(worker.blocksBiWeeklyCharge)
+            setBlocksHourlyRate(worker.blocksHourlyRate)
             setSelectedVideoTech({ value: worker.videoTech, label: worker.videoTech })
             setVideoFee(worker.cahrgeVideoFee)
             setDuplicateTable(worker.duplicateTable)
@@ -147,7 +167,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
     const removeStatus = (name) => {
         try {
             let status = storeData.Physician.find(x => x.associateName.includes(name))
-            return status.status === true ? name.split("(Active)")[0].split('-')[1].trim() : name.split("(Not Active)")[0].split('-')[1].trim()
+            return status.status === true ? name.split("(Active)")[0].split(':')[1].trim() : name.split("(Not Active)")[0].split(':')[1].trim()
         } catch (error) {
             return name
         }
@@ -157,14 +177,13 @@ const WorkerProfileTable = ({ selected, worker }) => {
 
     const handleSave = async (e) => {
         e.preventDefault()
-
         var temp = {}
         temp.status = active
         temp.startDate = date
         temp.site = provValue.label
         temp.associateType = associate.label
         temp.associateEmail = associateEmail
-        temp.associateName = associateName
+        temp.associateName = associateName.trim()
         temp.isSuperviser = tglSuperviser
         temp.isSupervised = tglIsSupervised
         temp.IsSupervisedByNonDirector = directorSupervised
@@ -172,17 +191,24 @@ const WorkerProfileTable = ({ selected, worker }) => {
         temp.supervisor1Covrage = superviserOneCovrage
         temp.supervisor2 = removeStatus(superviserTwo.label)
         temp.supervisor2Covrage = superviserTwoCovrage
-        temp.supervisorGetsMoney = getMoney
+        temp.supervisorOneGetsMoney = supOnegetMoney
+        temp.supervisorTwoGetsMoney = supTwoGetMoney
         temp.chargesHST = hst
         temp.associateFeeBaseType = associateFeeBaseType
         temp.associateFeeBaseType2 = associateFeeBaseTypeTwo
-        temp.associateFeeBaseRate = associateFeeBaseRate
-        temp.associateFeeBaseRateOverrideLessThen = associateFeebaseRateOverRide33
-        temp.associateFeeBaseRateOverrideGreaterThen = associateFeebaseRateOverRide34
+        temp.assessmentRate = assessmentRate
+        temp.associateFeeBaseRate = associateFeeBaseRate.trim()
+        temp.associateFeeBaseRateTwo = associateFeeBaseRateTwo.trim()
+        temp.associateFeeBaseRateOverrideLessThen = associateFeebaseRateOverRide33.trim()
+        temp.associateFeeBaseRateOverrideLessThenTwo = associateFeebaseRateOverRide33Two.trim()
+        temp.associateFeeBaseRateOverrideGreaterThen = associateFeebaseRateOverRide34.trim()
+        temp.associateFeeBaseRateOverrideGreaterThenTwo = associateFeebaseRateOverRide34Two.trim()
         temp.associateFeeBaseRateOverrideAsseements = associateFeeBaseRateOverrideAsseements
-        temp.inOfficeBlocks = inOfficeBlocks
+        temp.inOfficeBlocks = inOfficeBlocks.trim()
+        temp.inOfficeBlockHours = inOfficeBlockHours.trim()
         temp.inOfficeBlockTimes = inOfficeBlockTimes
         temp.blocksBiWeeklyCharge = blocksBiWeeklyCharge
+        temp.blocksHourlyRate = blocksHourlyRate.trim()
         temp.videoTech = selectedVideoTech.label
         temp.cahrgeVideoFee = videoFee
         temp.duplicateTable = duplicateTable
@@ -244,8 +270,28 @@ const WorkerProfileTable = ({ selected, worker }) => {
     const handleAddClick = () => {
         setAdjustmentFee([...adjustmentFee, { name: "", value: 0 }])
     }
+
     const handleAddPaymentClick = () => {
         setAdjustmentPAymentFee([...adjustmentPaymentFee, { name: "", value: 0 }])
+    }
+    const handleRemoveClick = (name, value) => {
+        if (adjustmentFee.length === 1) { setAdjustmentFee([{ name: "", value: 0 }]) }
+        else {
+            let temp = adjustmentFee
+            let index = adjustmentFee.findIndex(x => x.name === name && x.value === value)
+            temp.splice(index, 1)
+            setAdjustmentFee([...temp])
+        }
+    }
+    const handleRemovePaymentClick = (name, value) => {
+        if (adjustmentPaymentFee.length === 1) { setAdjustmentPAymentFee([{ name: "", value: 0 }]) }
+        else {
+            let temp = adjustmentPaymentFee
+            let index = adjustmentPaymentFee.findIndex(x => x.name === name && x.value === value)
+            temp.splice(index, 1)
+            setAdjustmentPAymentFee([...temp])
+        }
+
     }
 
     const updateAdjustmentArr = (value, item, index) => {
@@ -259,13 +305,23 @@ const WorkerProfileTable = ({ selected, worker }) => {
         setAdjustmentPAymentFee(tempArr)
     }
 
-    useEffect(() => {
-        if (!tglIsSupervised) {
+    const clearSuperviser = (e) => {
+        setTglIsSupervised(e.currentTarget.checked)
+        if (!tglIsSupervised === false) {
             setSupervierOne({ value: "Please Select", label: "Please Select" })
             setSupervierTwo({ value: "Select Second Superviser", label: "Select Second Superviser" })
         }
-    }, [tglIsSupervised])
+    }
 
+    const setAssociateLeval = (e) => {
+        e.value === 2 ? setSubPrac(true) : setSubPrac(false)
+        setAssociate(e)
+    }
+
+    useEffect(() => {
+        let hours = inOfficeBlocks * inOfficeBlockHours
+        setBlocksBiWeeklyCharge(isNaN((hours * blocksHourlyRate) * 2) ? 0 : (hours * blocksHourlyRate) * 2)
+    }, [blocksHourlyRate, inOfficeBlockHours, inOfficeBlocks])
     return (
         <div>
             {msg !== '' && <Alert key={1} style={{ position: 'sticky', top: '70px', zIndex: 1 }} variant={varient}  >
@@ -278,8 +334,8 @@ const WorkerProfileTable = ({ selected, worker }) => {
             <Form onSubmit={(e) => handleSave(e)}>
                 <Table className="mytable box">
                     <thead>
-                        <tr >
-                            <th className="required">Status</th>
+                        <tr className="row-item">
+                            <th className="required">Active</th>
                             <td aria-required>
                                 <ToggleButton
                                     className="mb-2"
@@ -288,7 +344,6 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                     variant="outline-dark"
                                     checked={active}
                                     disabled={worker.status === false}
-                                    // value="1"
                                     size="sm"
                                     onChange={(e) => setActive(e.currentTarget.checked)}
                                 >
@@ -299,14 +354,8 @@ const WorkerProfileTable = ({ selected, worker }) => {
                         <tr>
                             <th className="required">Start Date</th>
                             <td>
-                                <DatePicker
-                                    required={true}
-                                    id="date"
-                                    value={date}
-                                    onChange={(date) => setDate(date)}
-                                    formatStyle="large"
-                                    placeholder="DD/MM/YYYY"
-                                /></td>
+                                <DatePicker selected={date} onChange={(date) => setDate(date)} />
+                            </td>
                         </tr>
                         <tr>
                             <th className="required">Site</th>
@@ -350,10 +399,11 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                     options={levals()}
                                     placeholder="Please select"
                                     value={associate}
-                                    onChange={(e) => setAssociate((e))}
+                                    onChange={(e) => setAssociateLeval((e))}
                                 />
                             </td>
                         </tr>
+
                         <tr>
                             <th className="required">Is Superviser</th>
                             <td>
@@ -382,7 +432,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                     checked={tglIsSupervised}
                                     value="1"
                                     size="sm"
-                                    onChange={(e) => setTglIsSupervised(e.currentTarget.checked)}
+                                    onChange={(e) => clearSuperviser(e)}
                                 >
                                     {tglIsSupervised === true ? "Yes" : "No"}
                                 </ToggleButton>
@@ -429,6 +479,24 @@ const WorkerProfileTable = ({ selected, worker }) => {
                             </td>
                         </tr>
                         <tr>
+                            <th className={tglIsSupervised === true ? 'required' : ""}>Supervisor One Gets Money</th>
+                            <td>
+                                <ToggleButton
+                                    className="mb-2"
+                                    id="toggle-money"
+                                    type="checkbox"
+                                    variant="outline-dark"
+                                    checked={supOnegetMoney}
+                                    value="1"
+                                    size="sm"
+                                    onChange={(e) => setSupOneGetsMoney(e.currentTarget.checked)}
+                                    disabled={supTwoGetMoney}
+                                >
+                                    {supOnegetMoney === true ? "Yes" : "No"}
+                                </ToggleButton>
+                            </td>
+                        </tr>
+                        <tr>
                             <th>Superviser Two</th>
                             <td>
                                 <Select
@@ -450,19 +518,20 @@ const WorkerProfileTable = ({ selected, worker }) => {
                             </td>
                         </tr>
                         <tr>
-                            <th className={tglIsSupervised === true ? 'required' : ""}>Supervisor Gets Money</th>
+                            <th className={tglIsSupervised === true ? 'required' : ""}>Supervisor Two Gets Money</th>
                             <td>
                                 <ToggleButton
                                     className="mb-2"
-                                    id="toggle-money"
+                                    id="toggle-money-Two"
                                     type="checkbox"
                                     variant="outline-dark"
-                                    checked={getMoney}
+                                    checked={supTwoGetMoney}
                                     value="1"
                                     size="sm"
-                                    onChange={(e) => setGetsMoney(e.currentTarget.checked)}
+                                    onChange={(e) => setSupTwoGetsMoney(e.currentTarget.checked)}
+                                    disabled={supOnegetMoney}
                                 >
-                                    {getMoney === true ? "Yes" : "No"}
+                                    {supTwoGetMoney === true ? "Yes" : "No"}
                                 </ToggleButton>
                             </td>
                         </tr>
@@ -501,29 +570,45 @@ const WorkerProfileTable = ({ selected, worker }) => {
                             </td>
                         </tr>
                         <tr>
-                            <th>Associate Fee Base Rate</th>
+                            {<th>Assesment Rate Fee%</th>}
                             <td>
                                 <InputGroup size="sm"  >
-                                    <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRate}
+                                    <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={assessmentRate}
+                                        onChange={(e) => { setAssessmentRate(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                </InputGroup>
+                            </td>
+                        </tr>
+                        <tr>
+                            {subPrac ? <th>Superviser</th> : <th>Associate Fee Base Rate</th>}
+                            <td>
+                                <InputGroup size="sm"  >
+                                    <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRate}
                                         onChange={(e) => { setAssociateFeeBaseRate(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                    <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRateTwo}
+                                        onChange={(e) => { setAssociateFeeBaseRateTwo(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                 </InputGroup>
                             </td>
                         </tr>
                         <tr>
-                            <th>Associate Fee Base Rate Override({'<33'})</th>
+                            {subPrac ? <th>Worker</th> : <th>Associate Fee Base Rate Override({'<33'})</th>}
                             <td>
                                 <InputGroup size="sm"  >
-                                    <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide33}
+                                    <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                                        value={associateFeebaseRateOverRide33}
                                         onChange={(e) => { setAssociateFeeBaseRate33(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                    <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide33Two}
+                                        onChange={(e) => { setAssociateFeeBaseRate33Two(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                 </InputGroup>
                             </td>
                         </tr>
                         <tr>
-                            <th>Associate Fee Base Rate Override({'>34'})</th>
+                            {subPrac ? <th>CFIR</th> : <th>Associate Fee Base Rate Override({'>34'})</th>}
                             <td>
                                 <InputGroup size="sm"  >
-                                    <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34}
+                                    <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34}
                                         onChange={(e) => { setAssociateFeeBaseRate34(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                    <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34Two}
+                                        onChange={(e) => { setAssociateFeeBaseRate34Two(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                 </InputGroup>
                             </td>
                         </tr>
@@ -548,8 +633,36 @@ const WorkerProfileTable = ({ selected, worker }) => {
                             <th className={associateFeeBaseType === 1 || associateFeeBaseType === 2 ? 'required' : ""}> In Office Blocks</th >
                             <td>
                                 <InputGroup size="sm"  >
-                                    <Form.Control required={associateFeeBaseType === 1 || associateFeeBaseType === 2}
-                                        aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlocks} onChange={(e) => { setInOfficeBlocks(e.target.value) }} />
+                                    <Form.Control style={{ marginRight: 5 }} placeholder="Blocks" required={true}
+                                        aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlocks} onChange={(e) => { setInOfficeBlocks(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                </InputGroup>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th className={associateFeeBaseType === 1 || associateFeeBaseType === 2 ? 'required' : ""}> In Office Block Hours</th >
+                            <td>
+                                <InputGroup size="sm"  >
+                                    <Form.Control placeholder="Block Hours" required={associateFeeBaseType === 1 || associateFeeBaseType === 2}
+                                        aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlockHours} onChange={(e) => { setInOfficeBlockHours(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                </InputGroup>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th className={associateFeeBaseType === 1 || associateFeeBaseType === 4 ? 'required' : ""}>Block Hourly Rate</th>
+                            <td>
+                                <InputGroup size="sm"  >
+                                    <Form.Control required={associateFeeBaseType === 1 || associateFeeBaseType === 4}
+                                        aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={blocksHourlyRate}
+                                        onChange={(e) => { setBlocksHourlyRate(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                </InputGroup>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th className={associateFeeBaseType === 1 || associateFeeBaseType === 4 ? 'required' : ""}>Blocks Bi Weekly Charge</th>
+                            <td>
+                                <InputGroup size="sm"  >
+                                    <Form.Control disabled={true}
+                                        aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={blocksBiWeeklyCharge} />
                                 </InputGroup>
                             </td>
                         </tr>
@@ -559,16 +672,6 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                 <InputGroup size="sm"  >
                                     <Form.Control as={'textarea'} required={associateFeeBaseType === 1}
                                         aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlockTimes} onChange={(e) => { setInOfficeBlockTimes(e.target.value) }} />
-                                </InputGroup>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className={associateFeeBaseType === 1 || associateFeeBaseType === 4 ? 'required' : ""}>Blocks Bi Weekly Charge</th>
-                            <td>
-                                <InputGroup size="sm"  >
-                                    <Form.Control required={associateFeeBaseType === 1 || associateFeeBaseType === 4}
-                                        aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={blocksBiWeeklyCharge}
-                                        onChange={(e) => { setBlocksBiWeeklyCharge(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                 </InputGroup>
                             </td>
                         </tr>
@@ -641,6 +744,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.value}
                                             onChange={(e) => { updateAdjustmentArr(e.target.value, 'vlaue', index) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         <Button style={{ marginLeft: '5px' }} variant="dark" onClick={handleAddClick}>+</Button>
+                                        <Button style={{ marginLeft: '5px' }} variant="dark" onClick={() => handleRemoveClick(x.name, x.value)}>-</Button>
                                     </InputGroup>
                                 </td>
                             </tr>
@@ -655,6 +759,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.value}
                                             onChange={(e) => { updatePaymentAdjustmentArr(e.target.value, 'vlaue', index) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         <Button style={{ marginLeft: '5px' }} variant="dark" onClick={handleAddPaymentClick}>+</Button>
+                                        <Button style={{ marginLeft: '5px' }} variant="dark" onClick={() => handleRemovePaymentClick(x.name, x.value)}>-</Button>
                                     </InputGroup>
                                 </td>
                             </tr>

@@ -69,6 +69,7 @@ const WorkerOptionModal = ({ open, setOpen, header, accessToken, id, setCovrage1
 
     const disableCheckBox = (x) => {
         try {
+            if (superviser2.label === 'Select Second Superviser') { return true }
             if (header === 'Supervisor One Covrage') { return tryParse(covrage2).find(i => x.id === i) === undefined ? false : true }
             if (header === 'Supervisor Two Covrage') { return tryParse(covrage1).find(i => x.id === i) === undefined ? false : true }
         } catch (error) {
