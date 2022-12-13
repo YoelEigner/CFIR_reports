@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Alert, Button, Form, InputGroup, Table, ToggleButton } from "react-bootstrap"
+import { Alert, Button, Card, Form, InputGroup, Table, ToggleButton } from "react-bootstrap"
 import Select from 'react-select';
 import { useSelector } from 'react-redux';
 import GetVideoTech from "../BL/GetVideoTech";
@@ -322,6 +322,8 @@ const WorkerProfileTable = ({ selected, worker }) => {
         let hours = inOfficeBlocks * inOfficeBlockHours
         setBlocksBiWeeklyCharge(isNaN((hours * blocksHourlyRate) * 2) ? 0 : (hours * blocksHourlyRate) * 2)
     }, [blocksHourlyRate, inOfficeBlockHours, inOfficeBlocks])
+
+    const style = { margin: 20 }
     return (
         <div>
             {msg !== '' && <Alert key={1} style={{ position: 'sticky', top: '70px', zIndex: 1 }} variant={varient}  >
@@ -332,441 +334,522 @@ const WorkerProfileTable = ({ selected, worker }) => {
                 covrage1={superviserOneCovrage} covrage2={superviserTwoCovrage} superviser2={superviserTwo}
             />
             <Form onSubmit={(e) => handleSave(e)}>
+                {/* <Card style={{ width: 800 }}> */}
+
+
                 <Table className="mytable box">
                     <thead>
-                        <tr className="row-item">
-                            <th className="required">Active</th>
-                            <td aria-required>
-                                <ToggleButton
-                                    className="mb-2"
-                                    id="active"
-                                    type="checkbox"
-                                    variant="outline-dark"
-                                    checked={active}
-                                    disabled={worker.status === false}
-                                    size="sm"
-                                    onChange={(e) => setActive(e.currentTarget.checked)}
-                                >
-                                    {active === true ? "Yes" : "No"}
-                                </ToggleButton>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className="required">Start Date</th>
-                            <td>
-                                <DatePicker selected={date} onChange={(date) => setDate(date)} />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className="required">Site</th>
-                            <td aria-required>
-                                <Select
-                                    className="basic-single"
-                                    classNamePrefix="select"
-                                    isSearchable={true}
-                                    name="color"
-                                    options={provs()}
-                                    placeholder="Please select"
-                                    value={provValue}
-                                    onChange={(e) => setProvValue((e))}
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className="required">Associate Name</th>
-                            <td>
-                                <InputGroup size="sm" >
-                                    <Form.Control required aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateName} onChange={(e) => { setAssociateName(e.target.value) }} />
-                                </InputGroup>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className="required">Associate Email</th>
-                            <td>
-                                <InputGroup size="sm" >
-                                    <Form.Control required aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateEmail} onChange={(e) => { setAssociateEmail(e.target.value) }} />
-                                </InputGroup>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className="required">Associate Type</th>
-                            <td>
-                                <Select
-                                    className="basic-single"
-                                    classNamePrefix="select"
-                                    isSearchable={true}
-                                    name="color"
-                                    options={levals()}
-                                    placeholder="Please select"
-                                    value={associate}
-                                    onChange={(e) => setAssociateLeval((e))}
-                                />
-                            </td>
-                        </tr>
+                        <Card style={style}>
+                            <tr >
+                                <th className="required toggle-button-left" >Active</th>
+                                <div className="center-items-table">
+                                    <td aria-required className="toggle-button-right">
+                                        <ToggleButton
+                                            className="toggle-button-center"
+                                            id="active"
+                                            type="checkbox"
+                                            variant="outline-dark"
+                                            checked={active}
+                                            disabled={worker.status === false}
+                                            size="sm"
+                                            onChange={(e) => setActive(e.currentTarget.checked)}
+                                        >
+                                            {active === true ? "Yes" : "No"}
+                                        </ToggleButton>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className="required toggle-button-left" >Start Date</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <DatePicker selected={date} onChange={(date) => setDate(date)} />
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className="required toggle-button-left">Site</th>
+                                <div className="center-items-table">
+                                    <td aria-required className="toggle-button-right" style={{ width: 300 }}>
+                                        <Select
+                                            className="basic-single"
+                                            classNamePrefix="select"
+                                            isSearchable={true}
+                                            name="color"
+                                            options={provs()}
+                                            placeholder="Please select"
+                                            value={provValue}
+                                            onChange={(e) => setProvValue((e))}
+                                        />
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className="required toggle-button-left">Associate Name</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm" >
+                                            <Form.Control required aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateName} onChange={(e) => { setAssociateName(e.target.value) }} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className="required toggle-button-left">Associate Email</th>
 
-                        <tr>
-                            <th className="required">Is Superviser</th>
-                            <td>
-                                <ToggleButton
-                                    className="mb-2"
-                                    id="toggle-check-2"
-                                    type="checkbox"
-                                    variant="outline-dark"
-                                    checked={tglSuperviser}
-                                    value="1"
-                                    size="sm"
-                                    onChange={(e) => setTglSuperviser(e.currentTarget.checked)}
-                                >
-                                    {tglSuperviser === true ? "Yes" : "No"}
-                                </ToggleButton>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className="required">Is Supervised</th>
-                            <td>
-                                <ToggleButton
-                                    className="mb-2"
-                                    id="toggle-check-3"
-                                    type="checkbox"
-                                    variant="outline-dark"
-                                    checked={tglIsSupervised}
-                                    value="1"
-                                    size="sm"
-                                    onChange={(e) => clearSuperviser(e)}
-                                >
-                                    {tglIsSupervised === true ? "Yes" : "No"}
-                                </ToggleButton>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className={tglIsSupervised === true ? 'required' : ""}>Is Supervised By Non Director</th>
-                            <td>
-                                <ToggleButton
-                                    aria-required={true}
-                                    className="mb-2"
-                                    id="toggle-check4"
-                                    type="checkbox"
-                                    variant="outline-dark"
-                                    checked={directorSupervised}
-                                    value="1"
-                                    size="sm"
-                                    onChange={(e) => setDirectorsupervised(e.currentTarget.checked)}
-                                >
-                                    {directorSupervised === true ? "Yes" : "No"}
-                                </ToggleButton>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className={'required'}>Superviser One</th>
-                            <td>
-                                <Select
-                                    aria-required={true}
-                                    className="basic-single"
-                                    classNamePrefix="select"
-                                    isSearchable={true}
-                                    name="superviserOne"
-                                    options={superviserSelect}
-                                    placeholder="Please select"
-                                    value={superviserOne}
-                                    onChange={(e) => setSupervierOne(e)}
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className={tglIsSupervised === true ? 'required' : ""}>Supervisor One Covrage</th>
-                            <td>
-                                <Button disabled={superviserOne.value === 'Please Select'} variant="outline-dark" size="sm" onClick={() => openModal('Supervisor One Covrage', 1)}>Covrage Type</Button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className={tglIsSupervised === true ? 'required' : ""}>Supervisor One Gets Money</th>
-                            <td>
-                                <ToggleButton
-                                    className="mb-2"
-                                    id="toggle-money"
-                                    type="checkbox"
-                                    variant="outline-dark"
-                                    checked={supOnegetMoney}
-                                    value="1"
-                                    size="sm"
-                                    onChange={(e) => setSupOneGetsMoney(e.currentTarget.checked)}
-                                    disabled={supTwoGetMoney}
-                                >
-                                    {supOnegetMoney === true ? "Yes" : "No"}
-                                </ToggleButton>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Superviser Two</th>
-                            <td>
-                                <Select
-                                    className="basic-single"
-                                    classNamePrefix="select"
-                                    isSearchable={true}
-                                    name="superviserTwo"
-                                    options={superviserSelect}
-                                    placeholder="Please select"
-                                    value={superviserTwo}
-                                    onChange={(e) => setSupervierTwo(e)}
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th >Supervisor Two Covrage</th>
-                            <td>
-                                <Button disabled={superviserTwo.label === 'Select Second Superviser'} variant="outline-dark" size="sm" onClick={() => openModal('Supervisor Two Covrage', 2)}>Covrage Type</Button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className={tglIsSupervised === true ? 'required' : ""}>Supervisor Two Gets Money</th>
-                            <td>
-                                <ToggleButton
-                                    className="mb-2"
-                                    id="toggle-money-Two"
-                                    type="checkbox"
-                                    variant="outline-dark"
-                                    checked={supTwoGetMoney}
-                                    value="1"
-                                    size="sm"
-                                    onChange={(e) => setSupTwoGetsMoney(e.currentTarget.checked)}
-                                    disabled={supOnegetMoney}
-                                >
-                                    {supTwoGetMoney === true ? "Yes" : "No"}
-                                </ToggleButton>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className="required">Charges HST</th>
-                            <td >
-                                <ToggleButton
-                                    className="mb-2"
-                                    id="toggle-hst"
-                                    type="checkbox"
-                                    variant="outline-dark"
-                                    checked={hst}
-                                    value="1"
-                                    size="sm"
-                                    onChange={(e) => setHst(e.currentTarget.checked)}
-                                >
-                                    {hst === true ? "Yes" : "No"}
-                                </ToggleButton>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className="required">Associate Fee Base Type</th>
-                            <td>
-                                <Form.Check type={'radio'} label={'Online Only'} id={'online'} checked={associateFeeBaseType == 1} name="group1" onChange={() => setAssociateFeeBaseType(1)} />
-                                <Form.Check type={'radio'} label={'In Person Only'} id={'inPerson'} checked={associateFeeBaseType == 2} name="group1" onChange={() => setAssociateFeeBaseType(2)} />
-                                <Form.Check type={'radio'} label={'Both'} id={'both'} checked={associateFeeBaseType == 3} name="group1" onChange={() => setAssociateFeeBaseType(3)} />
-                                <Form.Check type={'radio'} label={'Hybrid (ABOVE SENIOR)'} id={'Hybrid'} checked={associateFeeBaseType == 4} name="group1" onChange={() => setAssociateFeeBaseType(4)} />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className="required">Associate FeeBase Type Two</th>
-                            <td>
-                                <Form.Check type={'radio'} label={'Junior Basic'} id={'junior'} checked={associateFeeBaseTypeTwo == 1} name="group2" onChange={() => setAssociateFeeBaseTypeTwo(1)} />
-                                <Form.Check type={'radio'} label={'Senior Advanced'} id={'senior'} checked={associateFeeBaseTypeTwo == 2} name="group2" onChange={() => setAssociateFeeBaseTypeTwo(2)} />
-                                <Form.Check type={'radio'} label={'Above Senior'} id={'above'} checked={associateFeeBaseTypeTwo == 3} name="group2" onChange={() => setAssociateFeeBaseTypeTwo(3)} />
-                            </td>
-                        </tr>
-                        <tr>
-                            {<th>Assesment Rate Fee%</th>}
-                            <td>
-                                <InputGroup size="sm"  >
-                                    <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={assessmentRate}
-                                        onChange={(e) => { setAssessmentRate(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
-                                </InputGroup>
-                            </td>
-                        </tr>
-                        <tr>
-                            {subPrac ? <th>Superviser</th> : <th>Associate Fee Base Rate</th>}
-                            <td>
-                                <InputGroup size="sm"  >
-                                    <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRate}
-                                        onChange={(e) => { setAssociateFeeBaseRate(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
-                                    <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRateTwo}
-                                        onChange={(e) => { setAssociateFeeBaseRateTwo(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
-                                </InputGroup>
-                            </td>
-                        </tr>
-                        <tr>
-                            {subPrac ? <th>Worker</th> : <th>Associate Fee Base Rate Override({'<33'})</th>}
-                            <td>
-                                <InputGroup size="sm"  >
-                                    <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                                        value={associateFeebaseRateOverRide33}
-                                        onChange={(e) => { setAssociateFeeBaseRate33(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
-                                    <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide33Two}
-                                        onChange={(e) => { setAssociateFeeBaseRate33Two(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
-                                </InputGroup>
-                            </td>
-                        </tr>
-                        <tr>
-                            {subPrac ? <th>CFIR</th> : <th>Associate Fee Base Rate Override({'>34'})</th>}
-                            <td>
-                                <InputGroup size="sm"  >
-                                    <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34}
-                                        onChange={(e) => { setAssociateFeeBaseRate34(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
-                                    <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34Two}
-                                        onChange={(e) => { setAssociateFeeBaseRate34Two(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
-                                </InputGroup>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Associate Fee Base Rate Override (Assessments)</th>
-                            <td >
-                                <ToggleButton
-                                    className="mb-2"
-                                    id="associateFeeBaseRateOverrideAsseements"
-                                    type="checkbox"
-                                    variant="outline-dark"
-                                    checked={associateFeeBaseRateOverrideAsseements}
-                                    // value="1"
-                                    size="sm"
-                                    onChange={(e) => setAssociateFeeBaseRateOverrideAsseements(e.currentTarget.checked)}
-                                >
-                                    {associateFeeBaseRateOverrideAsseements === true ? "Yes" : "No"}
-                                </ToggleButton>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className={associateFeeBaseType === 1 || associateFeeBaseType === 2 ? 'required' : ""}> In Office Blocks</th >
-                            <td>
-                                <InputGroup size="sm"  >
-                                    <Form.Control style={{ marginRight: 5 }} placeholder="Blocks" required={true}
-                                        aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlocks} onChange={(e) => { setInOfficeBlocks(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
-                                </InputGroup>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className={associateFeeBaseType === 1 || associateFeeBaseType === 2 ? 'required' : ""}> In Office Block Hours</th >
-                            <td>
-                                <InputGroup size="sm"  >
-                                    <Form.Control placeholder="Block Hours" required={associateFeeBaseType === 1 || associateFeeBaseType === 2}
-                                        aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlockHours} onChange={(e) => { setInOfficeBlockHours(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
-                                </InputGroup>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className={associateFeeBaseType === 1 || associateFeeBaseType === 4 ? 'required' : ""}>Block Hourly Rate</th>
-                            <td>
-                                <InputGroup size="sm"  >
-                                    <Form.Control required={associateFeeBaseType === 1 || associateFeeBaseType === 4}
-                                        aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={blocksHourlyRate}
-                                        onChange={(e) => { setBlocksHourlyRate(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
-                                </InputGroup>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className={associateFeeBaseType === 1 || associateFeeBaseType === 4 ? 'required' : ""}>Blocks Bi Weekly Charge</th>
-                            <td>
-                                <InputGroup size="sm"  >
-                                    <Form.Control disabled={true}
-                                        aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={blocksBiWeeklyCharge} />
-                                </InputGroup>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className={associateFeeBaseType === 1 ? 'required' : ""}>In Office Block Times</th>
-                            <td>
-                                <InputGroup size="sm"  >
-                                    <Form.Control as={'textarea'} required={associateFeeBaseType === 1}
-                                        aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlockTimes} onChange={(e) => { setInOfficeBlockTimes(e.target.value) }} />
-                                </InputGroup>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th className="required">Video Technology</th>
-                            <td>
-                                <Select
-                                    className="basic-single"
-                                    classNamePrefix="select"
-                                    isSearchable={true}
-                                    name="color"
-                                    options={videoTech}
-                                    placeholder="Please select"
-                                    value={selectedVideoTech}
-                                    onChange={(e) => setSelectedVideoTech((e))}
-                                />
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Charge Video Fee?</th>
-                            <td>
-                                <ToggleButton
-                                    aria-required={true}
-                                    className="mb-2"
-                                    id="toggle-check5"
-                                    type="checkbox"
-                                    variant="outline-dark"
-                                    checked={videoFee}
-                                    value="1"
-                                    size="sm"
-                                    onChange={(e) => setVideoFee(e.currentTarget.checked)}
-                                >
-                                    {videoFee === true ? "Yes" : "No"}
-                                </ToggleButton>
-                            </td>
-                        </tr>
-                        {/* <tr>
-                            <th className={selectedVideoTech.label !== 'Huddle' ? 'required' : ""}>Video Tech Monthly Fee</th>
-                            <td>
-                                <InputGroup size="sm"  >
-                                    <Form.Control required={selectedVideoTech.label !== 'Huddle'} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={videoFee}
-                                        onChange={(e) => { setVideoFee(e.currentTarget.checked) }} onKeyPress={(e) => NumbersOnly(e)} />
-                                </InputGroup>
-                            </td>
-                        </tr> */}
-                        <tr>
-                            <th >Comments</th>
-                            <td>
-                                <InputGroup size="sm"  >
-                                    <Form.Control as={'textarea'}
-                                        aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={comments} onChange={(e) => { setComments(e.target.value) }} />
-                                </InputGroup>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th >Tables to show on invoice report</th>
-                            <td>
-                                <Form.Check type={'checkbox'} id={`duplicateTable`} label={`Duplicate Table`} checked={duplicateTable} onChange={(e) => setDuplicateTable(e.target.checked)} />
-                                <Form.Check type={'checkbox'} id={`nonChargeablesTable`} label={`Non-chargeables`} checked={nonChargeablesTable} onChange={(e) => setNonChargeablesTable(e.target.checked)} />
-                                <Form.Check type={'checkbox'} id={`associateFeesTable`} label={`Associate Fees Table`} checked={associateFeesTable} onChange={(e) => setAssociateFeesTable(e.target.checked)} />
-                            </td>
-                        </tr>
-                        {adjustmentFee.map((x, index) => {
-                            return <tr key={index}>
-                                <th>Invoice Adjustment fee</th>
-                                <td>
-                                    <InputGroup size="sm"  >
-                                        <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.name} placeholder={'Invoice Adjustment Fee'} style={{ marginRight: '5px' }}
-                                            onChange={(e) => { updateAdjustmentArr(e.target.value, 'name', index) }} />
-                                        <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.value}
-                                            onChange={(e) => { updateAdjustmentArr(e.target.value, 'vlaue', index) }} onKeyPress={(e) => NumbersOnly(e)} />
-                                        <Button style={{ marginLeft: '5px' }} variant="dark" onClick={handleAddClick}>+</Button>
-                                        <Button style={{ marginLeft: '5px' }} variant="dark" onClick={() => handleRemoveClick(x.name, x.value)}>-</Button>
-                                    </InputGroup>
-                                </td>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm" >
+                                            <Form.Control required aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateEmail} onChange={(e) => { setAssociateEmail(e.target.value) }} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
                             </tr>
-                        })}
-                        {adjustmentPaymentFee.map((x, index) => {
-                            return <tr key={index}>
-                                <th>Payment Adjustment fee</th>
-                                <td>
-                                    <InputGroup size="sm"  >
-                                        <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.name} placeholder={'Payment Adjustment Fee'} style={{ marginRight: '5px' }}
-                                            onChange={(e) => { updatePaymentAdjustmentArr(e.target.value, 'name', index) }} />
-                                        <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.value}
-                                            onChange={(e) => { updatePaymentAdjustmentArr(e.target.value, 'vlaue', index) }} onKeyPress={(e) => NumbersOnly(e)} />
-                                        <Button style={{ marginLeft: '5px' }} variant="dark" onClick={handleAddPaymentClick}>+</Button>
-                                        <Button style={{ marginLeft: '5px' }} variant="dark" onClick={() => handleRemovePaymentClick(x.name, x.value)}>-</Button>
-                                    </InputGroup>
-                                </td>
+                            <tr>
+                                <th className="required toggle-button-left">Associate Type</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right" style={{ width: 300 }}>
+                                        <Select
+                                            className="basic-single"
+                                            classNamePrefix="select"
+                                            isSearchable={true}
+                                            name="color"
+                                            options={levals()}
+                                            placeholder="Please select"
+                                            value={associate}
+                                            onChange={(e) => setAssociateLeval((e))}
+                                        />
+                                    </td>
+                                </div>
                             </tr>
-                        })}
+                        </Card>
+                        <Card style={style}>
+                            <tr>
+                                <th className="required toggle-button-left">Is Superviser</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <ToggleButton
+                                            className="mb-2"
+                                            id="toggle-check-2"
+                                            type="checkbox"
+                                            variant="outline-dark"
+                                            checked={tglSuperviser}
+                                            value="1"
+                                            size="sm"
+                                            onChange={(e) => setTglSuperviser(e.currentTarget.checked)}
+                                        >
+                                            {tglSuperviser === true ? "Yes" : "No"}
+                                        </ToggleButton>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className="required toggle-button-left">Is Supervised</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <ToggleButton
+                                            className="mb-2"
+                                            id="toggle-check-3"
+                                            type="checkbox"
+                                            variant="outline-dark"
+                                            checked={tglIsSupervised}
+                                            value="1"
+                                            size="sm"
+                                            onChange={(e) => clearSuperviser(e)}
+                                        >
+                                            {tglIsSupervised === true ? "Yes" : "No"}
+                                        </ToggleButton>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className={tglIsSupervised === true ? 'required toggle-button-left' : "toggle-button-left"}>Is Supervised By Non Director</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <ToggleButton
+                                            aria-required={true}
+                                            className="mb-2"
+                                            id="toggle-check4"
+                                            type="checkbox"
+                                            variant="outline-dark"
+                                            checked={directorSupervised}
+                                            value="1"
+                                            size="sm"
+                                            onChange={(e) => setDirectorsupervised(e.currentTarget.checked)}
+                                        >
+                                            {directorSupervised === true ? "Yes" : "No"}
+                                        </ToggleButton>
+                                    </td>
+                                </div>
+                            </tr>
+                        </Card>
+                        <Card style={style}>
+                            <tr>
+                                <th className={'required toggle-button-left'}>Superviser One</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right" style={{ width: 300 }}>
+                                        <Select
+                                            aria-required={true}
+                                            className="basic-single"
+                                            classNamePrefix="select"
+                                            isSearchable={true}
+                                            name="superviserOne"
+                                            options={superviserSelect}
+                                            placeholder="Please select"
+                                            value={superviserOne}
+                                            onChange={(e) => setSupervierOne(e)} />
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className={tglIsSupervised === true ? 'required toggle-button-left' : "toggle-button-left"}>Supervisor One Covrage</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <Button disabled={superviserOne.value === 'Please Select'} variant="outline-dark" size="sm" onClick={() => openModal('Supervisor One Covrage', 1)}>Covrage Type</Button>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className={tglIsSupervised === true ? 'required toggle-button-left' : " toggle-button-left"}>Supervisor One Gets Money</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <ToggleButton
+                                            className="mb-2"
+                                            id="toggle-money"
+                                            type="checkbox"
+                                            variant="outline-dark"
+                                            checked={supOnegetMoney}
+                                            value="1"
+                                            size="sm"
+                                            onChange={(e) => setSupOneGetsMoney(e.currentTarget.checked)}
+                                            disabled={supTwoGetMoney}
+                                        >
+                                            {supOnegetMoney === true ? "Yes" : "No"}
+                                        </ToggleButton>
+                                    </td>
+                                </div>
+                            </tr><tr>
+                                <th className="toggle-button-left">Superviser Two</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right" style={{ width: 300 }}>
+                                        <Select
+                                            className="basic-single"
+                                            classNamePrefix="select"
+                                            isSearchable={true}
+                                            name="superviserTwo"
+                                            options={superviserSelect}
+                                            placeholder="Please select"
+                                            value={superviserTwo}
+                                            onChange={(e) => setSupervierTwo(e)} />
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className="toggle-button-left">Supervisor Two Covrage</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <Button disabled={superviserTwo.label === 'Select Second Superviser'} variant="outline-dark" size="sm" onClick={() => openModal('Supervisor Two Covrage', 2)}>Covrage Type</Button>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className={tglIsSupervised === true ? 'required toggle-button-left' : "toggle-button-left"}>Supervisor Two Gets Money</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <ToggleButton
+                                            className="mb-2"
+                                            id="toggle-money-Two"
+                                            type="checkbox"
+                                            variant="outline-dark"
+                                            checked={supTwoGetMoney}
+                                            value="1"
+                                            size="sm"
+                                            onChange={(e) => setSupTwoGetsMoney(e.currentTarget.checked)}
+                                            disabled={supOnegetMoney}
+                                        >
+                                            {supTwoGetMoney === true ? "Yes" : "No"}
+                                        </ToggleButton>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className="required toggle-button-left">Charges HST</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <ToggleButton
+                                            className="mb-2"
+                                            id="toggle-hst"
+                                            type="checkbox"
+                                            variant="outline-dark"
+                                            checked={hst}
+                                            value="1"
+                                            size="sm"
+                                            onChange={(e) => setHst(e.currentTarget.checked)}
+                                        >
+                                            {hst === true ? "Yes" : "No"}
+                                        </ToggleButton>
+                                    </td>
+                                </div>
+                            </tr>
+                        </Card>
+                        <Card style={style}>
+
+                            <tr>
+                                <th className="required toggle-button-left">Associate Fee Base Type</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <Form.Check type={'radio'} label={'Online Only'} id={'online'} checked={associateFeeBaseType == 1} name="group1" onChange={() => setAssociateFeeBaseType(1)} />
+                                        <Form.Check type={'radio'} label={'In Person Only'} id={'inPerson'} checked={associateFeeBaseType == 2} name="group1" onChange={() => setAssociateFeeBaseType(2)} />
+                                        <Form.Check type={'radio'} label={'Both'} id={'both'} checked={associateFeeBaseType == 3} name="group1" onChange={() => setAssociateFeeBaseType(3)} />
+                                        <Form.Check type={'radio'} label={'Hybrid (ABOVE SENIOR)'} id={'Hybrid'} checked={associateFeeBaseType == 4} name="group1" onChange={() => setAssociateFeeBaseType(4)} />
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className="required toggle-button-left">Associate FeeBase Type Two</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <Form.Check type={'radio'} label={'Junior Basic'} id={'junior'} checked={associateFeeBaseTypeTwo == 1} name="group2" onChange={() => setAssociateFeeBaseTypeTwo(1)} />
+                                        <Form.Check type={'radio'} label={'Senior Advanced'} id={'senior'} checked={associateFeeBaseTypeTwo == 2} name="group2" onChange={() => setAssociateFeeBaseTypeTwo(2)} />
+                                        <Form.Check type={'radio'} label={'Above Senior'} id={'above'} checked={associateFeeBaseTypeTwo == 3} name="group2" onChange={() => setAssociateFeeBaseTypeTwo(3)} />
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                {<th className="toggle-button-left">Assesment Rate Fee%</th>}
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right" style={{ marginRight: 50 }}>
+                                        <InputGroup size="sm">
+                                            <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={assessmentRate}
+                                                onChange={(e) => { setAssessmentRate(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                {subPrac ? <th className="toggle-button-left">Superviser</th> : <th className="toggle-button-left">Associate Fee Base Rate</th>}
+                                <div>
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm">
+                                            <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRate}
+                                                onChange={(e) => { setAssociateFeeBaseRate(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                            <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRateTwo}
+                                                onChange={(e) => { setAssociateFeeBaseRateTwo(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                {subPrac ? <th className="toggle-button-left">Worker</th> : <th className="toggle-button-left">Associate Fee Base Rate Override({'<33'})</th>}
+                                <div>
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm">
+                                            <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                                                value={associateFeebaseRateOverRide33}
+                                                onChange={(e) => { setAssociateFeeBaseRate33(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                            <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide33Two}
+                                                onChange={(e) => { setAssociateFeeBaseRate33Two(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                {subPrac ? <th className="toggle-button-left">CFIR</th> : <th className="toggle-button-left">Associate Fee Base Rate Override({'>34'})</th>}
+                                <div>
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm">
+                                            <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34}
+                                                onChange={(e) => { setAssociateFeeBaseRate34(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                            <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34Two}
+                                                onChange={(e) => { setAssociateFeeBaseRate34Two(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className="toggle-button-left">Associate Fee Base Rate Override (Assessments)</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <ToggleButton
+                                            className="mb-2"
+                                            id="associateFeeBaseRateOverrideAsseements"
+                                            type="checkbox"
+                                            variant="outline-dark"
+                                            checked={associateFeeBaseRateOverrideAsseements}
+                                            // value="1"
+                                            size="sm"
+                                            onChange={(e) => setAssociateFeeBaseRateOverrideAsseements(e.currentTarget.checked)}
+                                        >
+                                            {associateFeeBaseRateOverrideAsseements === true ? "Yes" : "No"}
+                                        </ToggleButton>
+                                    </td>
+                                </div>
+                            </tr>
+                        </Card>
+                        <Card style={style}>
+                            <tr>
+                                <th className={associateFeeBaseType === 1 || associateFeeBaseType === 2 ? 'required toggle-button-left' : "toggle-button-left"}> In Office Blocks</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm">
+                                            <Form.Control style={{ marginRight: 5 }} placeholder="Blocks" required={true}
+                                                aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlocks} onChange={(e) => { setInOfficeBlocks(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className={associateFeeBaseType === 1 || associateFeeBaseType === 2 ? 'required toggle-button-left' : "toggle-button-left"}> In Office Block Hours</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm">
+                                            <Form.Control placeholder="Block Hours" required={associateFeeBaseType === 1 || associateFeeBaseType === 2}
+                                                aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlockHours} onChange={(e) => { setInOfficeBlockHours(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className={associateFeeBaseType === 1 || associateFeeBaseType === 4 ? 'required toggle-button-left' : "toggle-button-left"}>Block Hourly Rate</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm">
+                                            <Form.Control required={associateFeeBaseType === 1 || associateFeeBaseType === 4}
+                                                aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={blocksHourlyRate}
+                                                onChange={(e) => { setBlocksHourlyRate(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className={associateFeeBaseType === 1 || associateFeeBaseType === 4 ? 'required toggle-button-left' : "toggle-button-left"}>Blocks Bi Weekly Charge</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm">
+                                            <Form.Control disabled={true}
+                                                aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={blocksBiWeeklyCharge} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className={associateFeeBaseType === 1 ? 'required toggle-button-left' : "toggle-button-left"}>In Office Block Times</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right" >
+                                        <InputGroup size="sm" >
+                                            <Form.Control as={'textarea'} style={{ width: 350 }} required={associateFeeBaseType === 1}
+                                                aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlockTimes} onChange={(e) => { setInOfficeBlockTimes(e.target.value) }} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                        </Card>
+                        <Card style={style}>
+
+                            <tr>
+                                <th className="required toggle-button-left">Video Technology</th>
+                                <div className="center-items-table" >
+                                    <td className="toggle-button-right" style={{ width: 300 }}>
+                                        <Select
+                                            className="basic-single"
+                                            classNamePrefix="select"
+                                            isSearchable={true}
+                                            name="color"
+                                            options={videoTech}
+                                            placeholder="Please select"
+                                            value={selectedVideoTech}
+                                            onChange={(e) => setSelectedVideoTech((e))} />
+                                    </td>
+                                </div>
+                            </tr><tr>
+                                <th className="toggle-button-left">Charge Video Fee?</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right" >
+                                        <ToggleButton
+                                            aria-required={true}
+                                            className="mb-2"
+                                            id="toggle-check5"
+                                            type="checkbox"
+                                            variant="outline-dark"
+                                            checked={videoFee}
+                                            value="1"
+                                            size="sm"
+                                            onChange={(e) => setVideoFee(e.currentTarget.checked)}
+                                        >
+                                            {videoFee === true ? "Yes" : "No"}
+                                        </ToggleButton>
+                                    </td>
+                                </div>
+                            </tr>
+                        </Card>
+                        <Card style={style}>
+                            <tr>
+                                <th className="toggle-button-left">Comments</th>
+                                <div className="center-items-table" >
+                                    <td className="toggle-button-right" style={{ width: 350 }}>
+                                        <InputGroup size="sm"  >
+                                            <Form.Control as={'textarea'}
+                                                aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={comments} onChange={(e) => { setComments(e.target.value) }} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className="toggle-button-left">Tables to show on invoice report</th>
+                                <div className="center-items-table" >
+                                    <td className="toggle-button-right" >
+                                        <Form.Check type={'checkbox'} id={`duplicateTable`} label={`Duplicate Table`} checked={duplicateTable} onChange={(e) => setDuplicateTable(e.target.checked)} />
+                                        <Form.Check type={'checkbox'} id={`nonChargeablesTable`} label={`Non-chargeables`} checked={nonChargeablesTable} onChange={(e) => setNonChargeablesTable(e.target.checked)} />
+                                        <Form.Check type={'checkbox'} id={`associateFeesTable`} label={`Associate Fees Table`} checked={associateFeesTable} onChange={(e) => setAssociateFeesTable(e.target.checked)} />
+                                    </td>
+                                </div>
+                            </tr>
+                        </Card>
+                        <Card style={style}>
+                            {
+                                adjustmentFee.map((x, index) => {
+                                    return <tr key={index}>
+                                        <th className="toggle-button-left">Invoice Adjustment fee</th>
+                                        <div className="center-items-table" >
+                                            <td className="toggle-button-right" >
+                                                <InputGroup size="sm"  >
+                                                    <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.name} placeholder={'Invoice Adjustment Fee'} style={{ marginRight: '5px' }}
+                                                        onChange={(e) => { updateAdjustmentArr(e.target.value, 'name', index) }} />
+                                                    <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.value}
+                                                        onChange={(e) => { updateAdjustmentArr(e.target.value, 'vlaue', index) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                                    <Button style={{ marginLeft: '5px' }} variant="dark" onClick={handleAddClick}>+</Button>
+                                                    <Button style={{ marginLeft: '5px' }} variant="dark" onClick={() => handleRemoveClick(x.name, x.value)}>-</Button>
+                                                </InputGroup>
+                                            </td>
+                                        </div>
+                                    </tr>
+                                })
+                            }
+                            {
+                                adjustmentPaymentFee.map((x, index) => {
+                                    return <tr key={index}>
+                                        <th className="toggle-button-left">Payment Adjustment fee</th>
+                                        <div className="center-items-table" >
+                                            <td className="toggle-button-right" >
+                                                <InputGroup size="sm"  >
+                                                    <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.name} placeholder={'Payment Adjustment Fee'} style={{ marginRight: '5px' }}
+                                                        onChange={(e) => { updatePaymentAdjustmentArr(e.target.value, 'name', index) }} />
+                                                    <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.value}
+                                                        onChange={(e) => { updatePaymentAdjustmentArr(e.target.value, 'vlaue', index) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                                    <Button style={{ marginLeft: '5px' }} variant="dark" onClick={handleAddPaymentClick}>+</Button>
+                                                    <Button style={{ marginLeft: '5px' }} variant="dark" onClick={() => handleRemovePaymentClick(x.name, x.value)}>-</Button>
+                                                </InputGroup>
+                                            </td>
+                                        </div>
+                                    </tr>
+                                })
+                            }
+                        </Card>
                     </thead>
                 </Table >
                 {<Button variant={'dark'} disabled={worker.status === false} type="submit">{selected === "" ? "Save user" : "Update user"}</Button>}
+                {/* </Card> */}
+
             </Form>
             <br />
             <br />

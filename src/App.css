@@ -58,6 +58,7 @@
   text-align: left;
   vertical-align: middle;
   outline: none;
+  width: 500;
   /* border: none; */
 }
 
@@ -68,8 +69,8 @@
 
 .box {
   transition: box-shadow .3s;
-  width: 300px;
-  height: 500px;
+  /* width: 500; */
+  /* height: 500px; */
   /* margin: 20px; */
   border-radius: 10px;
   border: 1px solid #ccc;
@@ -79,7 +80,7 @@
 }
 
 .box:hover {
-  box-shadow: 0 0 11px rgba(33, 33, 33, .2);
+  /* box-shadow: 0 0 11px rgba(33, 33, 33, .2); */
 }
 
 .required:after {
@@ -145,4 +146,32 @@
   /* background-color: #d6d6d6; */
   /* width: max-content; */
   /* position: absolute; */
+}
+
+.toggle-button-right {
+  float: right;
+  align-content: center;
+  /* margin-right: 20%; */
+}
+
+.toggle-button-left {
+  float: left;
+  margin-top: 2%;
+}
+
+.toggle-button-center {
+  margin-right: 200;
+  margin-left: 500;
+}
+
+.center-items-table {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 30%;
+  /* height: 100vh; */
+}
+
+.card:hover {
+  box-shadow: 0 0 11px rgba(33, 33, 33, .2);
 }
