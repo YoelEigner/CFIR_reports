@@ -160,8 +160,8 @@
 }
 
 .toggle-button-center {
-  margin-right: 200;
-  margin-left: 500;
+  /* margin-right: 200;
+  margin-left: 500; */
 }
 
 .center-items-table {
@@ -174,4 +174,6 @@
 
 .card:hover {
   box-shadow: 0 0 11px rgba(33, 33, 33, .2);
+  transform: translateY(-5px);
+
 }

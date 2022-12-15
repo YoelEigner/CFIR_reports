@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import Select from 'react-select';
 import GetAssociateTypes from "../BL/GetAssociateTypes";
 import GetFile from "../DALs/GetFileByDate";
+import EmailConfirmationModal from "../ResetAdjustmentFeeModal/EmailConfirmationModal";
 
 const MainTable = ({ date, loading, videoFee }) => {
     const storeData = useSelector(state => state)
@@ -12,7 +13,8 @@ const MainTable = ({ date, loading, videoFee }) => {
     const [chbx, setChbx] = useState([])
     const [errMsg, setErrMsg] = useState("")
     const [varient, setVarient] = useState('danger')
-
+    const [showHide, setShowHide] = useState(false)
+    const [reportType, setReportType] = useState('')
 
     let lines = [1]
     // let chbxValue = []
@@ -42,6 +44,18 @@ const MainTable = ({ date, loading, videoFee }) => {
         setSelected(e)
     }
 
+
+    const handleEmailClick = (type) => {
+        if (chbx.filter(x => x.checked === true).length === 0) {
+            setErrMsg('Please select one or more sites')
+            setVarient('danger')
+        }
+        else {
+            setReportType(type)
+            setShowHide(true)
+            setErrMsg("")
+        }
+    }
 
     const runReport = (type, action) => {
         if (chbx.filter(x => x.checked === true).length === 0) {
@@ -87,15 +101,15 @@ const MainTable = ({ date, loading, videoFee }) => {
                 let resp = await GetFile(date[0], date[1], storeData.accessToken, 'multipdf', filterSites, action, videoFee, type)
                 if (resp.status === 200) {
                     setVarient('success')
-                    if(action === 'email'){
-                        setErrMsg('Eamils sent!')
+                    if (action === 'email') {
+                        setErrMsg('Emails sent!')
                     }
                     else {
                         setErrMsg('Download compleate!')
                     }
                     setTimeout(() => {
                         setErrMsg("")
-                    }, 5000);
+                    }, 300000);
                 }
             }
             loading(false)
@@ -125,8 +139,8 @@ const MainTable = ({ date, loading, videoFee }) => {
             </td>
             <td >
                 <ButtonGroup size="sm">
-                    <Button disabled={isDisabled} variant="secondary" onClick={() => runReport('invoice', 'email')}>Invoice</Button>
-                    <Button disabled={isDisabled} variant="secondary" onClick={() => runReport('payment', 'email')}>Payment</Button>
+                    <Button disabled={isDisabled} variant="secondary" onClick={() => handleEmailClick('invoice')}>Invoice</Button>
+                    <Button disabled={isDisabled} variant="secondary" onClick={() => handleEmailClick('payment')}>Payment</Button>
                     {/* <Button disabled={isDisabled} variant="secondary" onClick={() => runReport('both', 'email')}>Both</Button> */}
                 </ButtonGroup>
             </td>
@@ -134,6 +148,7 @@ const MainTable = ({ date, loading, videoFee }) => {
 
     return (
         <div>
+            {showHide && <EmailConfirmationModal show={showHide} setShow={(e) => { setShowHide(e) }} reportType={reportType} sendEmails={(type) => { runReport(type, 'email') }} />}
             {errMsg !== "" && <Alert key={1} variant={varient}>
                 {errMsg}
             </Alert>}

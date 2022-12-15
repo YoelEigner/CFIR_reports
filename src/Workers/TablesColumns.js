@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useEffect, useState } from "react"
 import { Alert, Button, Card, Form, InputGroup, Table, ToggleButton } from "react-bootstrap"
 import Select from 'react-select';
@@ -36,13 +37,29 @@ const WorkerProfileTable = ({ selected, worker }) => {
     const [blocksHourlyRate, setBlocksHourlyRate] = useState(0)
     const [blocksBiWeeklyCharge, setBlocksBiWeeklyCharge] = useState(0)
     const [assessmentRate, setAssessmentRate] = useState(0)
+    const [assessmentRate_c, setAssessmentRate_c] = useState(0)
+    const [assessmentRate_f, setAssessmentRate_f] = useState(0)
     const [associateFeeBaseRate, setAssociateFeeBaseRate] = useState(0)
+    const [associateFeeBaseRate_c, setAssociateFeeBaseRate_c] = useState(0)
+    const [associateFeeBaseRate_f, setAssociateFeeBaseRate_f] = useState(0)
     const [associateFeeBaseRateTwo, setAssociateFeeBaseRateTwo] = useState(0)
+    const [associateFeeBaseRateTwo_c, setAssociateFeeBaseRateTwo_c] = useState(0)
+    const [associateFeeBaseRateTwo_f, setAssociateFeeBaseRateTwo_f] = useState(0)
     const [associateFeebaseRateOverRide33, setAssociateFeeBaseRate33] = useState(0)
+    const [associateFeebaseRateOverRide33_c, setAssociateFeeBaseRate33_c] = useState(0)
+    const [associateFeebaseRateOverRide33_f, setAssociateFeeBaseRate33_f] = useState(0)
     const [associateFeebaseRateOverRide33Two, setAssociateFeeBaseRate33Two] = useState(0)
+    const [associateFeebaseRateOverRide33Two_c, setAssociateFeeBaseRate33Two_c] = useState(0)
+    const [associateFeebaseRateOverRide33Two_f, setAssociateFeeBaseRate33Two_f] = useState(0)
     const [associateFeebaseRateOverRide34, setAssociateFeeBaseRate34] = useState(0)
+    const [associateFeebaseRateOverRide34_c, setAssociateFeeBaseRate34_c] = useState(0)
+    const [associateFeebaseRateOverRide34_f, setAssociateFeeBaseRate34_f] = useState(0)
     const [associateFeebaseRateOverRide34Two, setAssociateFeeBaseRate34Two] = useState(0)
+    const [associateFeebaseRateOverRide34Two_c, setAssociateFeeBaseRate34Two_c] = useState(0)
+    const [associateFeebaseRateOverRide34Two_f, setAssociateFeeBaseRate34Two_f] = useState(0)
     const [associateFeeBaseRateOverrideAsseements, setAssociateFeeBaseRateOverrideAsseements] = useState(false)
+    const [associateFeeBaseRateOverrideAsseements_c, setAssociateFeeBaseRateOverrideAsseements_c] = useState(false)
+    const [associateFeeBaseRateOverrideAsseements_f, setAssociateFeeBaseRateOverrideAsseements_f] = useState(false)
     const [associateFeeBaseType, setAssociateFeeBaseType] = useState('')
     const [associateFeeBaseTypeTwo, setAssociateFeeBaseTypeTwo] = useState('')
     const storeData = useSelector(state => state)
@@ -55,6 +72,11 @@ const WorkerProfileTable = ({ selected, worker }) => {
     const [nonChargeablesTable, setNonChargeablesTable] = useState(true)
     const [duplicateTable, setDuplicateTable] = useState(true)
     const [associateFeesTable, setAssociateFeesTable] = useState(true)
+    const [totalRemittenceTable, setTotalRemittenceTable] = useState(true)
+    const [nonRemittablesTable, setNonRemittablesTable] = useState(true)
+    const [transactionsTable, setTransactionsTable] = useState(true)
+    const [superviseeTotalTabel, setSuperviseeTotalTable] = useState(true)
+    const [appliedPaymentsTotalTable, setAppliedPaymentsTotalTable] = useState(true)
     const [comments, setComments] = useState('')
     const [adjustmentFee, setAdjustmentFee] = useState([{ name: "", value: 0 }])
     const [adjustmentPaymentFee, setAdjustmentPAymentFee] = useState([{ name: "", value: 0 }])
@@ -140,13 +162,29 @@ const WorkerProfileTable = ({ selected, worker }) => {
             setAssociateFeeBaseType(worker.associateFeeBaseType)
             setAssociateFeeBaseTypeTwo(worker.associateFeeBaseType2)
             setAssessmentRate(worker.assessmentRate)
+            setAssessmentRate_c(worker.assessmentRate_c)
+            setAssessmentRate_f(worker.assessmentRate_f)
             setAssociateFeeBaseRate(worker.associateFeeBaseRate)
+            setAssociateFeeBaseRate_c(worker.associateFeeBaseRate_c)
+            setAssociateFeeBaseRate_f(worker.associateFeeBaseRate_f)
             setAssociateFeeBaseRateTwo(worker.associateFeeBaseRateTwo)
+            setAssociateFeeBaseRateTwo_c(worker.associateFeeBaseRateTwo_c)
+            setAssociateFeeBaseRateTwo_f(worker.associateFeeBaseRateTwo_f)
             setAssociateFeeBaseRate33(worker.associateFeeBaseRateOverrideLessThen)
+            setAssociateFeeBaseRate33_c(worker.associateFeeBaseRateOverrideLessThen_c)
+            setAssociateFeeBaseRate33_f(worker.associateFeeBaseRateOverrideLessThen_f)
             setAssociateFeeBaseRate33Two(worker.associateFeeBaseRateOverrideLessThenTwo)
+            setAssociateFeeBaseRate33Two_c(worker.associateFeeBaseRateOverrideLessThenTwo_c)
+            setAssociateFeeBaseRate33Two_f(worker.associateFeeBaseRateOverrideLessThenTwo_f)
             setAssociateFeeBaseRate34(worker.associateFeeBaseRateOverrideGreaterThen)
+            setAssociateFeeBaseRate34_c(worker.associateFeeBaseRateOverrideGreaterThen_c)
+            setAssociateFeeBaseRate34_f(worker.associateFeeBaseRateOverrideGreaterThen_f)
             setAssociateFeeBaseRate34Two(worker.associateFeeBaseRateOverrideGreaterThenTwo)
+            setAssociateFeeBaseRate34Two_c(worker.associateFeeBaseRateOverrideGreaterThenTwo_c)
+            setAssociateFeeBaseRate34Two_f(worker.associateFeeBaseRateOverrideGreaterThenTwo_f)
             setAssociateFeeBaseRateOverrideAsseements(worker.associateFeeBaseRateOverrideAsseements)
+            setAssociateFeeBaseRateOverrideAsseements_c(worker.associateFeeBaseRateOverrideAsseements_c)
+            setAssociateFeeBaseRateOverrideAsseements_f(worker.associateFeeBaseRateOverrideAsseements_f)
             setInOfficeBlocks(worker.inOfficeBlocks)
             setInOfficeBlockHours(worker.inOfficeBlockHours)
             setInOfficeBlockTimes(worker.inOfficeBlockTimes)
@@ -157,6 +195,11 @@ const WorkerProfileTable = ({ selected, worker }) => {
             setDuplicateTable(worker.duplicateTable)
             setNonChargeablesTable(worker.nonChargeablesTable)
             setAssociateFeesTable(worker.associateFeesTable)
+            setTotalRemittenceTable(worker.totalRemittenceTable)
+            setNonRemittablesTable(worker.nonRemittablesTable)
+            setTransactionsTable(worker.transactionsTable)
+            setSuperviseeTotalTable(worker.superviseeTotalTabel)
+            setAppliedPaymentsTotalTable(worker.appliedPaymentsTotalTable)
             setComments(worker.comments)
             setAdjustmentFee(JSON.parse(worker.adjustmentFee))
             setAdjustmentPAymentFee(JSON.parse(worker.adjustmentPaymentFee))
@@ -197,13 +240,29 @@ const WorkerProfileTable = ({ selected, worker }) => {
         temp.associateFeeBaseType = associateFeeBaseType
         temp.associateFeeBaseType2 = associateFeeBaseTypeTwo
         temp.assessmentRate = assessmentRate
+        temp.assessmentRate_c = assessmentRate_c
+        temp.assessmentRate_f = assessmentRate_f
         temp.associateFeeBaseRate = associateFeeBaseRate.trim()
+        temp.associateFeeBaseRate_c = associateFeeBaseRate_c.trim()
+        temp.associateFeeBaseRate_f = associateFeeBaseRate_f.trim()
         temp.associateFeeBaseRateTwo = associateFeeBaseRateTwo.trim()
+        temp.associateFeeBaseRateTwo_c = associateFeeBaseRateTwo_c.trim()
+        temp.associateFeeBaseRateTwo_f = associateFeeBaseRateTwo_f.trim()
         temp.associateFeeBaseRateOverrideLessThen = associateFeebaseRateOverRide33.trim()
+        temp.associateFeeBaseRateOverrideLessThen_c = associateFeebaseRateOverRide33_c.trim()
+        temp.associateFeeBaseRateOverrideLessThen_f = associateFeebaseRateOverRide33_f.trim()
         temp.associateFeeBaseRateOverrideLessThenTwo = associateFeebaseRateOverRide33Two.trim()
+        temp.associateFeeBaseRateOverrideLessThenTwo_c = associateFeebaseRateOverRide33Two_c.trim()
+        temp.associateFeeBaseRateOverrideLessThenTwo_f = associateFeebaseRateOverRide33Two_f.trim()
         temp.associateFeeBaseRateOverrideGreaterThen = associateFeebaseRateOverRide34.trim()
+        temp.associateFeeBaseRateOverrideGreaterThen_c = associateFeebaseRateOverRide34_c.trim()
+        temp.associateFeeBaseRateOverrideGreaterThen_f = associateFeebaseRateOverRide34_f.trim()
         temp.associateFeeBaseRateOverrideGreaterThenTwo = associateFeebaseRateOverRide34Two.trim()
+        temp.associateFeeBaseRateOverrideGreaterThenTwo_c = associateFeebaseRateOverRide34Two_c.trim()
+        temp.associateFeeBaseRateOverrideGreaterThenTwo_f = associateFeebaseRateOverRide34Two_f.trim()
         temp.associateFeeBaseRateOverrideAsseements = associateFeeBaseRateOverrideAsseements
+        temp.associateFeeBaseRateOverrideAsseements_c = associateFeeBaseRateOverrideAsseements_c
+        temp.associateFeeBaseRateOverrideAsseements_f = associateFeeBaseRateOverrideAsseements_f
         temp.inOfficeBlocks = inOfficeBlocks.trim()
         temp.inOfficeBlockHours = inOfficeBlockHours.trim()
         temp.inOfficeBlockTimes = inOfficeBlockTimes
@@ -214,6 +273,11 @@ const WorkerProfileTable = ({ selected, worker }) => {
         temp.duplicateTable = duplicateTable
         temp.nonChargeablesTable = nonChargeablesTable
         temp.associateFeesTable = associateFeesTable
+        temp.totalRemittenceTable = totalRemittenceTable
+        temp.nonRemittablesTable = nonRemittablesTable
+        temp.transactionsTable = transactionsTable
+        temp.superviseeTotalTabel = superviseeTotalTabel
+        temp.appliedPaymentsTotalTable = appliedPaymentsTotalTable
         temp.comments = comments
         temp.adjustmentFee = JSON.stringify(adjustmentFee)
         temp.adjustmentPaymentFee = JSON.stringify(adjustmentPaymentFee)
@@ -334,9 +398,6 @@ const WorkerProfileTable = ({ selected, worker }) => {
                 covrage1={superviserOneCovrage} covrage2={superviserTwoCovrage} superviser2={superviserTwo}
             />
             <Form onSubmit={(e) => handleSave(e)}>
-                {/* <Card style={{ width: 800 }}> */}
-
-
                 <Table className="mytable box">
                     <thead>
                         <Card style={style}>
@@ -593,7 +654,6 @@ const WorkerProfileTable = ({ selected, worker }) => {
                             </tr>
                         </Card>
                         <Card style={style}>
-
                             <tr>
                                 <th className="required toggle-button-left">Associate Fee Base Type</th>
                                 <div className="center-items-table">
@@ -615,10 +675,13 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                     </td>
                                 </div>
                             </tr>
+                        </Card>
+                        <Card style={style}>
+                            <Card.Header style={{ backgroundColor: '#e9ecef' }}>Therapy</Card.Header>
                             <tr>
                                 {<th className="toggle-button-left">Assesment Rate Fee%</th>}
                                 <div className="center-items-table">
-                                    <td className="toggle-button-right" style={{ marginRight: 50 }}>
+                                    <td className="toggle-button-right" style={{ marginRight: 30 }}>
                                         <InputGroup size="sm">
                                             <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={assessmentRate}
                                                 onChange={(e) => { setAssessmentRate(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
@@ -681,6 +744,152 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                             onChange={(e) => setAssociateFeeBaseRateOverrideAsseements(e.currentTarget.checked)}
                                         >
                                             {associateFeeBaseRateOverrideAsseements === true ? "Yes" : "No"}
+                                        </ToggleButton>
+                                    </td>
+                                </div>
+                            </tr>
+                        </Card>
+                        <Card style={style}>
+                            <Card.Header style={{ backgroundColor: '#e9ecef' }}>CBT</Card.Header>
+                            <tr>
+                                {<th className="toggle-button-left">Assesment Rate Fee%</th>}
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right" style={{ marginRight: 30 }}>
+                                        <InputGroup size="sm">
+                                            <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={assessmentRate_c}
+                                                onChange={(e) => { setAssessmentRate_c(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                {subPrac ? <th className="toggle-button-left">Superviser</th> : <th className="toggle-button-left">Associate Fee Base Rate</th>}
+                                <div>
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm">
+                                            <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRate_c}
+                                                onChange={(e) => { setAssociateFeeBaseRate_c(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                            <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRateTwo_c}
+                                                onChange={(e) => { setAssociateFeeBaseRateTwo_c(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                {subPrac ? <th className="toggle-button-left">Worker</th> : <th className="toggle-button-left">Associate Fee Base Rate Override({'<33'})</th>}
+                                <div>
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm">
+                                            <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                                                value={associateFeebaseRateOverRide33_c}
+                                                onChange={(e) => { setAssociateFeeBaseRate33_c(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                            <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide33Two_c}
+                                                onChange={(e) => { setAssociateFeeBaseRate33Two_c(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                {subPrac ? <th className="toggle-button-left">CFIR</th> : <th className="toggle-button-left">Associate Fee Base Rate Override({'>34'})</th>}
+                                <div>
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm">
+                                            <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34_c}
+                                                onChange={(e) => { setAssociateFeeBaseRate34_c(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                            <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34Two_c}
+                                                onChange={(e) => { setAssociateFeeBaseRate34Two_c(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className="toggle-button-left">Associate Fee Base Rate Override (Assessments)</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <ToggleButton
+                                            className="mb-2"
+                                            id="associateFeeBaseRateOverrideAsseements_c"
+                                            type="checkbox"
+                                            variant="outline-dark"
+                                            checked={associateFeeBaseRateOverrideAsseements_c}
+                                            // value="1"
+                                            size="sm"
+                                            onChange={(e) => setAssociateFeeBaseRateOverrideAsseements_c(e.currentTarget.checked)}
+                                        >
+                                            {associateFeeBaseRateOverrideAsseements_c === true ? "Yes" : "No"}
+                                        </ToggleButton>
+                                    </td>
+                                </div>
+                            </tr>
+                        </Card>
+                        <Card style={style}>
+                            <Card.Header style={{ backgroundColor: '#e9ecef' }}>CPRI</Card.Header>
+                            <tr>
+                                {<th className="toggle-button-left">Assesment Rate Fee%</th>}
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right" style={{ marginRight: 30 }}>
+                                        <InputGroup size="sm">
+                                            <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={assessmentRate_f}
+                                                onChange={(e) => { setAssessmentRate_f(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                {subPrac ? <th className="toggle-button-left">Superviser</th> : <th className="toggle-button-left">Associate Fee Base Rate</th>}
+                                <div>
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm">
+                                            <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRate_f}
+                                                onChange={(e) => { setAssociateFeeBaseRate_f(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                            <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRateTwo_f}
+                                                onChange={(e) => { setAssociateFeeBaseRateTwo_f(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                {subPrac ? <th className="toggle-button-left">Worker</th> : <th className="toggle-button-left">Associate Fee Base Rate Override({'<33'})</th>}
+                                <div>
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm">
+                                            <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                                                value={associateFeebaseRateOverRide33_f}
+                                                onChange={(e) => { setAssociateFeeBaseRate33_f(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                            <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide33Two_f}
+                                                onChange={(e) => { setAssociateFeeBaseRate33Two_f(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                {subPrac ? <th className="toggle-button-left">CFIR</th> : <th className="toggle-button-left">Associate Fee Base Rate Override({'>34'})</th>}
+                                <div>
+                                    <td className="toggle-button-right">
+                                        <InputGroup size="sm">
+                                            <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34_f}
+                                                onChange={(e) => { setAssociateFeeBaseRate34_f(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                            <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34Two_f}
+                                                onChange={(e) => { setAssociateFeeBaseRate34Two_f(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className="toggle-button-left">Associate Fee Base Rate Override (Assessments)</th>
+                                <div className="center-items-table">
+                                    <td className="toggle-button-right">
+                                        <ToggleButton
+                                            className="mb-2"
+                                            id="associateFeeBaseRateOverrideAsseements_f"
+                                            type="checkbox"
+                                            variant="outline-dark"
+                                            checked={associateFeeBaseRateOverrideAsseements_f}
+                                            // value="1"
+                                            size="sm"
+                                            onChange={(e) => setAssociateFeeBaseRateOverrideAsseements_f(e.currentTarget.checked)}
+                                        >
+                                            {associateFeeBaseRateOverrideAsseements_f === true ? "Yes" : "No"}
                                         </ToggleButton>
                                     </td>
                                 </div>
@@ -784,23 +993,23 @@ const WorkerProfileTable = ({ selected, worker }) => {
                         </Card>
                         <Card style={style}>
                             <tr>
-                                <th className="toggle-button-left">Comments</th>
-                                <div className="center-items-table" >
-                                    <td className="toggle-button-right" style={{ width: 350 }}>
-                                        <InputGroup size="sm"  >
-                                            <Form.Control as={'textarea'}
-                                                aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={comments} onChange={(e) => { setComments(e.target.value) }} />
-                                        </InputGroup>
-                                    </td>
-                                </div>
-                            </tr>
-                            <tr>
                                 <th className="toggle-button-left">Tables to show on invoice report</th>
                                 <div className="center-items-table" >
                                     <td className="toggle-button-right" >
                                         <Form.Check type={'checkbox'} id={`duplicateTable`} label={`Duplicate Table`} checked={duplicateTable} onChange={(e) => setDuplicateTable(e.target.checked)} />
                                         <Form.Check type={'checkbox'} id={`nonChargeablesTable`} label={`Non-chargeables`} checked={nonChargeablesTable} onChange={(e) => setNonChargeablesTable(e.target.checked)} />
                                         <Form.Check type={'checkbox'} id={`associateFeesTable`} label={`Associate Fees Table`} checked={associateFeesTable} onChange={(e) => setAssociateFeesTable(e.target.checked)} />
+                                        <Form.Check type={'checkbox'} id={`totalRemittanceTable`} label={`Total Remittance Table`} checked={totalRemittenceTable} onChange={(e) => setTotalRemittenceTable(e.target.checked)} />                                    </td>
+                                </div>
+                            </tr>
+                            <tr>
+                                <th className="toggle-button-left">Tables to show on payment report</th>
+                                <div className="center-items-table" >
+                                    <td className="toggle-button-right" >
+                                        <Form.Check type={'checkbox'} id={`nonRemittablesTable`} label={`Non Remittables Table`} checked={nonRemittablesTable} onChange={(e) => setNonRemittablesTable(e.target.checked)} />
+                                        <Form.Check type={'checkbox'} id={`transactionsTable`} label={`Transactions Table `} checked={transactionsTable} onChange={(e) => setTransactionsTable(e.target.checked)} />
+                                        <Form.Check type={'checkbox'} id={`superviseeTotalTable`} label={`Supervisee Total Table`} checked={superviseeTotalTabel} onChange={(e) => setSuperviseeTotalTable(e.target.checked)} />
+                                        <Form.Check type={'checkbox'} id={`appliedPaymentsTable`} label={`Applied Payments Table`} checked={appliedPaymentsTotalTable} onChange={(e) => setAppliedPaymentsTotalTable(e.target.checked)} />
                                     </td>
                                 </div>
                             </tr>
@@ -845,11 +1054,23 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                 })
                             }
                         </Card>
+
+                        <Card style={style}>
+                            <tr>
+                                <th className="toggle-button-left">Comments</th>
+                                <div className="center-items-table" >
+                                    <td className="toggle-button-right" style={{ width: 350 }}>
+                                        <InputGroup size="sm"  >
+                                            <Form.Control as={'textarea'}
+                                                aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={comments} onChange={(e) => { setComments(e.target.value) }} />
+                                        </InputGroup>
+                                    </td>
+                                </div>
+                            </tr>
+                        </Card>
                     </thead>
                 </Table >
                 {<Button variant={'dark'} disabled={worker.status === false} type="submit">{selected === "" ? "Save user" : "Update user"}</Button>}
-                {/* </Card> */}
-
             </Form>
             <br />
             <br />
