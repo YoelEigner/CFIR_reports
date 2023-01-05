@@ -677,7 +677,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                             </tr>
                         </Card>
                         <Card style={style}>
-                            <Card.Header style={{ backgroundColor: '#e9ecef' }}>Therapy</Card.Header>
+                            <Card.Header style={{ backgroundColor: '#e9ecef' }}>CFIR</Card.Header>
                             <tr>
                                 {<th className="toggle-button-left">Assesment Rate Fee%</th>}
                                 <div className="center-items-table">
