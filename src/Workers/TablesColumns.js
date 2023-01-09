@@ -466,10 +466,10 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                     </td>
                                 </div>
                             </tr>
-                            <tr>
+                            <tr >
                                 <th className="required toggle-button-left">Associate Type</th>
                                 <div className="center-items-table">
-                                    <td className="toggle-button-right" style={{ width: 300 }}>
+                                    <td className="toggle-button-right" style={{ width: 300, zIndex: 1 }}>
                                         <Select
                                             className="basic-single"
                                             classNamePrefix="select"
