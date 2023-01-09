@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Cookies from 'universal-cookie';
 import moment from "moment";
+import { useDispatch } from "react-redux";
 
 
 
@@ -18,6 +19,7 @@ const Main = () => {
   const [date, setDate] = useState([new Date()]);
   const storeData = useSelector(state => state)
   const [videoFee, setVideoFee] = useState(0)
+  const dispatch = useDispatch()
   const [physicians, setPhysicians] = useState([])
   const [selectedUser, setSelectedUser] = useState("")
   const [err, setErr] = useState("")
@@ -54,7 +56,6 @@ const Main = () => {
     }
   }, [addEndDate])
 
-  useEffect(() => { console.log(cookies.get('startDate')); }, [])
 
   const onEndDateChange = (endDate) => {
     var temp = date
@@ -95,6 +96,7 @@ const Main = () => {
       }
 
     } catch (error) {
+      if (error?.response?.status === 403) dispatch({ type: "AUTHENTICATED", payload: false })
       setErr(String(error))
       setTimeout(() => {
         setErr("")

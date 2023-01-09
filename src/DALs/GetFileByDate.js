@@ -6,7 +6,7 @@ import saveAs from 'file-saver';
 
 const GetFile = async (start, end, token, reportType, users, action, videoFee, type) => {
     let resp = await axios.post(process.env.REACT_APP_API_URL + '/generatepdf', {
-        start: moment(start, 'MM-DD-YYYY').format('YYYY/MMM/DD'), end: moment(end, 'MM-DD-YYYY').format('YYYY/MMM/DD'),
+        start: moment(start).format('YYYY-MM-DD'), end: moment(end).format('YYYY-MM-DD'),
         users: users, action: action, videoFee, reportType, actionType: type
     }, { responseType: 'blob', headers: { "authorization": `Bearer ${token}` } })
 
