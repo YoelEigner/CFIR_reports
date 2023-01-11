@@ -11,6 +11,7 @@ import NewWorkerProfile from "../BL/NewWorkerProfile";
 import { NumbersOnly } from "../HomePage/NumbersOnly";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment";
 
 const WorkerProfileTable = ({ selected, worker }) => {
     const [tglSuperviser, setTglSuperviser] = useState(false)
@@ -25,45 +26,44 @@ const WorkerProfileTable = ({ selected, worker }) => {
     const [associate, setAssociate] = useState({ value: "Please Select", label: "Please Select" })
     const [superviserOne, setSupervierOne] = useState({ value: "Please Select", label: "Please Select" })
     const [superviserTwo, setSupervierTwo] = useState({ value: "Select Second Superviser", label: "Select Second Superviser" })
-    const [videoFee, setVideoFee] = useState(0)
+    const [videoFee, setVideoFee] = useState('0')
     const [provValue, setProvValue] = useState({ value: "Please Select", label: "Please Select" })
     const [videoTech, setVideoTech] = useState([])
     const [superviserOneCovrage, setSuperviserOneCovrage] = useState([])
     const [superviserTwoCovrage, setSuperviserTwoCovrage] = useState([])
     const [selectedVideoTech, setSelectedVideoTech] = useState({ value: "Please Select", label: "Please Select" })
-    const [inOfficeBlocks, setInOfficeBlocks] = useState(0)
-    const [inOfficeBlockHours, setInOfficeBlockHours] = useState(0)
+    const [inOfficeBlocks, setInOfficeBlocks] = useState('0')
+    const [inOfficeBlockHours, setInOfficeBlockHours] = useState('0')
     const [inOfficeBlockTimes, setInOfficeBlockTimes] = useState("")
-    const [blocksHourlyRate, setBlocksHourlyRate] = useState(0)
-    const [blocksBiWeeklyCharge, setBlocksBiWeeklyCharge] = useState(0)
-    const [assessmentRate, setAssessmentRate] = useState(0)
-    const [assessmentRate_c, setAssessmentRate_c] = useState(0)
-    const [assessmentRate_f, setAssessmentRate_f] = useState(0)
-    const [associateFeeBaseRate, setAssociateFeeBaseRate] = useState(0)
-    const [associateFeeBaseRate_c, setAssociateFeeBaseRate_c] = useState(0)
-    const [associateFeeBaseRate_f, setAssociateFeeBaseRate_f] = useState(0)
-    const [associateFeeBaseRateTwo, setAssociateFeeBaseRateTwo] = useState(0)
-    const [associateFeeBaseRateTwo_c, setAssociateFeeBaseRateTwo_c] = useState(0)
-    const [associateFeeBaseRateTwo_f, setAssociateFeeBaseRateTwo_f] = useState(0)
-    const [associateFeebaseRateOverRide33, setAssociateFeeBaseRate33] = useState(0)
-    const [associateFeebaseRateOverRide33_c, setAssociateFeeBaseRate33_c] = useState(0)
-    const [associateFeebaseRateOverRide33_f, setAssociateFeeBaseRate33_f] = useState(0)
-    const [associateFeebaseRateOverRide33Two, setAssociateFeeBaseRate33Two] = useState(0)
-    const [associateFeebaseRateOverRide33Two_c, setAssociateFeeBaseRate33Two_c] = useState(0)
-    const [associateFeebaseRateOverRide33Two_f, setAssociateFeeBaseRate33Two_f] = useState(0)
-    const [associateFeebaseRateOverRide34, setAssociateFeeBaseRate34] = useState(0)
-    const [associateFeebaseRateOverRide34_c, setAssociateFeeBaseRate34_c] = useState(0)
-    const [associateFeebaseRateOverRide34_f, setAssociateFeeBaseRate34_f] = useState(0)
-    const [associateFeebaseRateOverRide34Two, setAssociateFeeBaseRate34Two] = useState(0)
-    const [associateFeebaseRateOverRide34Two_c, setAssociateFeeBaseRate34Two_c] = useState(0)
-    const [associateFeebaseRateOverRide34Two_f, setAssociateFeeBaseRate34Two_f] = useState(0)
+    const [blocksHourlyRate, setBlocksHourlyRate] = useState('0')
+    const [blocksBiWeeklyCharge, setBlocksBiWeeklyCharge] = useState('0')
+    const [assessmentRate, setAssessmentRate] = useState('0')
+    const [assessmentRate_c, setAssessmentRate_c] = useState('0')
+    const [assessmentRate_f, setAssessmentRate_f] = useState('0')
+    const [associateFeeBaseRate, setAssociateFeeBaseRate] = useState('0')
+    const [associateFeeBaseRate_c, setAssociateFeeBaseRate_c] = useState('0')
+    const [associateFeeBaseRate_f, setAssociateFeeBaseRate_f] = useState('0')
+    const [associateFeeBaseRateTwo, setAssociateFeeBaseRateTwo] = useState('0')
+    const [associateFeeBaseRateTwo_c, setAssociateFeeBaseRateTwo_c] = useState('0')
+    const [associateFeeBaseRateTwo_f, setAssociateFeeBaseRateTwo_f] = useState('0')
+    const [associateFeebaseRateOverRide33, setAssociateFeeBaseRate33] = useState('0')
+    const [associateFeebaseRateOverRide33_c, setAssociateFeeBaseRate33_c] = useState('0')
+    const [associateFeebaseRateOverRide33_f, setAssociateFeeBaseRate33_f] = useState('0')
+    const [associateFeebaseRateOverRide33Two, setAssociateFeeBaseRate33Two] = useState('0')
+    const [associateFeebaseRateOverRide33Two_c, setAssociateFeeBaseRate33Two_c] = useState('0')
+    const [associateFeebaseRateOverRide33Two_f, setAssociateFeeBaseRate33Two_f] = useState('0')
+    const [associateFeebaseRateOverRide34, setAssociateFeeBaseRate34] = useState('0')
+    const [associateFeebaseRateOverRide34_c, setAssociateFeeBaseRate34_c] = useState('0')
+    const [associateFeebaseRateOverRide34_f, setAssociateFeeBaseRate34_f] = useState('0')
+    const [associateFeebaseRateOverRide34Two, setAssociateFeeBaseRate34Two] = useState('0')
+    const [associateFeebaseRateOverRide34Two_c, setAssociateFeeBaseRate34Two_c] = useState('0')
+    const [associateFeebaseRateOverRide34Two_f, setAssociateFeeBaseRate34Two_f] = useState('0')
     const [associateFeeBaseRateOverrideAsseements, setAssociateFeeBaseRateOverrideAsseements] = useState(false)
     const [associateFeeBaseRateOverrideAsseements_c, setAssociateFeeBaseRateOverrideAsseements_c] = useState(false)
     const [associateFeeBaseRateOverrideAsseements_f, setAssociateFeeBaseRateOverrideAsseements_f] = useState(false)
     const [associateFeeBaseType, setAssociateFeeBaseType] = useState('')
     const [associateFeeBaseTypeTwo, setAssociateFeeBaseTypeTwo] = useState('')
     const storeData = useSelector(state => state)
-    const [date, setDate] = useState(new Date())
     const [superviserSelect, setSuperviserSelect] = useState([])
     const [showModal, setShowModal] = useState(false)
     const [modalHeader, setModalHeader] = useState("")
@@ -83,6 +83,11 @@ const WorkerProfileTable = ({ selected, worker }) => {
     const dispatch = useDispatch()
     const [subPrac, setSubPrac] = useState(false)
 
+    const [date, setDate] = useState(new Date())
+    var futureDate = new Date();
+    futureDate.setFullYear(date.getFullYear() + 100);
+    const [endDate, setEndDate] = useState(futureDate)
+
 
     useEffect(() => {
         setSuperviserSelect(superviserSelectOptions(storeData.Physician))
@@ -91,8 +96,6 @@ const WorkerProfileTable = ({ selected, worker }) => {
     useEffect(() => {
         videoTechAPI()
     }, [])
-
-
 
 
     const superviserSelectOptions = (physicians) => {
@@ -146,6 +149,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
             worker.associateType === 'L1 (Sup Prac)' ? setSubPrac(true) : setSubPrac(false)
             setActive(worker.status)
             setDate(new Date(worker.startDate))
+            setEndDate(new Date(worker.endDate))
             setProvValue({ value: worker.site, label: worker.site })
             setAssociate({ value: worker.associateType, label: worker.associateType })
             setAssociateName(worker.associateName)
@@ -223,6 +227,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
         var temp = {}
         temp.status = active
         temp.startDate = date
+        temp.endDate = endDate
         temp.site = provValue.label
         temp.associateType = associate.label
         temp.associateEmail = associateEmail
@@ -283,6 +288,8 @@ const WorkerProfileTable = ({ selected, worker }) => {
         temp.adjustmentPaymentFee = JSON.stringify(adjustmentPaymentFee)
 
         let validate = Object.keys(temp).map(key => { return temp[key] })
+        // let validateTemp = Object.keys(temp).map(key => { return temp[key] })
+        // console.log(temp)
         if (validate.includes("Please Select") || associateFeeBaseType === "" || associateFeeBaseTypeTwo === "" || date === "date") {
             setVarient('danger')
             setMsg("Please fill the requied items!")
@@ -389,7 +396,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
 
     const style = { margin: 20 }
     return (
-        <div>
+        <>
             {msg !== '' && <Alert key={1} style={{ position: 'sticky', top: '70px', zIndex: 1 }} variant={varient}  >
                 {msg}
             </Alert>}
@@ -403,8 +410,8 @@ const WorkerProfileTable = ({ selected, worker }) => {
                         <Card style={style}>
                             <tr >
                                 <th className="required toggle-button-left" >Active</th>
-                                <div className="center-items-table">
-                                    <td aria-required className="toggle-button-right">
+                                <td aria-required className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <ToggleButton
                                             className="toggle-button-center"
                                             id="active"
@@ -417,21 +424,29 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         >
                                             {active === true ? "Yes" : "No"}
                                         </ToggleButton>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className="required toggle-button-left" >Start Date</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <DatePicker selected={date} onChange={(date) => setDate(date)} />
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th className="required toggle-button-left" >End Date</th>
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
+                                        <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className="required toggle-button-left">Site</th>
-                                <div className="center-items-table">
-                                    <td aria-required className="toggle-button-right" style={{ width: 300 }}>
+                                <td aria-required className="center-items-table" >
+                                    <div className="toggle-button-right" style={{ width: 300 }}>
                                         <Select
                                             className="basic-single"
                                             classNamePrefix="select"
@@ -442,34 +457,34 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                             value={provValue}
                                             onChange={(e) => setProvValue((e))}
                                         />
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className="required toggle-button-left">Associate Name</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <InputGroup size="sm" >
                                             <Form.Control required aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateName} onChange={(e) => { setAssociateName(e.target.value) }} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+
+                                </td>
                             </tr>
                             <tr>
                                 <th className="required toggle-button-left">Associate Email</th>
-
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <InputGroup size="sm" >
                                             <Form.Control required aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateEmail} onChange={(e) => { setAssociateEmail(e.target.value) }} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
-                            <tr >
+                            <tr>
                                 <th className="required toggle-button-left">Associate Type</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right" style={{ width: 300, zIndex: 1 }}>
+                                <td className="center-items-table" >
+                                    <div className="toggle-button-right" style={{ width: 300 }}>
                                         <Select
                                             className="basic-single"
                                             classNamePrefix="select"
@@ -480,15 +495,15 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                             value={associate}
                                             onChange={(e) => setAssociateLeval((e))}
                                         />
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                         </Card>
                         <Card style={style}>
                             <tr>
                                 <th className="required toggle-button-left">Is Superviser</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <ToggleButton
                                             className="mb-2"
                                             id="toggle-check-2"
@@ -501,13 +516,13 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         >
                                             {tglSuperviser === true ? "Yes" : "No"}
                                         </ToggleButton>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className="required toggle-button-left">Is Supervised</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <ToggleButton
                                             className="mb-2"
                                             id="toggle-check-3"
@@ -520,13 +535,13 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         >
                                             {tglIsSupervised === true ? "Yes" : "No"}
                                         </ToggleButton>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className={tglIsSupervised === true ? 'required toggle-button-left' : "toggle-button-left"}>Is Supervised By Non Director</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <ToggleButton
                                             aria-required={true}
                                             className="mb-2"
@@ -540,15 +555,15 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         >
                                             {directorSupervised === true ? "Yes" : "No"}
                                         </ToggleButton>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                         </Card>
                         <Card style={style}>
                             <tr>
                                 <th className={'required toggle-button-left'}>Superviser One</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right" style={{ width: 300 }}>
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right" style={{ width: 300 }}>
                                         <Select
                                             aria-required={true}
                                             className="basic-single"
@@ -559,21 +574,22 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                             placeholder="Please select"
                                             value={superviserOne}
                                             onChange={(e) => setSupervierOne(e)} />
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className={tglIsSupervised === true ? 'required toggle-button-left' : "toggle-button-left"}>Supervisor One Covrage</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <Button disabled={superviserOne.value === 'Please Select'} variant="outline-dark" size="sm" onClick={() => openModal('Supervisor One Covrage', 1)}>Covrage Type</Button>
-                                    </td>
-                                </div>
+                                    </div>
+
+                                </td>
                             </tr>
                             <tr>
                                 <th className={tglIsSupervised === true ? 'required toggle-button-left' : " toggle-button-left"}>Supervisor One Gets Money</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <ToggleButton
                                             className="mb-2"
                                             id="toggle-money"
@@ -587,12 +603,12 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         >
                                             {supOnegetMoney === true ? "Yes" : "No"}
                                         </ToggleButton>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr><tr>
                                 <th className="toggle-button-left">Superviser Two</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right" style={{ width: 300 }}>
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right" style={{ width: 300 }}>
                                         <Select
                                             className="basic-single"
                                             classNamePrefix="select"
@@ -602,21 +618,21 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                             placeholder="Please select"
                                             value={superviserTwo}
                                             onChange={(e) => setSupervierTwo(e)} />
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className="toggle-button-left">Supervisor Two Covrage</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <Button disabled={superviserTwo.label === 'Select Second Superviser'} variant="outline-dark" size="sm" onClick={() => openModal('Supervisor Two Covrage', 2)}>Covrage Type</Button>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className={tglIsSupervised === true ? 'required toggle-button-left' : "toggle-button-left"}>Supervisor Two Gets Money</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <ToggleButton
                                             className="mb-2"
                                             id="toggle-money-Two"
@@ -630,13 +646,13 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         >
                                             {supTwoGetMoney === true ? "Yes" : "No"}
                                         </ToggleButton>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className="required toggle-button-left">Charges HST</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <ToggleButton
                                             className="mb-2"
                                             id="toggle-hst"
@@ -649,63 +665,64 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         >
                                             {hst === true ? "Yes" : "No"}
                                         </ToggleButton>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                         </Card>
                         <Card style={style}>
                             <tr>
                                 <th className="required toggle-button-left">Associate Fee Base Type</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <Form.Check type={'radio'} label={'Online Only'} id={'online'} checked={associateFeeBaseType == 1} name="group1" onChange={() => setAssociateFeeBaseType(1)} />
                                         <Form.Check type={'radio'} label={'In Person Only'} id={'inPerson'} checked={associateFeeBaseType == 2} name="group1" onChange={() => setAssociateFeeBaseType(2)} />
                                         <Form.Check type={'radio'} label={'Both'} id={'both'} checked={associateFeeBaseType == 3} name="group1" onChange={() => setAssociateFeeBaseType(3)} />
                                         <Form.Check type={'radio'} label={'Hybrid (ABOVE SENIOR)'} id={'Hybrid'} checked={associateFeeBaseType == 4} name="group1" onChange={() => setAssociateFeeBaseType(4)} />
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <th className="required toggle-button-left">Associate FeeBase Type Two</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
-                                        <Form.Check type={'radio'} label={'Junior Basic'} id={'junior'} checked={associateFeeBaseTypeTwo == 1} name="group2" onChange={() => setAssociateFeeBaseTypeTwo(1)} />
+                                <th className="required toggle-button-left">Associate Fee Base Type Two</th>
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
+                                        <Form.Check type={'radio'} label={'Junior Advanced'} id={'junior'} checked={associateFeeBaseTypeTwo == 1} name="group2" onChange={() => setAssociateFeeBaseTypeTwo(1)} />
                                         <Form.Check type={'radio'} label={'Senior Advanced'} id={'senior'} checked={associateFeeBaseTypeTwo == 2} name="group2" onChange={() => setAssociateFeeBaseTypeTwo(2)} />
                                         <Form.Check type={'radio'} label={'Above Senior'} id={'above'} checked={associateFeeBaseTypeTwo == 3} name="group2" onChange={() => setAssociateFeeBaseTypeTwo(3)} />
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                         </Card>
                         <Card style={style}>
                             <Card.Header style={{ backgroundColor: '#e9ecef' }}>CFIR</Card.Header>
                             <tr>
                                 {<th className="toggle-button-left">Assesment Rate Fee%</th>}
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right" style={{ marginRight: 30 }}>
+                                <td className="center-items-table" style={{ marginRight: 30 }}>
+                                    <div className="toggle-button-right">
                                         <InputGroup size="sm">
                                             <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={assessmentRate}
                                                 onChange={(e) => { setAssessmentRate(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 {subPrac ? <th className="toggle-button-left">Superviser</th> : <th className="toggle-button-left">Associate Fee Base Rate</th>}
-                                <div>
-                                    <td className="toggle-button-right">
+                                <td className="toggle-button-right">
+                                    <div>
+
                                         <InputGroup size="sm">
                                             <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRate}
                                                 onChange={(e) => { setAssociateFeeBaseRate(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                             <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRateTwo}
                                                 onChange={(e) => { setAssociateFeeBaseRateTwo(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 {subPrac ? <th className="toggle-button-left">Worker</th> : <th className="toggle-button-left">Associate Fee Base Rate Override({'<33'})</th>}
-                                <div>
-                                    <td className="toggle-button-right">
+                                <td className="toggle-button-right">
+                                    <div>
                                         <InputGroup size="sm">
                                             <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm"
                                                 value={associateFeebaseRateOverRide33}
@@ -713,26 +730,26 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                             <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide33Two}
                                                 onChange={(e) => { setAssociateFeeBaseRate33Two(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 {subPrac ? <th className="toggle-button-left">CFIR</th> : <th className="toggle-button-left">Associate Fee Base Rate Override({'>34'})</th>}
-                                <div>
-                                    <td className="toggle-button-right">
+                                <td className="toggle-button-right">
+                                    <div>
                                         <InputGroup size="sm">
                                             <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34}
                                                 onChange={(e) => { setAssociateFeeBaseRate34(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                             <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34Two}
                                                 onChange={(e) => { setAssociateFeeBaseRate34Two(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className="toggle-button-left">Associate Fee Base Rate Override (Assessments)</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <ToggleButton
                                             className="mb-2"
                                             id="associateFeeBaseRateOverrideAsseements"
@@ -745,40 +762,41 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         >
                                             {associateFeeBaseRateOverrideAsseements === true ? "Yes" : "No"}
                                         </ToggleButton>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                         </Card>
                         <Card style={style}>
                             <Card.Header style={{ backgroundColor: '#e9ecef' }}>CBT</Card.Header>
                             <tr>
                                 {<th className="toggle-button-left">Assesment Rate Fee%</th>}
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right" style={{ marginRight: 30 }}>
+                                <td className="center-items-table" >
+                                    <div className="toggle-button-right" style={{ marginRight: 30 }}>
                                         <InputGroup size="sm">
                                             <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={assessmentRate_c}
                                                 onChange={(e) => { setAssessmentRate_c(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 {subPrac ? <th className="toggle-button-left">Superviser</th> : <th className="toggle-button-left">Associate Fee Base Rate</th>}
-                                <div>
-                                    <td className="toggle-button-right">
+                                <td className="toggle-button-right">
+                                    <div>
                                         <InputGroup size="sm">
                                             <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRate_c}
                                                 onChange={(e) => { setAssociateFeeBaseRate_c(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                             <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRateTwo_c}
                                                 onChange={(e) => { setAssociateFeeBaseRateTwo_c(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 {subPrac ? <th className="toggle-button-left">Worker</th> : <th className="toggle-button-left">Associate Fee Base Rate Override({'<33'})</th>}
-                                <div>
-                                    <td className="toggle-button-right">
+
+                                <td className="toggle-button-right">
+                                    <div>
                                         <InputGroup size="sm">
                                             <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm"
                                                 value={associateFeebaseRateOverRide33_c}
@@ -786,26 +804,26 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                             <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide33Two_c}
                                                 onChange={(e) => { setAssociateFeeBaseRate33Two_c(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 {subPrac ? <th className="toggle-button-left">CFIR</th> : <th className="toggle-button-left">Associate Fee Base Rate Override({'>34'})</th>}
-                                <div>
-                                    <td className="toggle-button-right">
+                                <td className="toggle-button-right">
+                                    <div>
                                         <InputGroup size="sm">
                                             <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34_c}
                                                 onChange={(e) => { setAssociateFeeBaseRate34_c(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                             <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34Two_c}
                                                 onChange={(e) => { setAssociateFeeBaseRate34Two_c(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className="toggle-button-left">Associate Fee Base Rate Override (Assessments)</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <ToggleButton
                                             className="mb-2"
                                             id="associateFeeBaseRateOverrideAsseements_c"
@@ -818,40 +836,40 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         >
                                             {associateFeeBaseRateOverrideAsseements_c === true ? "Yes" : "No"}
                                         </ToggleButton>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                         </Card>
                         <Card style={style}>
                             <Card.Header style={{ backgroundColor: '#e9ecef' }}>CPRI</Card.Header>
                             <tr>
                                 {<th className="toggle-button-left">Assesment Rate Fee%</th>}
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right" style={{ marginRight: 30 }}>
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right" style={{ marginRight: 30 }}>
                                         <InputGroup size="sm">
                                             <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={assessmentRate_f}
                                                 onChange={(e) => { setAssessmentRate_f(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 {subPrac ? <th className="toggle-button-left">Superviser</th> : <th className="toggle-button-left">Associate Fee Base Rate</th>}
-                                <div>
-                                    <td className="toggle-button-right">
+                                <td className="toggle-button-right">
+                                    <div>
                                         <InputGroup size="sm">
                                             <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRate_f}
                                                 onChange={(e) => { setAssociateFeeBaseRate_f(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                             <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeeBaseRateTwo_f}
                                                 onChange={(e) => { setAssociateFeeBaseRateTwo_f(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 {subPrac ? <th className="toggle-button-left">Worker</th> : <th className="toggle-button-left">Associate Fee Base Rate Override({'<33'})</th>}
-                                <div>
-                                    <td className="toggle-button-right">
+                                <td className="toggle-button-right">
+                                    <div>
                                         <InputGroup size="sm">
                                             <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm"
                                                 value={associateFeebaseRateOverRide33_f}
@@ -859,26 +877,27 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                             <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide33Two_f}
                                                 onChange={(e) => { setAssociateFeeBaseRate33Two_f(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 {subPrac ? <th className="toggle-button-left">CFIR</th> : <th className="toggle-button-left">Associate Fee Base Rate Override({'>34'})</th>}
-                                <div>
-                                    <td className="toggle-button-right">
+                                <td className="toggle-button-right">
+                                    <div>
                                         <InputGroup size="sm">
                                             <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34_f}
                                                 onChange={(e) => { setAssociateFeeBaseRate34_f(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                             <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateFeebaseRateOverRide34Two_f}
                                                 onChange={(e) => { setAssociateFeeBaseRate34Two_f(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className="toggle-button-left">Associate Fee Base Rate Override (Assessments)</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
+
                                         <ToggleButton
                                             className="mb-2"
                                             id="associateFeeBaseRateOverrideAsseements_f"
@@ -891,74 +910,73 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         >
                                             {associateFeeBaseRateOverrideAsseements_f === true ? "Yes" : "No"}
                                         </ToggleButton>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                         </Card>
                         <Card style={style}>
                             <tr>
                                 <th className={associateFeeBaseType === 1 || associateFeeBaseType === 2 ? 'required toggle-button-left' : "toggle-button-left"}> In Office Blocks</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <InputGroup size="sm">
                                             <Form.Control style={{ marginRight: 5 }} placeholder="Blocks" required={true}
                                                 aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlocks} onChange={(e) => { setInOfficeBlocks(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className={associateFeeBaseType === 1 || associateFeeBaseType === 2 ? 'required toggle-button-left' : "toggle-button-left"}> In Office Block Hours</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <InputGroup size="sm">
                                             <Form.Control placeholder="Block Hours" required={associateFeeBaseType === 1 || associateFeeBaseType === 2}
                                                 aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlockHours} onChange={(e) => { setInOfficeBlockHours(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className={associateFeeBaseType === 1 || associateFeeBaseType === 4 ? 'required toggle-button-left' : "toggle-button-left"}>Block Hourly Rate</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <InputGroup size="sm">
                                             <Form.Control required={associateFeeBaseType === 1 || associateFeeBaseType === 4}
                                                 aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={blocksHourlyRate}
                                                 onChange={(e) => { setBlocksHourlyRate(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className={associateFeeBaseType === 1 || associateFeeBaseType === 4 ? 'required toggle-button-left' : "toggle-button-left"}>Blocks Bi Weekly Charge</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right">
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right">
                                         <InputGroup size="sm">
                                             <Form.Control disabled={true}
                                                 aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={blocksBiWeeklyCharge} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <th className={associateFeeBaseType === 1 ? 'required toggle-button-left' : "toggle-button-left"}>In Office Block Times</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right" >
+                                <th className={"toggle-button-left"}>In Office Block Times</th>
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right" >
                                         <InputGroup size="sm" >
-                                            <Form.Control as={'textarea'} style={{ width: 350 }} required={associateFeeBaseType === 1}
+                                            <Form.Control as={'textarea'} style={{ width: 350 }} //required={associateFeeBaseType === 1}
                                                 aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={inOfficeBlockTimes} onChange={(e) => { setInOfficeBlockTimes(e.target.value) }} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                         </Card>
                         <Card style={style}>
-
                             <tr>
                                 <th className="required toggle-button-left">Video Technology</th>
-                                <div className="center-items-table" >
-                                    <td className="toggle-button-right" style={{ width: 300 }}>
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right" style={{ width: 300 }}>
                                         <Select
                                             className="basic-single"
                                             classNamePrefix="select"
@@ -968,12 +986,13 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                             placeholder="Please select"
                                             value={selectedVideoTech}
                                             onChange={(e) => setSelectedVideoTech((e))} />
-                                    </td>
-                                </div>
-                            </tr><tr>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
                                 <th className="toggle-button-left">Charge Video Fee?</th>
-                                <div className="center-items-table">
-                                    <td className="toggle-button-right" >
+                                <td className="center-items-table" >
+                                    <div className="toggle-button-right">
                                         <ToggleButton
                                             aria-required={true}
                                             className="mb-2"
@@ -987,31 +1006,32 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         >
                                             {videoFee === true ? "Yes" : "No"}
                                         </ToggleButton>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                         </Card>
                         <Card style={style}>
                             <tr>
                                 <th className="toggle-button-left">Tables to show on invoice report</th>
-                                <div className="center-items-table" >
-                                    <td className="toggle-button-right" >
+                                <td className="center-items-table" >
+                                    <div className="toggle-button-right" >
                                         <Form.Check type={'checkbox'} id={`duplicateTable`} label={`Duplicate Table`} checked={duplicateTable} onChange={(e) => setDuplicateTable(e.target.checked)} />
                                         <Form.Check type={'checkbox'} id={`nonChargeablesTable`} label={`Non-chargeables`} checked={nonChargeablesTable} onChange={(e) => setNonChargeablesTable(e.target.checked)} />
                                         <Form.Check type={'checkbox'} id={`associateFeesTable`} label={`Associate Fees Table`} checked={associateFeesTable} onChange={(e) => setAssociateFeesTable(e.target.checked)} />
-                                        <Form.Check type={'checkbox'} id={`totalRemittanceTable`} label={`Total Remittance Table`} checked={totalRemittenceTable} onChange={(e) => setTotalRemittenceTable(e.target.checked)} />                                    </td>
-                                </div>
+                                        <Form.Check type={'checkbox'} id={`totalRemittanceTable`} label={`Total Remittance Table`} checked={totalRemittenceTable} onChange={(e) => setTotalRemittenceTable(e.target.checked)} />
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
                                 <th className="toggle-button-left">Tables to show on payment report</th>
-                                <div className="center-items-table" >
-                                    <td className="toggle-button-right" >
+                                <td className="center-items-table" >
+                                    <div className="toggle-button-right" >
                                         <Form.Check type={'checkbox'} id={`nonRemittablesTable`} label={`Non Remittables Table`} checked={nonRemittablesTable} onChange={(e) => setNonRemittablesTable(e.target.checked)} />
                                         <Form.Check type={'checkbox'} id={`transactionsTable`} label={`Transactions Table `} checked={transactionsTable} onChange={(e) => setTransactionsTable(e.target.checked)} />
                                         <Form.Check type={'checkbox'} id={`superviseeTotalTable`} label={`Supervisee Total Table`} checked={superviseeTotalTabel} onChange={(e) => setSuperviseeTotalTable(e.target.checked)} />
                                         <Form.Check type={'checkbox'} id={`appliedPaymentsTable`} label={`Applied Payments Table`} checked={appliedPaymentsTotalTable} onChange={(e) => setAppliedPaymentsTotalTable(e.target.checked)} />
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                         </Card>
                         <Card style={style}>
@@ -1019,8 +1039,8 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                 adjustmentFee.map((x, index) => {
                                     return <tr key={index}>
                                         <th className="toggle-button-left">Invoice Adjustment fee</th>
-                                        <div className="center-items-table" >
-                                            <td className="toggle-button-right" >
+                                        <td className="center-items-table" >
+                                            <div className="toggle-button-right" >
                                                 <InputGroup size="sm"  >
                                                     <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.name} placeholder={'Invoice Adjustment Fee'} style={{ marginRight: '5px' }}
                                                         onChange={(e) => { updateAdjustmentArr(e.target.value, 'name', index) }} />
@@ -1029,8 +1049,8 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                                     <Button style={{ marginLeft: '5px' }} variant="dark" onClick={handleAddClick}>+</Button>
                                                     <Button style={{ marginLeft: '5px' }} variant="dark" onClick={() => handleRemoveClick(x.name, x.value)}>-</Button>
                                                 </InputGroup>
-                                            </td>
-                                        </div>
+                                            </div>
+                                        </td>
                                     </tr>
                                 })
                             }
@@ -1038,8 +1058,8 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                 adjustmentPaymentFee.map((x, index) => {
                                     return <tr key={index}>
                                         <th className="toggle-button-left">Payment Adjustment fee</th>
-                                        <div className="center-items-table" >
-                                            <td className="toggle-button-right" >
+                                        <td className="center-items-table" >
+                                            <div className="toggle-button-right" >
                                                 <InputGroup size="sm"  >
                                                     <Form.Control aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={x.name} placeholder={'Payment Adjustment Fee'} style={{ marginRight: '5px' }}
                                                         onChange={(e) => { updatePaymentAdjustmentArr(e.target.value, 'name', index) }} />
@@ -1048,8 +1068,8 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                                     <Button style={{ marginLeft: '5px' }} variant="dark" onClick={handleAddPaymentClick}>+</Button>
                                                     <Button style={{ marginLeft: '5px' }} variant="dark" onClick={() => handleRemovePaymentClick(x.name, x.value)}>-</Button>
                                                 </InputGroup>
-                                            </td>
-                                        </div>
+                                            </div>
+                                        </td>
                                     </tr>
                                 })
                             }
@@ -1058,14 +1078,14 @@ const WorkerProfileTable = ({ selected, worker }) => {
                         <Card style={style}>
                             <tr>
                                 <th className="toggle-button-left">Comments</th>
-                                <div className="center-items-table" >
-                                    <td className="toggle-button-right" style={{ width: 350 }}>
+                                <td className="center-items-table" >
+                                    <div className="toggle-button-right" style={{ width: 350 }}>
                                         <InputGroup size="sm"  >
                                             <Form.Control as={'textarea'}
                                                 aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={comments} onChange={(e) => { setComments(e.target.value) }} />
                                         </InputGroup>
-                                    </td>
-                                </div>
+                                    </div>
+                                </td>
                             </tr>
                         </Card>
                     </thead>
@@ -1075,7 +1095,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
             <br />
             <br />
             <br />
-        </div >
+        </ >
     )
 }
 export default WorkerProfileTable
