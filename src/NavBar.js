@@ -9,11 +9,8 @@ import TokenRefreshModal from "./Login/TokenRefreshModal";
 
 
 const NavBar = () => {
-    // const [physiciansVisable, setWorkerProfile] = useState(false)
-    // const [getByDateVisable, setGetByDateVisable] = useState(true)
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    // const [updatePass, setUpdatePass] = useState(false)
     const storeData = useSelector(state => state)
     const [msg, setMsg] = useState("")
     const [varient, setVarient] = useState("success")
@@ -71,8 +68,8 @@ const NavBar = () => {
                         activeKey={active}
                         onSelect={(selectedKey) => setActive(selectedKey)}
                     >
-                        <Nav.Link href="" onClick={() => navigate('/home')} eventKey="default" >Get By Date</Nav.Link>
-                        <Nav.Link href="" onClick={() => navigate('/workerprofile')} eventKey="link-1" >Worker Profile</Nav.Link>
+                        <Nav.Link href="" onClick={() => window.open('/home')} eventKey="default" >Get By Date</Nav.Link>
+                        <Nav.Link href="" onClick={() => window.open('/workerprofile', '_blank')} eventKey="link-1" >Worker Profile</Nav.Link>
                         <Nav.Link href="" onClick={() => setShowHide(true)} eventKey="link-2">Reset Adjustment Fees</Nav.Link>
                         <Nav.Link href="" onClick={() => navigate('changepass', { user: 'yoel' })} eventKey="link-3" >Change Password</Nav.Link>
                         <Nav.Link href="" onClick={() => logout()} >Logout</Nav.Link>

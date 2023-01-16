@@ -106,6 +106,15 @@ const Main = () => {
     }
   }
 
+  const handleVideoFeeChange = (e) => {
+    cookies.set('viedoFee', e, { maxAge: 2629800000 });
+    setVideoFee(e)
+  }
+
+  useEffect(() => {
+    setVideoFee(cookies.get('viedoFee'))
+
+  }, [])
   return (
     <Col style={{ paddingTop: '80px' }}>
       {isLoading && <LoadingSpinner />}
@@ -140,7 +149,7 @@ const Main = () => {
           <thead>
             <tr>
               <td ><Form.Control required={true} aria-label="Small" size="sm" aria-describedby="inputGroup-sizing-sm" onKeyPress={(e) => NumbersOnly(e)} contentEditable={true}
-                onChange={(e) => setVideoFee(e.target.value)} placeholder="Video fee (For All Users)" /></td>
+                onChange={(e) => handleVideoFeeChange(e.target.value)} value={videoFee} placeholder="Video fee (For All Users)" /></td>
             </tr>
           </thead>
         </Table>

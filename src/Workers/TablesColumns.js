@@ -11,9 +11,10 @@ import NewWorkerProfile from "../BL/NewWorkerProfile";
 import { NumbersOnly } from "../HomePage/NumbersOnly";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import moment from "moment";
+import DeleteWorkerProfile from "../BL/DeleteWorkerProfile";
+import DeleteProfileModual from "../ResetAdjustmentFeeModal/DeleteProfileModual";
 
-const WorkerProfileTable = ({ selected, worker }) => {
+const WorkerProfileTable = ({ selected, worker, setSelected }) => {
     const [tglSuperviser, setTglSuperviser] = useState(false)
     const [tglIsSupervised, setTglIsSupervised] = useState(false)
     const [directorSupervised, setDirectorsupervised] = useState(false)
@@ -21,6 +22,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
     const [supTwoGetMoney, setSupTwoGetsMoney] = useState(false)
     const [hst, setHst] = useState(false)
     const [active, setActive] = useState(true)
+    const [copyProfile, setCopyProfile] = useState(false)
     const [associateName, setAssociateName] = useState("")
     const [associateEmail, setAssociateEmail] = useState("")
     const [associate, setAssociate] = useState({ value: "Please Select", label: "Please Select" })
@@ -82,11 +84,13 @@ const WorkerProfileTable = ({ selected, worker }) => {
     const [adjustmentPaymentFee, setAdjustmentPAymentFee] = useState([{ name: "", value: 0 }])
     const dispatch = useDispatch()
     const [subPrac, setSubPrac] = useState(false)
+    const [showHide, setShowHide] = useState(false)
+
 
     const [date, setDate] = useState(new Date())
-    var futureDate = new Date();
-    futureDate.setFullYear(date.getFullYear() + 100);
-    const [endDate, setEndDate] = useState(futureDate)
+    // var futureDate = new Date();
+    // futureDate.setFullYear(date.getFullYear() + 100);
+    const [endDate, setEndDate] = useState(new Date())
 
 
     useEffect(() => {
@@ -97,6 +101,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
         videoTechAPI()
     }, [])
 
+    useEffect(() => { setCopyProfile(false) }, [worker])
 
     const superviserSelectOptions = (physicians) => {
         let arr = []
@@ -322,9 +327,9 @@ const WorkerProfileTable = ({ selected, worker }) => {
 
                 setVarient('success')
                 setMsg('User Updated!')
+                // window.location.reload(true);
             }
             else {
-
                 setVarient('danger')
                 setMsg(resp.errMsg)
             }
@@ -394,9 +399,66 @@ const WorkerProfileTable = ({ selected, worker }) => {
         setBlocksBiWeeklyCharge(isNaN((hours * blocksHourlyRate) * 2) ? 0 : (hours * blocksHourlyRate) * 2)
     }, [blocksHourlyRate, inOfficeBlockHours, inOfficeBlocks])
 
+    const handleCopyProfile = () => {
+        setSelected('')
+        setCopyProfile(true)
+    }
+
+    const handleResp = async (resp) => {
+        try {
+            // let resp = await DeleteWorkerProfile(storeData.accessToken, selected)
+            setShowHide(false)
+            if (resp.status === 200) {
+                setVarient('success')
+                setMsg("User successfully deleted")
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 1000);
+            }
+            else {
+                setVarient('danger')
+                setMsg(`Error: ${resp.message}`)
+            }
+        } catch (error) {
+            console.log('dd')
+            setVarient('danger')
+            setMsg(`Error: ${error.message}`)
+        }
+
+    }
+
     const style = { margin: 20 }
     return (
         <>
+            <DeleteProfileModual show={showHide} setShow={(e) => { setShowHide(e) }} token={storeData.accessToken} handleResp={(resp) => handleResp(resp)} worker={worker} id={selected} />
+
+            <ToggleButton
+                className="toggle-button-center"
+                style={{ marginBottom: 20 }}
+                id="copyProfile"
+                type="checkbox"
+                variant="outline-dark"
+                checked={copyProfile}
+                disabled={selected === '' ? true : false}
+                size="sm"
+                onChange={(e) => handleCopyProfile(e)}
+            >
+                {copyProfile === true ? "Profile Copied!" : "Copy Profile"}
+            </ToggleButton>
+            {" "}
+            <Button
+                className="toggle-button-center"
+                style={{ marginBottom: 20 }}
+                id="copyProfile"
+                type="checkbox"
+                variant="outline-dark"
+                // checked={copyProfile}
+                disabled={selected === '' ? true : false}
+                size="sm"
+                onClick={(e) => setShowHide(!showHide)}
+            >
+                {'Delete Profile'}
+            </Button>
             {msg !== '' && <Alert key={1} style={{ position: 'sticky', top: '70px', zIndex: 1 }} variant={varient}  >
                 {msg}
             </Alert>}
@@ -577,7 +639,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
+                            {/* <tr>
                                 <th className={tglIsSupervised === true ? 'required toggle-button-left' : "toggle-button-left"}>Supervisor One Covrage</th>
                                 <td className="center-items-table">
                                     <div className="toggle-button-right">
@@ -585,7 +647,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                     </div>
 
                                 </td>
-                            </tr>
+                            </tr> */}
                             <tr>
                                 <th className={tglIsSupervised === true ? 'required toggle-button-left' : " toggle-button-left"}>Supervisor One Gets Money</th>
                                 <td className="center-items-table">
@@ -621,14 +683,14 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
+                            {/* <tr>
                                 <th className="toggle-button-left">Supervisor Two Covrage</th>
                                 <td className="center-items-table">
                                     <div className="toggle-button-right">
                                         <Button disabled={superviserTwo.label === 'Select Second Superviser'} variant="outline-dark" size="sm" onClick={() => openModal('Supervisor Two Covrage', 2)}>Covrage Type</Button>
                                     </div>
                                 </td>
-                            </tr>
+                            </tr> */}
                             <tr>
                                 <th className={tglIsSupervised === true ? 'required toggle-button-left' : "toggle-button-left"}>Supervisor Two Gets Money</th>
                                 <td className="center-items-table">
@@ -746,7 +808,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
+                            {/* <tr>
                                 <th className="toggle-button-left">Associate Fee Base Rate Override (Assessments)</th>
                                 <td className="center-items-table">
                                     <div className="toggle-button-right">
@@ -764,7 +826,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         </ToggleButton>
                                     </div>
                                 </td>
-                            </tr>
+                            </tr> */}
                         </Card>
                         <Card style={style}>
                             <Card.Header style={{ backgroundColor: '#e9ecef' }}>CBT</Card.Header>
@@ -820,7 +882,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
+                            {/* <tr>
                                 <th className="toggle-button-left">Associate Fee Base Rate Override (Assessments)</th>
                                 <td className="center-items-table">
                                     <div className="toggle-button-right">
@@ -838,7 +900,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         </ToggleButton>
                                     </div>
                                 </td>
-                            </tr>
+                            </tr> */}
                         </Card>
                         <Card style={style}>
                             <Card.Header style={{ backgroundColor: '#e9ecef' }}>CPRI</Card.Header>
@@ -893,7 +955,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
+                            {/* <tr>
                                 <th className="toggle-button-left">Associate Fee Base Rate Override (Assessments)</th>
                                 <td className="center-items-table">
                                     <div className="toggle-button-right">
@@ -912,7 +974,7 @@ const WorkerProfileTable = ({ selected, worker }) => {
                                         </ToggleButton>
                                     </div>
                                 </td>
-                            </tr>
+                            </tr> */}
                         </Card>
                         <Card style={style}>
                             <tr>

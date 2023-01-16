@@ -1,3 +1,4 @@
+import moment from 'moment';
 import GetPhysician from './../DALs/GetPhysicians';
 
 const GetPhysicianFunc = async (token) => {
@@ -6,7 +7,7 @@ const GetPhysicianFunc = async (token) => {
     resp.data.forEach(user => {
         let temp = user
         let status = temp.status === true ? " (Active)" : " (Not Active)"
-        temp.associateName = user.associateType + " : " + temp.associateName + status
+        temp.associateName = `${user.associateType} : ${temp.associateName} ${status} | ${moment(user.startDate).format('YYYY-MM-DD')}`
         arr.push(temp)
     })
     return resp.data

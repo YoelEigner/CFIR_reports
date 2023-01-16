@@ -62,7 +62,7 @@ const WorkerProfiles = () => {
                 onChange={(e) => handleChange((e.value))}
             />
             <br />
-            <WorkerProfileTable selected={physicianNmae} worker={worker} />
+            <WorkerProfileTable selected={physicianNmae} worker={worker} setSelected={(e) => setPhysicianName(e)} />
 
 
         </Col>

@@ -164,6 +164,10 @@
   margin-left: 500; */
 }
 
+.add-margin-bottom{
+  margin-bottom: 20;
+}
+
 .center-items-table {
   display: flex;
   justify-content: center;
