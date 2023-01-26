@@ -85,6 +85,9 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
     const dispatch = useDispatch()
     const [subPrac, setSubPrac] = useState(false)
     const [showHide, setShowHide] = useState(false)
+    const [assessmentMoneyToSupervisorOne, setAssessmentMoneyToSupervisorOne] = useState(false)
+    const [assessmentMoneyToSupervisorTwo, setAssessmentMoneyToSupervisorTwo] = useState(false)
+    const [probono, setProbono] = useState(0)
 
 
     const [date, setDate] = useState(new Date())
@@ -168,8 +171,11 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
             setSuperviserTwoCovrage(worker.supervisor2Covrage)
             setSupOneGetsMoney(worker.supervisorOneGetsMoney)
             setSupTwoGetsMoney(worker.supervisorTwoGetsMoney)
+            setAssessmentMoneyToSupervisorOne(worker.assessmentMoneyToSupervisorOne)
+            setAssessmentMoneyToSupervisorTwo(worker.assessmentMoneyToSupervisorTwo)
             setAssociateFeeBaseType(worker.associateFeeBaseType)
             setAssociateFeeBaseTypeTwo(worker.associateFeeBaseType2)
+            setProbono(worker.probono)
             setAssessmentRate(worker.assessmentRate)
             setAssessmentRate_c(worker.assessmentRate_c)
             setAssessmentRate_f(worker.assessmentRate_f)
@@ -246,9 +252,12 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
         temp.supervisor2Covrage = superviserTwoCovrage
         temp.supervisorOneGetsMoney = supOnegetMoney
         temp.supervisorTwoGetsMoney = supTwoGetMoney
+        temp.assessmentMoneyToSupervisorTwo = assessmentMoneyToSupervisorTwo
+        temp.assessmentMoneyToSupervisorOne = assessmentMoneyToSupervisorOne
         temp.chargesHST = hst
         temp.associateFeeBaseType = associateFeeBaseType
         temp.associateFeeBaseType2 = associateFeeBaseTypeTwo
+        temp.probono = probono
         temp.assessmentRate = assessmentRate
         temp.assessmentRate_c = assessmentRate_c
         temp.assessmentRate_f = assessmentRate_f
@@ -649,9 +658,9 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
                                 </td>
                             </tr> */}
                             <tr>
-                                <th className={tglIsSupervised === true ? 'required toggle-button-left' : " toggle-button-left"}>Supervisor One Gets Money</th>
+                                <th className={tglIsSupervised === true ? 'required toggle-button-left' : " toggle-button-left"}>Therapy Money to Supervisor One</th>
                                 <td className="center-items-table">
-                                    <div className="toggle-button-right">
+                                    <div className="toggle-button-right-custom-margin">
                                         <ToggleButton
                                             className="mb-2"
                                             id="toggle-money"
@@ -667,7 +676,29 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
                                         </ToggleButton>
                                     </div>
                                 </td>
-                            </tr><tr>
+                            </tr>
+                            {associate.label === 'L1 (Sup Prac)' && <tr>
+                                <th className={tglIsSupervised === true ? 'required toggle-button-left' : "toggle-button-left"}>Assessment Money to Supervisor One</th>
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right-custom-margin">
+                                        <ToggleButton
+                                            aria-required={true}
+                                            className="mb-2"
+                                            id="toggle-check5"
+                                            type="checkbox"
+                                            variant="outline-dark"
+                                            checked={assessmentMoneyToSupervisorOne}
+                                            value="1"
+                                            size="sm"
+                                            onChange={(e) => setAssessmentMoneyToSupervisorOne(e.currentTarget.checked)}
+                                            disabled={assessmentMoneyToSupervisorTwo}
+                                        >
+                                            {assessmentMoneyToSupervisorOne === true ? "Yes" : "No"}
+                                        </ToggleButton>
+                                    </div>
+                                </td>
+                            </tr>}
+                            <tr>
                                 <th className="toggle-button-left">Superviser Two</th>
                                 <td className="center-items-table">
                                     <div className="toggle-button-right" style={{ width: 300 }}>
@@ -692,9 +723,9 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
                                 </td>
                             </tr> */}
                             <tr>
-                                <th className={tglIsSupervised === true ? 'required toggle-button-left' : "toggle-button-left"}>Supervisor Two Gets Money</th>
+                                <th className={tglIsSupervised === true ? 'required toggle-button-left' : "toggle-button-left"}>Therapy Money to Supervisor Two</th>
                                 <td className="center-items-table">
-                                    <div className="toggle-button-right">
+                                    <div className="toggle-button-right-custom-margin">
                                         <ToggleButton
                                             className="mb-2"
                                             id="toggle-money-Two"
@@ -711,6 +742,27 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
                                     </div>
                                 </td>
                             </tr>
+                            {associate.label === 'L1 (Sup Prac)' && <tr>
+                                <th className={tglIsSupervised === true ? 'required toggle-button-left' : "toggle-button-left"}>Assessment Money to Supervisor Two</th>
+                                <td className="center-items-table">
+                                    <div className="toggle-button-right-custom-margin">
+                                        <ToggleButton
+                                            aria-required={true}
+                                            className="mb-2"
+                                            id="toggle-check6"
+                                            type="checkbox"
+                                            variant="outline-dark"
+                                            checked={assessmentMoneyToSupervisorTwo}
+                                            value="1"
+                                            size="sm"
+                                            onChange={(e) => setAssessmentMoneyToSupervisorTwo(e.currentTarget.checked)}
+                                            disabled={assessmentMoneyToSupervisorOne}
+                                        >
+                                            {assessmentMoneyToSupervisorTwo === true ? "Yes" : "No"}
+                                        </ToggleButton>
+                                    </div>
+                                </td>
+                            </tr>}
                             <tr>
                                 <th className="required toggle-button-left">Charges HST</th>
                                 <td className="center-items-table">
@@ -753,6 +805,22 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
                                     </div>
                                 </td>
                             </tr>
+                        </Card>       
+                        <Card style={style}>
+                            {/* <Card.Header style={{ backgroundColor: '#e9ecef' }}>CFIR</Card.Header> */}
+                            <tr>
+                                {<th className="toggle-button-left">Probono Rate</th>}
+                                <td className="center-items-table" style={{ marginRight: 30 }}>
+                                    <div className="toggle-button-right">
+                                        <InputGroup size="sm">
+                                            <Form.Control style={{ marginRight: 5 }} aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={probono}
+                                                onChange={(e) => { setProbono(e.target.value) }} onKeyPress={(e) => NumbersOnly(e)} />
+                                        </InputGroup>
+                                    </div>
+                                </td>
+                            </tr>
+
+
                         </Card>
                         <Card style={style}>
                             <Card.Header style={{ backgroundColor: '#e9ecef' }}>CFIR</Card.Header>

@@ -1,6 +1,6 @@
 import { Alert, Container, Nav, Navbar } from "react-bootstrap"
 import { Children, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from 'react';
 import GetPhysicianFunc from './Login/GetPhysicianFunc';
@@ -17,7 +17,7 @@ const NavBar = () => {
     const [showHide, setShowHide] = useState(false)
     const [open, setOpen] = useState(false)
     const [active, setActive] = useState('default');
-
+    const location = useLocation();
 
     const logout = () => {
         dispatch({ type: "RESET" })
@@ -68,15 +68,15 @@ const NavBar = () => {
                         activeKey={active}
                         onSelect={(selectedKey) => setActive(selectedKey)}
                     >
-                        <Nav.Link href="" onClick={() => window.open('/home')} eventKey="default" >Get By Date</Nav.Link>
-                        <Nav.Link href="" onClick={() => window.open('/workerprofile', '_blank')} eventKey="link-1" >Worker Profile</Nav.Link>
-                        <Nav.Link href="" onClick={() => setShowHide(true)} eventKey="link-2">Reset Adjustment Fees</Nav.Link>
-                        <Nav.Link href="" onClick={() => navigate('changepass', { user: 'yoel' })} eventKey="link-3" >Change Password</Nav.Link>
+                        <Nav.Link href="" onClick={() => window.open('/home')} active={location.pathname === '/home' ? true : false} >Get By Date</Nav.Link>
+                        <Nav.Link href="" onClick={() => window.open('/workerprofile', '_blank')} active={location.pathname === '/workerprofile' ? true : false} >Worker Profile</Nav.Link>
+                        <Nav.Link href="" onClick={() => setShowHide(true)} active={location.pathname === '/resetFees' ? true : false}>Reset Adjustment Fees</Nav.Link>
+                        <Nav.Link href="" onClick={() => navigate('changepass', { user: 'yoel' })} active={location.pathname === '/changepass' ? true : false}>Change Password</Nav.Link>
                         <Nav.Link href="" onClick={() => logout()} >Logout</Nav.Link>
 
                     </Nav>
                     <Navbar.Text>
-                        Signed in as: <a href="#/" onClick={() => navigate('changepass')}>{storeData.username}</a>
+                        Signed in as: <a href="/changepass" onClick={() => navigate('changepass')}>{storeData.username.charAt(0).toUpperCase() + storeData.username.slice(1)}</a>
                     </Navbar.Text>
                 </Container>
             </Navbar>

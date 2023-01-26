@@ -151,7 +151,12 @@
 .toggle-button-right {
   float: right;
   align-content: center;
-  /* margin-right: 20%; */
+  margin-right: 0%;
+}
+.toggle-button-right-custom-margin {
+  float: right;
+  align-content: center;
+  margin-right: 18%;
 }
 
 .toggle-button-left {
