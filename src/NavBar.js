@@ -71,7 +71,8 @@ const NavBar = () => {
                         <Nav.Link href="" onClick={() => window.open('/home')} active={location.pathname === '/home' ? true : false} >Get By Date</Nav.Link>
                         <Nav.Link href="" onClick={() => window.open('/workerprofile', '_blank')} active={location.pathname === '/workerprofile' ? true : false} >Worker Profile</Nav.Link>
                         <Nav.Link href="" onClick={() => setShowHide(true)} active={location.pathname === '/resetFees' ? true : false}>Reset Adjustment Fees</Nav.Link>
-                        <Nav.Link href="" onClick={() => navigate('changepass', { user: 'yoel' })} active={location.pathname === '/changepass' ? true : false}>Change Password</Nav.Link>
+                        <Nav.Link href="" onClick={() => navigate('/changepass', { user: 'yoel' })} active={location.pathname === '/changepass' ? true : false}>Change Password</Nav.Link>
+                        <Nav.Link href="" onClick={() => navigate('/emailpass', { user: 'yoel' })} active={location.pathname === '/emailpass' ? true : false}>Email Password</Nav.Link>
                         <Nav.Link href="" onClick={() => logout()} >Logout</Nav.Link>
 
                     </Nav>

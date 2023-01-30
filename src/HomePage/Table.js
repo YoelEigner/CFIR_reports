@@ -114,12 +114,13 @@ const MainTable = ({ date, loading, videoFee }) => {
             }
             loading(false)
         } catch (error) {
+            console.log(error,'ddddddd')
             setErrMsg(String(error))
             setVarient('danger')
-            setTimeout(() => {
-                setErrMsg("")
+            // setTimeout(() => {
+            //     setErrMsg("")
 
-            }, 10000);
+            // }, 10000);
             loading(false)
         }
     }

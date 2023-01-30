@@ -9,6 +9,7 @@ import WorkerProfiles from './../Workers/WorkerProfiles';
 import Main from './../HomePage/Main';
 import ChangePassword from './../ChangePassword/ChangePassword';
 import RefreshToeknModal from "../Login/TokenRefreshModal";
+import UpdateEmailPassword from "../UpdateEmailPassword/UpdateEmailPassword";
 
 const Routing = () => {
     const storeData = useSelector(state => state)
@@ -42,6 +43,7 @@ const Routing = () => {
                         <Route exact path="/home" element={loggedIn ? <Main /> : <Denied />} />
                         <Route exact path="/workerprofile" element={loggedIn ? <WorkerProfiles /> : <Denied />} />
                         <Route exact path="/changepass" element={<ChangePassword />} />
+                        <Route exact path="/emailpass" element={<UpdateEmailPassword />} />
                         <Route path="/register" element={<div className="App"><RegisterUser /></div>} />
                         <Route path="/login" element={<div className="App"><Login /></div>} />
                         <Route path="/logout" element={<div className="App"><Denied /></div>} />

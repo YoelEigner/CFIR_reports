@@ -10,9 +10,11 @@ const UpdateEmailPassword = () => {
     const [varient, setVarient] = useState("danger")
 
     const onSubmit = async (e) => {
+        e.preventDefault()
         try {
             let resp = await UpdateEmailPasswordBL(storeData.accessToken, pass)
             if (resp.status === 200) {
+                setPass("")
                 setVarient('success')
                 setMsg('Password has been updated')
                 setTimeout(() => {
@@ -21,6 +23,7 @@ const UpdateEmailPassword = () => {
             }
 
         } catch (error) {
+            setPass("")
             setVarient("danger")
             setMsg(error.message)
             setTimeout(() => {
@@ -36,8 +39,8 @@ const UpdateEmailPassword = () => {
             </Alert>}
             <Form onSubmit={onSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                    <Form.Label>Update email password</Form.Label>
-                    <Form.Control type={'password'} placeholder="Password" onChange={(e) => setPass(e.target.value)}
+                    <Form.Label>{`Update email password`}</Form.Label>
+                    <Form.Control type={'password'} placeholder="Password" value={pass} onChange={(e) => setPass(e.target.value)}
                     />
                 </Form.Group>
                 <Button variant="dark" type="submit">
@@ -45,7 +48,7 @@ const UpdateEmailPassword = () => {
                 </Button>
             </Form>
             <div style={{ position: 'absolute', left: '30%', right: '30%' }}>
-                This password is NOT the account password, this is the "App Password" in the email account settings!
+                {`This password is NOT the account password, this is the "App Password" in the email account settings!`}
             </div>
         </div>
     );

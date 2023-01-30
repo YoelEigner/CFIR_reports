@@ -4,6 +4,11 @@ import saveAs from 'file-saver';
 
 
 const GetFile = async (start, end, token, reportType, users, action, videoFee, type) => {
+    try {
+        
+    } catch (error) {
+        
+    }
     let resp = await axios.post(process.env.REACT_APP_API_URL + '/generatepdf', {
         start: moment(start).format('YYYY-MM-DD'), end: moment(end).format('YYYY-MM-DD'),
         users: users, action: action, videoFee, reportType, actionType: type
