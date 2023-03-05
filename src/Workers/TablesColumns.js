@@ -13,6 +13,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import DeleteWorkerProfile from "../BL/DeleteWorkerProfile";
 import DeleteProfileModual from "../ResetAdjustmentFeeModal/DeleteProfileModual";
+import GetNewWorkers from "../BL/GetNewWorkers";
 
 const WorkerProfileTable = ({ selected, worker, setSelected }) => {
     const [tglSuperviser, setTglSuperviser] = useState(false)
@@ -23,7 +24,8 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
     const [hst, setHst] = useState(false)
     const [active, setActive] = useState(true)
     const [copyProfile, setCopyProfile] = useState(false)
-    const [associateName, setAssociateName] = useState("")
+    const [associateName, setAssociateName] = useState({ value: "Please Select", label: "Please Select" })
+    // const [associateName, setAssociateName] = useState("")
     const [associateEmail, setAssociateEmail] = useState("")
     const [associate, setAssociate] = useState({ value: "Please Select", label: "Please Select" })
     const [superviserOne, setSupervierOne] = useState({ value: "Please Select", label: "Please Select" })
@@ -67,6 +69,7 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
     const [associateFeeBaseTypeTwo, setAssociateFeeBaseTypeTwo] = useState('')
     const storeData = useSelector(state => state)
     const [superviserSelect, setSuperviserSelect] = useState([])
+    const [newWorkers, setNewWorkers] = useState([])
     const [showModal, setShowModal] = useState(false)
     const [modalHeader, setModalHeader] = useState("")
     const [msg, setMsg] = useState('')
@@ -91,8 +94,6 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
 
 
     const [date, setDate] = useState(new Date())
-    // var futureDate = new Date();
-    // futureDate.setFullYear(date.getFullYear() + 100);
     const [endDate, setEndDate] = useState(new Date())
 
 
@@ -106,6 +107,18 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
 
     useEffect(() => { setCopyProfile(false) }, [worker])
 
+    useEffect(() => {
+        const getNewWorker = async () => {
+            let arr = []
+
+            const resp = await GetNewWorkers(storeData.accessToken)
+            resp?.forEach(x => {
+                arr.push({ value: x.id, label: x.associateName })
+            })
+            setNewWorkers(arr)
+        }
+        getNewWorker()
+    }, [])
     const superviserSelectOptions = (physicians) => {
         let arr = []
         arr.push({ value: 'NOT SUPERVISED', label: 'NOT SUPERVISED' }, { value: 'EXTERNAL SUPERVISOR', label: 'EXTERNAL SUPERVISOR' })
@@ -153,6 +166,7 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
 
 
     useEffect(() => {
+        console.log(worker)
         if (worker.length !== 0) {
             worker.associateType === 'L1 (Sup Prac)' ? setSubPrac(true) : setSubPrac(false)
             setActive(worker.status)
@@ -160,7 +174,7 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
             setEndDate(new Date(worker.endDate))
             setProvValue({ value: worker.site, label: worker.site })
             setAssociate({ value: worker.associateType, label: worker.associateType })
-            setAssociateName(worker.associateName)
+            setAssociateName({ value: worker.associateName, label: worker.associateName })
             setAssociateEmail(worker.associateEmail)
             setTglSuperviser(worker.isSuperviser)
             setTglIsSupervised(worker.isSupervised)
@@ -242,7 +256,7 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
         temp.site = provValue.label
         temp.associateType = associate.label
         temp.associateEmail = associateEmail
-        temp.associateName = associateName.trim()
+        temp.associateName = associateName.label.trim()
         temp.isSuperviser = tglSuperviser
         temp.isSupervised = tglIsSupervised
         temp.IsSupervisedByNonDirector = directorSupervised
@@ -436,6 +450,10 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
 
     }
 
+    const onUserSelect = () => {
+
+    }
+
     const style = { margin: 20 }
     return (
         <>
@@ -533,15 +551,31 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
                             </tr>
                             <tr>
                                 <th className="required toggle-button-left">Associate Name</th>
+                                <td aria-required className="center-items-table" >
+                                    <div className="toggle-button-right" style={{ width: 300 }}>
+                                        <Select
+                                            className="basic-single"
+                                            classNamePrefix="select"
+                                            isSearchable={true}
+                                            name="associateName"
+                                            options={newWorkers}
+                                            placeholder="Please select"
+                                            value={associateName}
+                                            onChange={(e) => setAssociateName(e)} />
+                                    </div>
+                                </td>
+                            </tr>
+                            {/* <tr>
+                                <th className="required toggle-button-left">Associate Name</th>
                                 <td className="center-items-table">
                                     <div className="toggle-button-right">
                                         <InputGroup size="sm" >
-                                            <Form.Control required aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateName} onChange={(e) => { setAssociateName(e.target.value) }} />
+                                            <Form.Control disabled={true} required aria-label="Small" aria-describedby="inputGroup-sizing-sm" value={associateName} onChange={(e) => { setAssociateName(e.target.value) }} />
                                         </InputGroup>
                                     </div>
 
                                 </td>
-                            </tr>
+                            </tr> */}
                             <tr>
                                 <th className="required toggle-button-left">Associate Email</th>
                                 <td className="center-items-table">
@@ -677,7 +711,7 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
                                     </div>
                                 </td>
                             </tr>
-                            {associate.label === 'L1 (Sup Prac)' && <tr>
+                            <tr>
                                 <th className={tglIsSupervised === true ? 'required toggle-button-left' : "toggle-button-left"}>Assessment Money to Supervisor One</th>
                                 <td className="center-items-table">
                                     <div className="toggle-button-right-custom-margin">
@@ -697,7 +731,7 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
                                         </ToggleButton>
                                     </div>
                                 </td>
-                            </tr>}
+                            </tr>
                             <tr>
                                 <th className="toggle-button-left">Superviser Two</th>
                                 <td className="center-items-table">
@@ -742,7 +776,7 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
                                     </div>
                                 </td>
                             </tr>
-                            {associate.label === 'L1 (Sup Prac)' && <tr>
+                            <tr>
                                 <th className={tglIsSupervised === true ? 'required toggle-button-left' : "toggle-button-left"}>Assessment Money to Supervisor Two</th>
                                 <td className="center-items-table">
                                     <div className="toggle-button-right-custom-margin">
@@ -762,7 +796,7 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
                                         </ToggleButton>
                                     </div>
                                 </td>
-                            </tr>}
+                            </tr>
                             <tr>
                                 <th className="required toggle-button-left">Charges HST</th>
                                 <td className="center-items-table">
@@ -805,7 +839,7 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
                                     </div>
                                 </td>
                             </tr>
-                        </Card>       
+                        </Card>
                         <Card style={style}>
                             {/* <Card.Header style={{ backgroundColor: '#e9ecef' }}>CFIR</Card.Header> */}
                             <tr>

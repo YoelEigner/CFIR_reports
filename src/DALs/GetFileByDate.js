@@ -5,9 +5,9 @@ import saveAs from 'file-saver';
 
 const GetFile = async (start, end, token, reportType, users, action, videoFee, type) => {
     try {
-        
+
     } catch (error) {
-        
+
     }
     let resp = await axios.post(process.env.REACT_APP_API_URL + '/generatepdf', {
         start: moment(start).format('YYYY-MM-DD'), end: moment(end).format('YYYY-MM-DD'),
@@ -27,7 +27,12 @@ const GetFile = async (start, end, token, reportType, users, action, videoFee, t
 
         let url = window.URL.createObjectURL(file);
         a.href = url;
-        a.download = `${type}_${users?.map(x => x.associateName)[0]}_${date.toJSON().slice(0, 10)}_${date.toLocaleTimeString().slice(0, 5)}`; // gives it a name via an a tag
+        if (users?.map(x => x.associateName)[0].includes('.')) {
+            a.download = `${type}_${users?.map(x => x.associateName)[0]}_${date.toJSON().slice(0, 10)}_${date.toLocaleTimeString().slice(0, 5)}.pdf`
+        }
+        else{
+            a.download = `${type}_${users?.map(x => x.associateName)[0]}_${date.toJSON().slice(0, 10)}_${date.toLocaleTimeString().slice(0, 5)}`; // gives it a name via an a tag
+        }
         a.click();
         window.URL.revokeObjectURL(url);
 

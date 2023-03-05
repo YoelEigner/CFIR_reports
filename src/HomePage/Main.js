@@ -170,6 +170,7 @@ const Main = () => {
 
 
         <br />
+
         <MainTable date={date} loading={(e) => setIsLoading(e)} videoFee={videoFee} />
       </Col>
     </Col >
