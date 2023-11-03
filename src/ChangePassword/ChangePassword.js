@@ -1,6 +1,7 @@
+import React from 'react';
 import { Alert, Button, Col, Form } from 'react-bootstrap'
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import ChangePasswordBL from '../BL/ChangePasswordBL';
 import { useEffect } from 'react';
 

@@ -1,5 +1,6 @@
+import React from 'react';
 import { useState } from "react";
-import { Alert, Button, Form, InputGroup } from "react-bootstrap";
+import { Alert, Button, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import UpdateEmailPasswordBL from "../BL/UpdateEmailPasswordBL";
 

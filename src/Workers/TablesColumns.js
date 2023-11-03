@@ -1160,7 +1160,7 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
                                         <ToggleButton
                                             aria-required={true}
                                             className="mb-2"
-                                            id="toggle-check5"
+                                            id="toggle-check8"
                                             type="checkbox"
                                             variant="outline-dark"
                                             checked={videoFee}
@@ -1232,6 +1232,7 @@ const WorkerProfileTable = ({ selected, worker, setSelected }) => {
                                                     <Button style={{ marginLeft: '5px' }} variant="dark" onClick={handleAddPaymentClick}>+</Button>
                                                     <Button style={{ marginLeft: '5px' }} variant="dark" onClick={() => handleRemovePaymentClick(x.name, x.value)}>-</Button>
                                                 </InputGroup>
+                                                
                                             </div>
                                         </td>
                                     </tr>

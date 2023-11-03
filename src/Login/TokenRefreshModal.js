@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Timer from 'react-compound-timer/build';
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import RefreshToken from '../BL/RefreshToken';
-import { useEffect } from 'react';
 
 
 const RefreshToeknModal = ({ open, setOpen, revokeAccess }) => {
