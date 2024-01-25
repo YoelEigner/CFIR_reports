@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Button, Col, Form, Row, Table } from 'react-bootstrap'
+import { Alert, Button, Col, Form, FormCheck, Row, Table, Tooltip } from 'react-bootstrap'
 import { useSelector } from "react-redux";
 import GetFile from '../DALs/GetFileByDate';
 import Select from 'react-select';
@@ -28,6 +28,7 @@ const Main = () => {
   const [endDate, setEndDate] = useState('')
   const numberFormat = Intl.NumberFormat()
   const cookies = new Cookies();
+  const [InvalidateCache, setInvalidateCache] = useState(false)
 
 
   useEffect(() => {
@@ -88,9 +89,9 @@ const Main = () => {
       }
       else {
         setIsLoading(true)
-        let resp = await GetWorkerProfile(selectedUser, storeData.accessToken)
-        await GetFile(date[0], date[1], storeData.accessToken, 'singlepdf', resp, 'run', videoFee, 'payment')
-        await GetFile(date[0], date[1], storeData.accessToken, 'singlepdf', resp, 'run', videoFee, 'invoice')
+        let resp = await GetWorkerProfile(selectedUser, storeData.accessToken, InvalidateCache)
+        await GetFile(date[0], date[1], storeData.accessToken, 'singlepdf', resp, 'run', videoFee, 'payment', InvalidateCache)
+        await GetFile(date[0], date[1], storeData.accessToken, 'singlepdf', resp, 'run', videoFee, 'invoice', InvalidateCache)
         setIsLoading(false)
 
       }
@@ -148,8 +149,17 @@ const Main = () => {
         <Table style={style}>
           <thead>
             <tr>
-              <td ><Form.Control required={true} aria-label="Small" size="sm" aria-describedby="inputGroup-sizing-sm" onKeyPress={(e) => NumbersOnly(e)} contentEditable={true}
-                onChange={(e) => handleVideoFeeChange(e.target.value)} value={videoFee} placeholder="Video fee (For All Users)" /></td>
+              <td >
+                <Form.Control required={true} aria-label="Small" size="sm" aria-describedby="inputGroup-sizing-sm" onKeyPress={(e) => NumbersOnly(e)} contentEditable={true}
+                  onChange={(e) => handleVideoFeeChange(e.target.value)} value={videoFee} placeholder="Video fee (For All Users)" />
+              </td>
+            </tr>
+            <tr>
+              <td >
+                <Form.Check style={{ display: 'inline-table' }}
+                  type={'checkbox'} label={'Load Latest Information'}
+                  onChange={(e) => setInvalidateCache(e.target.checked)} name="group3" id="radio2" />
+              </td>
             </tr>
           </thead>
         </Table>
@@ -171,7 +181,7 @@ const Main = () => {
 
         <br />
 
-        <MainTable date={date} loading={(e) => setIsLoading(e)} videoFee={videoFee} />
+        <MainTable date={date} loading={(e) => setIsLoading(e)} videoFee={videoFee} InvalidateCache={InvalidateCache} />
       </Col>
     </Col >
   )

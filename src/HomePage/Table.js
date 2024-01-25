@@ -6,7 +6,7 @@ import GetAssociateTypes from "../BL/GetAssociateTypes";
 import GetFile from "../DALs/GetFileByDate";
 import EmailConfirmationModal from "../ResetAdjustmentFeeModal/EmailConfirmationModal";
 
-const MainTable = ({ date, loading, videoFee }) => {
+const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
     const storeData = useSelector(state => state)
     const [provence, setProvence] = useState([])
     const [selected, setSelected] = useState("")
@@ -98,7 +98,7 @@ const MainTable = ({ date, loading, videoFee }) => {
                 setVarient('danger')
             }
             else {
-                let resp = await GetFile(date[0], date[1], storeData.accessToken, 'multipdf', filterSites, action, videoFee, type)
+                let resp = await GetFile(date[0], date[1], storeData.accessToken, 'multipdf', filterSites, action, videoFee, type, InvalidateCache)
                 if (resp.status === 200) {
                     setVarient('success')
                     if (action === 'email') {
@@ -114,7 +114,6 @@ const MainTable = ({ date, loading, videoFee }) => {
             }
             loading(false)
         } catch (error) {
-            console.log(error,'ddddddd')
             setErrMsg(String(error))
             setVarient('danger')
             // setTimeout(() => {
