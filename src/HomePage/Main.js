@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Alert, Button, Col, Form, FormCheck, Row, Table, Tooltip } from 'react-bootstrap'
+import React, { useCallback, useEffect, useState } from "react";
+import { Alert, Button, Col, Form, Row, Table } from 'react-bootstrap'
 import { useSelector } from "react-redux";
 import GetFile from '../DALs/GetFileByDate';
 import Select from 'react-select';
@@ -35,8 +35,7 @@ const Main = () => {
     setPhysicians(storeData.Physician)
   }, [storeData.Physician])
 
-
-  const onStartDateChange = (startDate) => {
+  const onStartDateChange = useCallback((startDate) => {
     cookies.set('startDate', startDate, { maxAge: 2629800000 });
     var temp = []
     var endateTemp = new Date(startDate);
@@ -45,17 +44,25 @@ const Main = () => {
     temp.push(startDate)
     temp.push(endateTemp)
     setDate(temp);
+  }, [cookies]);
+
+  function areDatesEqual(date1, date2) {
+    return date1.getTime() === date2.getTime();
   }
 
   useEffect(() => {
     if (addEndDate === false) {
-      let cookieStartDate = new Date(cookies.get('startDate'))
+      let cookieStartDate = new Date(cookies.get('startDate'));
       if (!moment(cookieStartDate).isValid()) {
-        cookieStartDate = new Date()
+        cookieStartDate = new Date();
       }
-      date[0] !== undefined && onStartDateChange(cookieStartDate)
+
+      // Check if the date has actually changed before calling onStartDateChange
+      if (date[0] !== undefined && !areDatesEqual(cookieStartDate, date[0])) {
+        onStartDateChange(cookieStartDate);
+      }
     }
-  }, [addEndDate])
+  }, [addEndDate, cookies, date, onStartDateChange]);
 
 
   const onEndDateChange = (endDate) => {
