@@ -12,13 +12,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import Cookies from 'universal-cookie';
 import moment from "moment";
 import { useDispatch } from "react-redux";
+import { validateVideoFee } from "../utils/utils";
 
 
 
 const Main = () => {
   const [date, setDate] = useState([new Date()]);
   const storeData = useSelector(state => state)
-  const [videoFee, setVideoFee] = useState(0)
+  const [videoFee, setVideoFee] = useState(null)
   const dispatch = useDispatch()
   const [physicians, setPhysicians] = useState([])
   const [selectedUser, setSelectedUser] = useState("")
@@ -26,7 +27,6 @@ const Main = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [addEndDate, setAddEndDate] = useState(false)
   const [endDate, setEndDate] = useState('')
-  const numberFormat = Intl.NumberFormat()
   const cookies = new Cookies();
   const [InvalidateCache, setInvalidateCache] = useState(false)
 
@@ -88,7 +88,7 @@ const Main = () => {
 
   const getWorker = async () => {
     try {
-      if (isNaN(numberFormat.format(videoFee))) {
+      if (validateVideoFee(videoFee) !== null) {
         setErr('Please enter a video fee amount')
         setTimeout(() => {
           setErr("")
@@ -115,8 +115,10 @@ const Main = () => {
   }
 
   const handleVideoFeeChange = (e) => {
-    cookies.set('viedoFee', e, { maxAge: 2629800000 });
-    setVideoFee(e)
+    const expirationTime = 12 * 60 * 60 * 1000;
+    const expirationDate = new Date(Date.now() + expirationTime);    
+    cookies.set('viedoFee', e, { expires: expirationDate });
+    setVideoFee(e);
   }
 
   useEffect(() => {
@@ -158,7 +160,7 @@ const Main = () => {
             <tr>
               <td >
                 <Form.Control required={true} aria-label="Small" size="sm" aria-describedby="inputGroup-sizing-sm" onKeyPress={(e) => NumbersOnly(e)} contentEditable={true}
-                  onChange={(e) => handleVideoFeeChange(e.target.value)} value={videoFee} placeholder="Video fee (For All Users)" />
+                  onChange={(e) => handleVideoFeeChange(e.target.value)} defaultValue={videoFee} placeholder="Video fee (For All Users)" />
               </td>
             </tr>
             <tr>

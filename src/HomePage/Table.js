@@ -5,6 +5,7 @@ import Select from 'react-select';
 import GetAssociateTypes from "../BL/GetAssociateTypes";
 import GetFile from "../DALs/GetFileByDate";
 import EmailConfirmationModal from "../ResetAdjustmentFeeModal/EmailConfirmationModal";
+import { validateVideoFee } from "../utils/utils";
 
 const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
     const storeData = useSelector(state => state)
@@ -25,12 +26,13 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
     }, [storeData.provence])
 
     const optionsArr = [
-        { value: 'associateType', label: "Run all reports for all therapists" },
-        { value: 'supervisers', label: "Run reports for Supervisors only" },
+        { value: 'associateType', label: "Run all reports for all therapists (excl. supervised practice)" },
+        { value: 'supervisers', label: "Run reports for supervisors only" },
         { value: 'L1', label: "Run reports for L1 only" },
         { value: 'L2', label: "Run reports for L2 only" },
         { value: 'L3', label: "Run reports for L3 only" },
         { value: 'L4', label: "Run reports for L4 only" },
+        { value: 'L1 (Sup Prac)', label: "Run reports for supervised practice only" },
     ]
     const updateChbxValue = (row, name, checked) => {
         let temp = chbx
@@ -71,7 +73,6 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
     const isDisabled = date.length === 0 || selected === ''
 
     const getFiles = async (action, type) => {
-        // let activeWorkers = []
         try {
             loading(true)
 
@@ -80,14 +81,21 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
             let workersTemp = await GetAssociateTypes(storeData.accessToken, selected.value, chbx)
             workersTemp.length === 0 && setErrMsg("No user found in this catagory, please select another option!")
             workersTemp.length === 0 && setVarient('danger')
+
             if (selected.value === 'superviser') {
                 activeWorkers = workersTemp
                     .filter(x => x.status === true)
                     .filter(x => x.isSuperviser === true || x.isSupervised === true)
             }
-            else {
-                activeWorkers = workersTemp.filter(x => x.status === true)
+            else if (selected.value === 'L1 (Sup Prac)') {
+                activeWorkers = workersTemp
+                    .filter(x => x.status === true)
+                    .filter(x => x.associateType === 'L1 (Sup Prac)')
             }
+            else {
+                activeWorkers = workersTemp.filter(x => x.status === true && x.associateType !== 'L1 (Sup Prac)')
+            }
+
             // let activeWorkers = workersTemp.filter(x => x.status === true)
             //**************Filter by city *******************/
 
@@ -96,6 +104,13 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
             if (filterSites.length === 0) {
                 setErrMsg(`No users found in ${activeChbxValue[0]}, please select another city!`)
                 setVarient('danger')
+            }
+            if (validateVideoFee(videoFee) !== null) {
+                setErrMsg('Please enter a video fee amount')
+                setVarient('danger')
+                setTimeout(() => {
+                    setErrMsg("")
+                }, 5000);
             }
             else {
                 let resp = await GetFile(date[0], date[1], storeData.accessToken, 'multipdf', filterSites, action, videoFee, type, InvalidateCache)
