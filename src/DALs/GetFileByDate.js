@@ -11,7 +11,11 @@ const GetFile = async (start, end, token, reportType, users, action, videoFee, t
     let resp = await axios.post(process.env.REACT_APP_API_URL + '/generatepdf', {
         start: moment(start).format('YYYY-MM-DD'), end: moment(end).format('YYYY-MM-DD'),
         users: users, action: action, videoFee, reportType, actionType: type
-    }, { responseType: 'blob', headers: headers })
+    }, { responseType: 'blob', headers: headers }).catch(err => {
+        if (err?.response?.status === 404) {
+            throw new Error('No data found for the selected date range. Please modify your search and try again.')
+        }
+    })
 
     if (action === 'email') {
         return resp
@@ -30,7 +34,7 @@ const GetFile = async (start, end, token, reportType, users, action, videoFee, t
             a.download = `${type}_${users?.map(x => x.associateName)[0]}_${date.toJSON().slice(0, 10)}_${date.toLocaleTimeString().slice(0, 5)}.pdf`
         }
         else {
-            a.download = `${type}_${users?.map(x => x.associateName)[0]}_${date.toJSON().slice(0, 10)}_${date.toLocaleTimeString().slice(0, 5)}`; // gives it a name via an a tag
+            a.download = `${type}_${users?.map(x => x.associateName)[0]}_${date.toJSON().slice(0, 10)}_${date.toLocaleTimeString().slice(0, 5)}`; 
         }
         a.click();
         window.URL.revokeObjectURL(url);
