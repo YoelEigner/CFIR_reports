@@ -33,6 +33,7 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
         { value: 'L3', label: "Run reports for L3 only" },
         { value: 'L4', label: "Run reports for L4 only" },
         { value: 'L1 (Sup Prac)', label: "Run reports for supervised practice only" },
+        { value: 'summery', label: "Summarized report" },
     ]
     const updateChbxValue = (row, name, checked) => {
         let temp = chbx
@@ -92,6 +93,10 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
                     .filter(x => x.status === true)
                     .filter(x => x.associateType === 'L1 (Sup Prac)')
             }
+            else if (selected.value === 'summery') {
+                //this is only needed for the error message not to show up
+                activeWorkers = workersTemp.filter(x => x.status === true)
+            }
             else {
                 activeWorkers = workersTemp.filter(x => x.status === true && x.associateType !== 'L1 (Sup Prac)')
             }
@@ -113,18 +118,30 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
                 }, 5000);
             }
             else {
-                let resp = await GetFile(date[0], date[1], storeData.accessToken, 'multipdf', filterSites, action, videoFee, type, InvalidateCache)
-                if (resp.status === 200) {
-                    setVarient('success')
-                    if (action === 'email') {
-                        setErrMsg('Emails sent!')
-                    }
-                    else {
+                if (selected.value === 'summery') {
+                    let resp = await GetFile(date[0], date[1], storeData.accessToken, selected.value, filterSites, action, videoFee, type, InvalidateCache, activeChbxValue)
+                    if (resp.status === 200) {
+                        setVarient('success')
                         setErrMsg('Download compleate!')
+                        setTimeout(() => {
+                            setErrMsg("")
+                        }, 300000);
                     }
-                    setTimeout(() => {
-                        setErrMsg("")
-                    }, 300000);
+                }
+                else {
+                    let resp = await GetFile(date[0], date[1], storeData.accessToken, 'multipdf', filterSites, action, videoFee, type, InvalidateCache)
+                    if (resp.status === 200) {
+                        setVarient('success')
+                        if (action === 'email') {
+                            setErrMsg('Emails sent!')
+                        }
+                        else {
+                            setErrMsg('Download compleate!')
+                        }
+                        setTimeout(() => {
+                            setErrMsg("")
+                        }, 300000);
+                    }
                 }
             }
             loading(false)
@@ -148,21 +165,18 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
                 <ButtonGroup size="sm">
                     <Button disabled={isDisabled} variant="secondary" onClick={() => runReport('invoice', 'run')}>Invoice</Button>
                     <Button disabled={isDisabled} variant="secondary" onClick={() => runReport('payment', 'run')}>Payment</Button>
-                    {/* <Button disabled={isDisabled} variant="secondary" onClick={() => runReport('both', 'run')}>Both</Button> */}
-                    {/* <Button disabled={isDisabled} variant="secondary" onClick={() => runReport('save', 'save')}>Save</Button> */}
                 </ButtonGroup>
             </td>
             <td >
                 <ButtonGroup size="sm">
                     <Button disabled={isDisabled} variant="secondary" onClick={() => handleEmailClick('invoice')}>Invoice</Button>
                     <Button disabled={isDisabled} variant="secondary" onClick={() => handleEmailClick('payment')}>Payment</Button>
-                    {/* <Button disabled={isDisabled} variant="secondary" onClick={() => runReport('both', 'email')}>Both</Button> */}
                 </ButtonGroup>
             </td>
         </tr>
 
     return (
-        <div>
+        <div style={{ marginBottom: '10rem' }}>
             {showHide && <EmailConfirmationModal show={showHide} setShow={(e) => { setShowHide(e) }} reportType={reportType} sendEmails={(type) => { runReport(type, 'email') }} />}
             {errMsg !== "" && <Alert key={1} variant={varient}>
                 {errMsg}
