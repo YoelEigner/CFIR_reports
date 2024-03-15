@@ -20,7 +20,7 @@ const Login = () => {
 
     useEffect(() => {
         dispatch({ type: "AUTHENTICATED", payload: false })
-    }, [])
+    }, [dispatch])
     const submit = async (e) => {
         e.preventDefault()
         setIsLoading(true);
@@ -35,6 +35,7 @@ const Login = () => {
             dispatch({ type: "AUTHENTICATED", payload: resp.authenticated })
             dispatch({ type: "USERNAME", payload: resp.username })
             dispatch({ type: "EXPIERSIN", payload: resp.expiresIn })
+            dispatch({ type: "EXPIERSAT", payload: resp.expiresAt })
             dispatch({ type: "PROVENCE", payload: respProvinces })
             dispatch({ type: "PHYSICIANS", payload: physicians })
             dispatch({ type: "PAYMENTTYPES", payload: paymentTypes })

@@ -14,11 +14,12 @@ import moment from "moment";
 import { useDispatch } from "react-redux";
 import { validateVideoFee } from "../utils/utils";
 
-
-
 const Main = () => {
   const [date, setDate] = useState([new Date()]);
-  const storeData = useSelector(state => state)
+  const physician = useSelector(state => state.Physician)
+  const expiresAt = useSelector(state => state.expiresAt)
+  const accessToken = useSelector(state => state.accessToken)
+  const paymentTypes = useSelector(state => state.paymentTypes)
   const [videoFee, setVideoFee] = useState(null)
   const dispatch = useDispatch()
   const [physicians, setPhysicians] = useState([])
@@ -32,8 +33,8 @@ const Main = () => {
 
 
   useEffect(() => {
-    setPhysicians(storeData.Physician)
-  }, [storeData.Physician])
+    setPhysicians(physician)
+  }, [physician])
 
   const onStartDateChange = useCallback((startDate) => {
     cookies.set('startDate', startDate, { maxAge: 2629800000 });
@@ -86,6 +87,14 @@ const Main = () => {
     setSelectedUser(id.value)
   }
 
+  useEffect(() => {
+    const now = new Date()
+    const tokenExpiration = new Date(expiresAt);
+    if (now > tokenExpiration) {
+      dispatch({ type: "AUTHENTICATED", payload: false })
+    }
+  }, [expiresAt, dispatch])
+
   const getWorker = async () => {
     try {
       if (validateVideoFee(videoFee) !== null) {
@@ -96,9 +105,9 @@ const Main = () => {
       }
       else {
         setIsLoading(true)
-        let resp = await GetWorkerProfile(selectedUser, storeData.accessToken, InvalidateCache)
-        await GetFile(date[0], date[1], storeData.accessToken, 'singlepdf', resp, 'run', videoFee, 'payment', InvalidateCache)
-        await GetFile(date[0], date[1], storeData.accessToken, 'singlepdf', resp, 'run', videoFee, 'invoice', InvalidateCache)
+        let resp = await GetWorkerProfile(selectedUser, accessToken, InvalidateCache)
+        await GetFile(date[0], date[1], accessToken, 'singlepdf', resp, 'run', videoFee, 'payment', InvalidateCache)
+        await GetFile(date[0], date[1], accessToken, 'singlepdf', resp, 'run', videoFee, 'invoice', InvalidateCache)
         setIsLoading(false)
 
       }
@@ -110,21 +119,19 @@ const Main = () => {
         setErr("")
       }, 10000);
       setIsLoading(false)
-
     }
   }
 
   const handleVideoFeeChange = (e) => {
     const expirationTime = 12 * 60 * 60 * 1000;
-    const expirationDate = new Date(Date.now() + expirationTime);    
+    const expirationDate = new Date(Date.now() + expirationTime);
     cookies.set('viedoFee', e, { expires: expirationDate });
     setVideoFee(e);
   }
 
   useEffect(() => {
     setVideoFee(cookies.get('viedoFee'))
-
-  }, [])
+  }, [cookies])
   return (
     <Col style={{ paddingTop: '80px' }}>
       {isLoading && <LoadingSpinner />}
@@ -144,7 +151,7 @@ const Main = () => {
       <Col>
         <Table >
           <tbody>
-            {storeData.paymentTypes.map((x, index) => {
+            {paymentTypes.map((x, index) => {
               return (
                 <tr key={index}>
                   <th>{x.name}</th>

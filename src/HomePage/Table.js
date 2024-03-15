@@ -8,7 +8,8 @@ import EmailConfirmationModal from "../ResetAdjustmentFeeModal/EmailConfirmation
 import { validateVideoFee } from "../utils/utils";
 
 const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
-    const storeData = useSelector(state => state)
+    const provenceState = useSelector(state => state.provence)
+    const accessToken = useSelector(state => state.accessToken)
     const [provence, setProvence] = useState([])
     const [selected, setSelected] = useState("")
     const [chbx, setChbx] = useState([])
@@ -22,8 +23,8 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
     useEffect(() => { setSelected('') }, [])
 
     useEffect(() => {
-        setProvence(storeData.provence)
-    }, [storeData.provence])
+        setProvence(provenceState)
+    }, [provenceState])
 
     const optionsArr = [
         { value: 'associateType', label: "Run all reports for all therapists (excl. supervised practice)" },
@@ -79,7 +80,7 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
 
             //******Filter Active Workers & select only superviser/supervisees */
             let activeWorkers = []
-            let workersTemp = await GetAssociateTypes(storeData.accessToken, selected.value, chbx)
+            let workersTemp = await GetAssociateTypes(accessToken, selected.value, chbx)
             workersTemp.length === 0 && setErrMsg("No user found in this catagory, please select another option!")
             workersTemp.length === 0 && setVarient('danger')
 
@@ -119,7 +120,7 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
             }
             else {
                 if (selected.value === 'summery') {
-                    let resp = await GetFile(date[0], date[1], storeData.accessToken, selected.value, filterSites, action, videoFee, type, InvalidateCache, activeChbxValue)
+                    let resp = await GetFile(date[0], date[1], accessToken, selected.value, filterSites, action, videoFee, type, InvalidateCache, activeChbxValue)
                     if (resp.status === 200) {
                         setVarient('success')
                         setErrMsg('Download compleate!')
@@ -129,7 +130,7 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
                     }
                 }
                 else {
-                    let resp = await GetFile(date[0], date[1], storeData.accessToken, 'multipdf', filterSites, action, videoFee, type, InvalidateCache)
+                    let resp = await GetFile(date[0], date[1], accessToken, 'multipdf', filterSites, action, videoFee, type, InvalidateCache)
                     if (resp.status === 200) {
                         setVarient('success')
                         if (action === 'email') {

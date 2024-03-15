@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Alert, Container, Nav, Navbar } from "react-bootstrap"
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -12,7 +12,9 @@ import TokenRefreshModal from "./Login/TokenRefreshModal";
 const NavBar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    const storeData = useSelector(state => state)
+    const accessToken = useSelector(state => state.accessToken)
+    const expiresIn = useSelector(state => state.expiresIn)
+    const username = useSelector(state => state.username)
     const [msg, setMsg] = useState("")
     const [varient, setVarient] = useState("success")
     const [showHide, setShowHide] = useState(false)
@@ -24,14 +26,14 @@ const NavBar = () => {
         dispatch({ type: "RESET" })
         navigate('/login')
     }
-    const onReload = async () => {
-        let physicians = await GetPhysicianFunc(storeData.accessToken)
+    const onReload = useCallback(async () => {
+        let physicians = await GetPhysicianFunc(accessToken)
         dispatch({ type: "PHYSICIANS", payload: physicians })
+    }, [accessToken, dispatch])
 
-    }
     useEffect(() => {
         onReload()
-    }, [])
+    }, [onReload])
 
     // useEffect(() => {
     //     revokeAccess()
@@ -40,7 +42,7 @@ const NavBar = () => {
     const revokeAccess = () => {
         setTimeout(() => {
             setOpen(true)
-        }, storeData.expiresIn);
+        }, expiresIn);
     }
 
     const handleResp = async (resp) => {
@@ -78,14 +80,14 @@ const NavBar = () => {
 
                     </Nav>
                     <Navbar.Text>
-                        Signed in as: <a href="/changepass" onClick={() => navigate('changepass')}>{storeData.username.charAt(0).toUpperCase() + storeData.username.slice(1)}</a>
+                        Signed in as: <a href="/changepass" onClick={() => navigate('changepass')}>{username.charAt(0).toUpperCase() + username.slice(1)}</a>
                     </Navbar.Text>
                 </Container>
             </Navbar>
             {msg !== "" && <Alert style={{ textAlign: "center", position: "sticky", top: 50 }} key={'success'} variant={varient}>
                 {msg}
             </Alert>}
-            <ResetAdjustmentFeeModal show={showHide} setShow={(e) => { setShowHide(e) }} token={storeData.accessToken} handleResp={(resp) => handleResp(resp)} />
+            <ResetAdjustmentFeeModal show={showHide} setShow={(e) => { setShowHide(e) }} token={accessToken} handleResp={(resp) => handleResp(resp)} />
         </div>
     )
 }
