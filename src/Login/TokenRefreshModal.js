@@ -10,7 +10,7 @@ import RefreshToken from '../BL/RefreshToken';
 const RefreshToeknModal = ({ open, setOpen, revokeAccess }) => {
     const dispatch = useDispatch()
     const navigate = useNavigate();
-    const storeData = (useSelector(state => state))
+    const refreshToken = (useSelector(state => state.refreshToken))
 
     const handleClose = () => {
         dispatch({ type: "RESET" })
@@ -18,7 +18,7 @@ const RefreshToeknModal = ({ open, setOpen, revokeAccess }) => {
         setOpen(false)
     }
     const handleStay = async () => {
-        let resp = await RefreshToken(storeData.refreshToken)
+        let resp = await RefreshToken(refreshToken)
         dispatch({ type: "ACCESSTOKEN", payload: resp.accessToken });
         dispatch({ type: "AUTHENTICATED", payload: true })
         revokeAccess()

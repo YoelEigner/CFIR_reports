@@ -3,6 +3,7 @@ const appReducer = (state = {
     refreshToken: "",
     authenticated: false,
     expiresIn: 1800000,
+    expiresAt: null,
     provence: [],
     Physician: [],
     worker: [],
@@ -21,6 +22,8 @@ const appReducer = (state = {
             return { ...state, username: action.payload };
         case "EXPIERSIN":
             return { ...state, expiresIn: action.payload };
+        case "EXPIERSAT":
+            return { ...state, expiresAt: action.payload };
         case "PROVENCE":
             return { ...state, provence: action.payload };
         case "PHYSICIANS":

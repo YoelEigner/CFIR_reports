@@ -11,7 +11,7 @@ import ChangePassword from './../ChangePassword/ChangePassword';
 import UpdateEmailPassword from "../UpdateEmailPassword/UpdateEmailPassword";
 
 const Routing = () => {
-    const storeData = useSelector(state => state)
+    const authenticated = useSelector(state => state.authenticated)
     const [loggedIn, setLoggedin] = useState(false)
     // const [open, setOpen] = useState(false)
 
@@ -24,8 +24,8 @@ const Routing = () => {
     }, [])
 
     useEffect(() => {
-        setLoggedin(storeData.authenticated)
-    }, [storeData.authenticated])
+        setLoggedin(authenticated)
+    }, [authenticated])
 
     const revokeAccess = () => {
         setTimeout(() => {

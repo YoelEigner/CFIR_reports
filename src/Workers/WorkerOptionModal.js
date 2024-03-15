@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import GetServiceTypes from '../BL/GetServiceTypes';
@@ -10,21 +10,21 @@ const WorkerOptionModal = ({ open, setOpen, header, accessToken, id, setCovrage1
     const [options, setOptions] = useState([])
     const [selectedOptions, setSelectedOptions] = useState([])
 
-    const getServiceTypes = async () => {
+    const getServiceTypes = useCallback(async () => {
         let resp = await GetServiceTypes(accessToken)
         setOptions(resp)
-    }
+    }, [accessToken])
 
     useEffect(() => {
         getServiceTypes()
-    }, [])
+    }, [getServiceTypes])
 
     useEffect(() => {
         if (header === 'Supervisor One Covrage') { setSelectedOptions(tryParse(covrage1)) }
         else if (header === 'Supervisor Two Covrage') { setSelectedOptions(tryParse(covrage2)) }
         open === false && setSelectedOptions([])
         open === false && getServiceTypes()
-    }, [open]);
+    }, [open, getServiceTypes, covrage1, covrage2, header]);
 
 
     const handleChange = (option, isChecked) => {
