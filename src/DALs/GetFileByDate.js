@@ -15,6 +15,12 @@ const GetFile = async (start, end, token, reportType, users, action, videoFee, t
         if (err?.response?.status === 404) {
             throw new Error('No data found for the selected date range. Please modify your search and try again.')
         }
+        else if (err?.response?.status === 403) {
+            throw new Error('Forbidden.')
+        }
+        else if (err?.response?.status !== 200) {
+            throw new Error('unknown error. please contact the administrator.')
+        }
     })
 
     if (action === 'email') {
