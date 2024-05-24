@@ -11,12 +11,20 @@ const GetFile = async (start, end, token, reportType, users, action, videoFee, t
     let resp = await axios.post(process.env.REACT_APP_API_URL + '/generatepdf', {
         start: moment(start).format('YYYY-MM-DD'), end: moment(end).format('YYYY-MM-DD'),
         users: users, action: action, videoFee, reportType, actionType: type, sites: filterSites
-    }, { responseType: 'blob', headers: headers }).catch(err => {
+    }, { responseType: 'blob', headers: headers }).catch(async err => {
+        if (err?.response?.status === 400 && err?.response?.data instanceof Blob) {
+            const text = await new Response(err?.response?.data).text()
+            throw new Error(text)
+        }
+
         if (err?.response?.status === 404) {
             throw new Error('No data found for the selected date range. Please modify your search and try again.')
         }
         else if (err?.response?.status === 403) {
             throw new Error('Forbidden.')
+        }
+        else if (err?.response?.status === 500) {
+            throw new Error('Internal server error.')
         }
         else if (err?.response?.status !== 200) {
             throw new Error('unknown error. please contact the administrator.')
@@ -36,14 +44,14 @@ const GetFile = async (start, end, token, reportType, users, action, videoFee, t
 
         let url = window.URL.createObjectURL(file);
         a.href = url;
-        if(reportType === 'summery'){
+        if (reportType === 'summery') {
             a.download = `${type}_summary.pdf`
         }
         else if (users?.map(x => x.associateName)[0].includes('.')) {
             a.download = `${type}_${users?.map(x => x.associateName)[0]}_${date.toJSON().slice(0, 10)}_${date.toLocaleTimeString().slice(0, 5)}.pdf`
         }
         else {
-            a.download = `${type}_${users?.map(x => x.associateName)[0]}_${date.toJSON().slice(0, 10)}_${date.toLocaleTimeString().slice(0, 5)}`; 
+            a.download = `${type}_${users?.map(x => x.associateName)[0]}_${date.toJSON().slice(0, 10)}_${date.toLocaleTimeString().slice(0, 5)}`;
         }
         a.click();
         window.URL.revokeObjectURL(url);
