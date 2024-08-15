@@ -6,8 +6,9 @@ import GetAssociateTypes from "../BL/GetAssociateTypes";
 import GetFile from "../DALs/GetFileByDate";
 import EmailConfirmationModal from "../ResetAdjustmentFeeModal/EmailConfirmationModal";
 import { validateVideoFee } from "../utils/utils";
+import ProgressComponent from "../Loader/ProgressComponent";
 
-const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
+const MainTable = ({ date, loading, isLoading, videoFee, InvalidateCache }) => {
     const provenceState = useSelector(state => state.provence)
     const accessToken = useSelector(state => state.accessToken)
     const [provence, setProvence] = useState([])
@@ -17,6 +18,7 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
     const [varient, setVarient] = useState('danger')
     const [showHide, setShowHide] = useState(false)
     const [reportType, setReportType] = useState('')
+    const [selectUserCount, setSelectedUserCount] = useState(0)
 
     let lines = [1]
     // let chbxValue = []
@@ -107,6 +109,7 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
 
             let activeChbxValue = chbx.filter(x => x.checked === true).map(x => x.name)
             let filterSites = activeWorkers.filter(x => activeChbxValue.includes(x.site))
+            setSelectedUserCount(filterSites.length)
             if (filterSites.length === 0) {
                 setErrMsg(`No users found in ${activeChbxValue[0]}, please select another city!`)
                 setVarient('danger')
@@ -178,6 +181,7 @@ const MainTable = ({ date, loading, videoFee, InvalidateCache }) => {
 
     return (
         <div style={{ marginBottom: '10rem' }}>
+            {isLoading && <ProgressComponent userCount={selectUserCount} />}
             {showHide && <EmailConfirmationModal show={showHide} setShow={(e) => { setShowHide(e) }} reportType={reportType} sendEmails={(type) => { runReport(type, 'email') }} />}
             {errMsg !== "" && <Alert key={1} variant={varient}>
                 {errMsg}

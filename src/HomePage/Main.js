@@ -197,7 +197,7 @@ const Main = () => {
 
         <br />
 
-        <MainTable date={date} loading={(e) => setIsLoading(e)} videoFee={videoFee} InvalidateCache={InvalidateCache} />
+        <MainTable date={date} loading={(e) => setIsLoading(e)} isLoading={isLoading} videoFee={videoFee} InvalidateCache={InvalidateCache} />
       </Col>
     </Col >
   )
